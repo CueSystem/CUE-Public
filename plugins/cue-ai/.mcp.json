@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "cvc": {
+      "type": "http",
+      "url": "http://127.0.0.1:8765/mcp"
+    },
+    "cue-docs": {
+      "type": "http",
+      "url": "https://www.cuesystem.com/docs-mcp"
+    }
+  }
+}

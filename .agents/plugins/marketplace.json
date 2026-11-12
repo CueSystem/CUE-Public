@@ -1,0 +1,12 @@
+{
+  "name": "cue-ai-local",
+  "interface": { "displayName": "CUE AI" },
+  "plugins": [
+    {
+      "name": "cue-ai",
+      "source": { "source": "local", "path": "./plugins/cue-ai" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Productivity"
+    }
+  ]
+}

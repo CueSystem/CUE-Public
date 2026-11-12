@@ -1,0 +1,476 @@
+{
+  "files": [
+    {
+      "bytes": 4679,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/add-smart-relay.mjs",
+      "sha256": "f3d7be0068ec1b3d794247184e7aaaff12545ef66e56e3ab9403028ba4d5022e"
+    },
+    {
+      "bytes": 4885,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/add-status-panel.mjs",
+      "sha256": "ccd57c9a57308eb06862d9eb31b4e33f099cdfe6217bda841fafc178f6f9eb53"
+    },
+    {
+      "bytes": 4988,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/build-first-project.mjs",
+      "sha256": "e53d16ef5f53e40cc394d02d0de9b98bb900224363798e7adf4f243160a58f4a"
+    },
+    {
+      "bytes": 2861,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/catalog-data.mjs",
+      "sha256": "b9be46275ef6bc09c544f8769aa1af1b666311e0e4959e9fecd775fcc657f9b8"
+    },
+    {
+      "bytes": 2770,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/core-czech.json",
+      "sha256": "a79002b194ac01e8fdd7e189c1f8eaa7690ecb03b9b4dc1a9388c9655a9658cb"
+    },
+    {
+      "bytes": 5356,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/CVCP-FORMAT.md",
+      "sha256": "7d1d90c1673c77383abfcb6791019a35b6b74c792e7a027b239f81b884c8cb0a"
+    },
+    {
+      "bytes": 2897,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/DATA-LIBRARY.md",
+      "sha256": "3a3831c4c4e3a164e4a4243805b87c7f98dae4f62590065523383e076c404d06"
+    },
+    {
+      "bytes": 2731,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/driver.mjs",
+      "sha256": "8fb1b6b2467bde3dfe25f27d17d82e303306b450ff328dd2e3a062b185e2d17d"
+    },
+    {
+      "bytes": 6891,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/green-core-project.mjs",
+      "sha256": "085dfc03d342a65b2cee74b23607c9357939f048c6b13eb8f58db60d21021557"
+    },
+    {
+      "bytes": 5172,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/inspect-project.mjs",
+      "sha256": "88a42ca094d0e05a22c05a9537c5cf33bd61f5f403354ed0aec233dec38eb247"
+    },
+    {
+      "bytes": 1262,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/inspect-project.test.mjs",
+      "sha256": "b961be40921f40bcad2f226fd319c294c4810c7f9957fae4fdafeff7d8071821"
+    },
+    {
+      "bytes": 169,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/package.json",
+      "sha256": "034730dc28c070c849b17c02a393e4dce44df5117dc928cab5332181e9f78969"
+    },
+    {
+      "bytes": 3504,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/project.mjs",
+      "sha256": "fc648ef4be18aa71fc6ba1e9d8f2592bb3b2c59190451cbe1b3a87c19bbc7b7c"
+    },
+    {
+      "bytes": 1043,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/project.test.mjs",
+      "sha256": "d1e85bc6ab84fbf08e5d51328f8fc90f22ad38f4239976bbbe99504b504bae9d"
+    },
+    {
+      "bytes": 1792,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/public-relay-processes.mjs",
+      "sha256": "e85fcb903ba1db16fd30b1ac00af3acdfbff501e1dd6a2812e49e5fc2cfed56e"
+    },
+    {
+      "bytes": 3679,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/README.md",
+      "sha256": "1d3ef919198bbdd18ffe334ac967e2eeb9a05e1a71f5dbd766d1c77fa5c55b56"
+    },
+    {
+      "bytes": 3487,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/server.mjs",
+      "sha256": "bb751d8aa97b77604414f64ba05f0110c049a28cf4d9fb69d73bd3aa616d004c"
+    },
+    {
+      "bytes": 3044,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/test.mjs",
+      "sha256": "eecca4997f87ceb2518d5b31e2b9700230ba6a8b6d50b1bff74d9f8de88f62d0"
+    },
+    {
+      "bytes": 2978,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/use-relay-events.mjs",
+      "sha256": "6294e7d6d4ae14b5b37d2a7878ea222440e522070d2735a7e5f64bfeba98965e"
+    },
+    {
+      "bytes": 3497960,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/generated/CoreGraphicLibrary-before-green-czech.cvcp",
+      "sha256": "c1191c411a94e47c80d354f292f878c51d00b16f3ce5d8169cda705a8b131bf6"
+    },
+    {
+      "bytes": 3504992,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/generated/CoreGraphicLibrary-green-czech.cvcp",
+      "sha256": "48b89c57e9cee25d091ebec4360ba0751c78c0f24a62ebdd24058d1de8c48677"
+    },
+    {
+      "bytes": 82693,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/generated/CoreGraphicLibrary-green-layout.xpl2",
+      "sha256": "73e83ff170023e15baa4e6856e8c37074d9856f111d7f1ed87cac348a83716f6"
+    },
+    {
+      "bytes": 13007,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/generated/CoreGraphicLibrary-languages.xpl2",
+      "sha256": "37c74e2cf75d7c638e94ae26e5f55f9cc97aa3e606733e9017528e7d3e0945bd"
+    },
+    {
+      "bytes": 846511,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/generated/FirstAIproject-before-events.cvcp",
+      "sha256": "1fdbc6a4ff602ec403fe4d49875306844b0e0eb4892190f4131c37629c1c7186"
+    },
+    {
+      "bytes": 845261,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/generated/FirstAIproject-before-global.cvcp",
+      "sha256": "81150ce3252efeb53e76333ca28e384423acffce6aa7b9cff1f96d1a52c5aa0a"
+    },
+    {
+      "bytes": 845255,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/generated/FirstAIproject-before-public-processes.cvcp",
+      "sha256": "ea6ebf3a79f65bf4d244bcd16d1065710f7c825ca77faa852e6c6eb20cbdee54"
+    },
+    {
+      "bytes": 831900,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/generated/FirstAIproject-before-relay.cvcp",
+      "sha256": "e8ac5e7fcf26c8cc9cbee8b3fb2eafd97b3334d45f94b8dbd489378e56eeb8e9"
+    },
+    {
+      "bytes": 845260,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/generated/FirstAIproject-before-status-panel.cvcp",
+      "sha256": "bd913fc8bbbe22a59cd69363be4909d2ef3ae81197d61f3ed9721cce826cd965"
+    },
+    {
+      "bytes": 846502,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/generated/FirstAIproject-events.cvcp",
+      "sha256": "3ba49f52e71564facee610f8bb0acccfc47d2bdf0d6e48467f819cb2f8f50ff8"
+    },
+    {
+      "bytes": 1019,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/generated/FirstAIproject-events.xpl2",
+      "sha256": "eb7b547e6e2a501eb562aef52100955e887675e9b75a26d7ac76c48ee1bd2956"
+    },
+    {
+      "bytes": 845260,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/generated/FirstAIproject-global.cvcp",
+      "sha256": "bd913fc8bbbe22a59cd69363be4909d2ef3ae81197d61f3ed9721cce826cd965"
+    },
+    {
+      "bytes": 896,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/generated/FirstAIproject-layout.xpl2",
+      "sha256": "06b6c91b668fd325652cb15421d56def28b8612d1da48b5ed10a3d72e4914f21"
+    },
+    {
+      "bytes": 845261,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/generated/FirstAIproject-public-processes.cvcp",
+      "sha256": "81150ce3252efeb53e76333ca28e384423acffce6aa7b9cff1f96d1a52c5aa0a"
+    },
+    {
+      "bytes": 376,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/generated/FirstAIproject-relay-events.xpl2",
+      "sha256": "abb22838a1b2faebfe106ed3eaa14a69194a2b0f15cbd0f56e43bed9402168d4"
+    },
+    {
+      "bytes": 846511,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/generated/FirstAIproject-status-panel.cvcp",
+      "sha256": "1fdbc6a4ff602ec403fe4d49875306844b0e0eb4892190f4131c37629c1c7186"
+    },
+    {
+      "bytes": 1634,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/generated/FirstAIproject-status-panel.xpl2",
+      "sha256": "59b4ed44439fcffd2f9a9622ca813ec98e63cadd3c0c276d2aaf86650d50e2a0"
+    },
+    {
+      "bytes": 845255,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/generated/FirstAIproject-with-relay.cvcp",
+      "sha256": "ea6ebf3a79f65bf4d244bcd16d1065710f7c825ca77faa852e6c6eb20cbdee54"
+    },
+    {
+      "bytes": 831900,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/generated/FirstAIproject.cvcp",
+      "sha256": "e8ac5e7fcf26c8cc9cbee8b3fb2eafd97b3334d45f94b8dbd489378e56eeb8e9"
+    },
+    {
+      "bytes": 615,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/generated/RelayDriverMCP.cvcd",
+      "sha256": "679393256e8c260a98c8bdc44caa796ed69bc52cc5c37247ffdbd7474d4cdbfc"
+    },
+    {
+      "bytes": 978,
+      "path": "skills/archive/CUE Docs/cvc-driver-mcp/generated/TestAI_02.cvcp",
+      "sha256": "fe83d1f16f83da527fa191ef1308da58fbb540a1f259f1f2e4138b2d451de52d"
+    },
+    {
+      "bytes": 8215,
+      "path": "skills/archive/CVC MCP/add-basic-keypad.mjs",
+      "sha256": "84febae4ee1a071d43231f46c05ba8d11e44809b7306ee15ab9092e8c2b4b1cc"
+    },
+    {
+      "bytes": 8307,
+      "path": "skills/archive/CVC MCP/add-room-pages.mjs",
+      "sha256": "7f971a19b98de4fae6edf4ac5863bc4c8b5f44113e019564a1cc5488c8f6ec91"
+    },
+    {
+      "bytes": 4467,
+      "path": "skills/archive/CVC MCP/add-samsung-buttons.mjs",
+      "sha256": "6908ebc9a97898e0154897f73d8bf3b03678884dbf39056261070ea97df1e12a"
+    },
+    {
+      "bytes": 1573,
+      "path": "skills/archive/CVC MCP/add-samsung.mjs",
+      "sha256": "0f388ae247d347fa634caef0fed8adead493ba109f9962d1f29a16e5c943797f"
+    },
+    {
+      "bytes": 5314,
+      "path": "skills/archive/CVC MCP/AVService-two-state.xpl2",
+      "sha256": "1a163b32c80af64564182fefe3141bbdbed65346a03b2170efd6f6e5ac2894e3"
+    },
+    {
+      "bytes": 5843,
+      "path": "skills/archive/CVC MCP/AVService-v02.xpl2",
+      "sha256": "2c74323ec6de1e66bf1c59f47fb86ad31a3e0b48ed93cbb6c0a94234f03ac1d9"
+    },
+    {
+      "bytes": 5847,
+      "path": "skills/archive/CVC MCP/AVService-v04.xpl2",
+      "sha256": "aeae0316ce70c0b33c405965621ec12611865b27df8adfb79395301537eb7f5c"
+    },
+    {
+      "bytes": 4244,
+      "path": "skills/archive/CVC MCP/AVService.xpl2",
+      "sha256": "78465b1d12cd22b72e996263fb4df90f1dd0f9adfd9ef32cb84b6001d60283c3"
+    },
+    {
+      "bytes": 74002,
+      "path": "skills/archive/CVC MCP/basic-source.xpl2",
+      "sha256": "4ab5781c6124c697cfc511d1ef165b32a0cc527adb7ee22ae1caf498efeb77c9"
+    },
+    {
+      "bytes": 12323,
+      "path": "skills/archive/CVC MCP/bridge-source.xpl2",
+      "sha256": "2edfd53a6eb2f9b4b19369c7a51e249857358f1d44c0e875f354907d1aae7616"
+    },
+    {
+      "bytes": 1975,
+      "path": "skills/archive/CVC MCP/connect-samsung.mjs",
+      "sha256": "01c1842071adc6be671b9f4e3186370bf6475a31cb9fb6595f56b7f4104b9423"
+    },
+    {
+      "bytes": 345408,
+      "path": "skills/archive/CVC MCP/device-drivers-response.json",
+      "sha256": "1f7f92f1091624ebf8e1f36b91454cf4c2e811816a5e95462323b5caa5f0e4e5"
+    },
+    {
+      "bytes": 67830,
+      "path": "skills/archive/CVC MCP/device-drivers.csv",
+      "sha256": "c6eed8fdc7f772428809d678c9750481802c3d10b0cdce116e177425bfeae3ee"
+    },
+    {
+      "bytes": 4929,
+      "path": "skills/archive/CVC MCP/direct-input-events.mjs",
+      "sha256": "f3184212dc8d4f435efa3df41287662bb3cf94a9deb3083d4272cff018860e37"
+    },
+    {
+      "bytes": 865999,
+      "path": "skills/archive/CVC MCP/FirstAIproject_v02.cvcp",
+      "sha256": "4cff879a55a0f414e7efe55bcbc8ce9545bdd9de720d7c36ae74de0fdbe10cc7"
+    },
+    {
+      "bytes": 867127,
+      "path": "skills/archive/CVC MCP/FirstAIproject_v03.cvcp",
+      "sha256": "6f92d22c514229e8af81b28c8f9ff3586d5ed2275447946b3c4d114979d83d3f"
+    },
+    {
+      "bytes": 867117,
+      "path": "skills/archive/CVC MCP/FirstAIproject_v04.cvcp",
+      "sha256": "cd22ce3703df341ae0274f7165d2b9825dd3ee38332627f5a96927937174ab42"
+    },
+    {
+      "bytes": 889455,
+      "path": "skills/archive/CVC MCP/FirstAIproject_v05.cvcp",
+      "sha256": "96c20039c71cf896de2ac9414e16e3e4e7b06e2e4b689bb233ec680c39aa4c4b"
+    },
+    {
+      "bytes": 889466,
+      "path": "skills/archive/CVC MCP/FirstAIproject_v06.cvcp",
+      "sha256": "df2371d3a00a4bc3d7a2abea04c1181acd4c9481b0038cfc087eb17edc7fea25"
+    },
+    {
+      "bytes": 859693,
+      "path": "skills/archive/CVC MCP/FirstAIproject-before-panel-sync.cvcp",
+      "sha256": "16f6b319685cffefab065c36887783029eda3800f811e2016dc142cd25556243"
+    },
+    {
+      "bytes": 856364,
+      "path": "skills/archive/CVC MCP/FirstAIproject-before-room-pages.cvcp",
+      "sha256": "9cd206ee6d92f732983835217edb57b135681e9d4a7956aab604759cc670acd1"
+    },
+    {
+      "bytes": 854084,
+      "path": "skills/archive/CVC MCP/FirstAIproject-before-samsung-buttons.cvcp",
+      "sha256": "34d76b6b4ffac9725c5091897c76b962871c2cb543d9a63d31c467b3597ad47a"
+    },
+    {
+      "bytes": 853818,
+      "path": "skills/archive/CVC MCP/FirstAIproject-before-samsung-connection.cvcp",
+      "sha256": "a98c4d9f894b91ea2ee7c98ba896fcdff6fb783b95d7dd237cc63fbdd9f340b6"
+    },
+    {
+      "bytes": 846626,
+      "path": "skills/archive/CVC MCP/FirstAIproject-before-samsung.cvcp",
+      "sha256": "1cdf36f3a81eac9fc3d8d99e4dd692b3dbb5c4929dc6ccb2ebbaa728437ffb10"
+    },
+    {
+      "bytes": 864418,
+      "path": "skills/archive/CVC MCP/FirstAIproject-before-two-state.cvcp",
+      "sha256": "c81a32d98cf8f634745f14177bb5ffb836862c065095a25a8b32b3e7c9e0153c"
+    },
+    {
+      "bytes": 864418,
+      "path": "skills/archive/CVC MCP/FirstAIproject-panel-sync.cvcp",
+      "sha256": "c81a32d98cf8f634745f14177bb5ffb836862c065095a25a8b32b3e7c9e0153c"
+    },
+    {
+      "bytes": 859693,
+      "path": "skills/archive/CVC MCP/FirstAIproject-room-pages.cvcp",
+      "sha256": "16f6b319685cffefab065c36887783029eda3800f811e2016dc142cd25556243"
+    },
+    {
+      "bytes": 856364,
+      "path": "skills/archive/CVC MCP/FirstAIproject-samsung-buttons.cvcp",
+      "sha256": "9cd206ee6d92f732983835217edb57b135681e9d4a7956aab604759cc670acd1"
+    },
+    {
+      "bytes": 854084,
+      "path": "skills/archive/CVC MCP/FirstAIproject-samsung-connected.cvcp",
+      "sha256": "34d76b6b4ffac9725c5091897c76b962871c2cb543d9a63d31c467b3597ad47a"
+    },
+    {
+      "bytes": 865310,
+      "path": "skills/archive/CVC MCP/FirstAIproject-two-state.cvcp",
+      "sha256": "edcab38eb2e031438445157f0e192f803d45f5f5ef3129aff2f38de7c414036a"
+    },
+    {
+      "bytes": 853818,
+      "path": "skills/archive/CVC MCP/FirstAIproject-with-samsung.cvcp",
+      "sha256": "a98c4d9f894b91ea2ee7c98ba896fcdff6fb783b95d7dd237cc63fbdd9f340b6"
+    },
+    {
+      "bytes": 4619,
+      "path": "skills/archive/CVC MCP/fix-av-latency.mjs",
+      "sha256": "4b34d8468304ff404cf08b622e021afe168a3cad7ea750efa07dd21bf343c144"
+    },
+    {
+      "bytes": 2825,
+      "path": "skills/archive/CVC MCP/fix-duplicate-links.mjs",
+      "sha256": "ed078b343e4aaa42557e130402a704edfcd16ead14ff02347698656eca1fff33"
+    },
+    {
+      "bytes": 1771,
+      "path": "skills/archive/CVC MCP/fix-keypad-connectors.mjs",
+      "sha256": "507cbb009b4f010ff29eb16fb01269b8f21e02e74b5d38c4aab393f12a690853"
+    },
+    {
+      "bytes": 157181,
+      "path": "skills/archive/CVC MCP/generic-base-source.txt",
+      "sha256": "62d1474f49c401600cd2e577c2ba696006f2a8337b8767363cdaaa135673406b"
+    },
+    {
+      "bytes": 4918,
+      "path": "skills/archive/CVC MCP/input-state-buttons.mjs",
+      "sha256": "64d021ce7092f493bb51a7c2647f2c585157167e32c3b0b4e51fa95a5e793fbc"
+    },
+    {
+      "bytes": 6163,
+      "path": "skills/archive/CVC MCP/keypad-source.xpl2",
+      "sha256": "92a83946a4af654632fa1fbacb9a362c610c5222636877634f05a9b8c5118f33"
+    },
+    {
+      "bytes": 2869,
+      "path": "skills/archive/CVC MCP/KeypadControls-v05.xpl2",
+      "sha256": "24e0000a8fb42e5b9452935765c7720c2d5c8f9c1d4c26c46365d4c89c02f650"
+    },
+    {
+      "bytes": 1442,
+      "path": "skills/archive/CVC MCP/LightingControls-synchronized.xpl2",
+      "sha256": "b5b427d022b749fa47dc683c0faddafe1fa131a28930ebd538f35a9e01a8ab02"
+    },
+    {
+      "bytes": 984,
+      "path": "skills/archive/CVC MCP/LightingControls.xpl2",
+      "sha256": "6cb27073f8b926319e7d1636b444a38fee1ad78c4c3ad65aaf31273606b796e2"
+    },
+    {
+      "bytes": 32263,
+      "path": "skills/archive/CVC MCP/samsung-source.txt",
+      "sha256": "d7aae64008504433bddb168dac2a2e45a74376c8e89faa56008685738d019884"
+    },
+    {
+      "bytes": 6963,
+      "path": "skills/archive/CVC MCP/SamsungControls-v03.xpl2",
+      "sha256": "f7c8a903c063a4edca85d7e338c656fba82c77132cd40a3760c30634f9fac161"
+    },
+    {
+      "bytes": 1503,
+      "path": "skills/archive/CVC MCP/SamsungControls.xpl2",
+      "sha256": "4c9c6a1c06d74aebca409fc43880ec3fd0e7a75897174c3607132afba761759c"
+    },
+    {
+      "bytes": 7142,
+      "path": "skills/archive/CVC MCP/SamsungDisplay_Generic_2.28.cvcd",
+      "sha256": "477d1ed03b0dbe93cedb502f586d676cad01054751066f50da89481ff256d821"
+    },
+    {
+      "bytes": 9337,
+      "path": "skills/archive/CVC MCP/sync-panels.mjs",
+      "sha256": "2eba8b8f91d64ba1a15ebf26e1a3c4f24df9801928d411b5f300158a31ad7811"
+    },
+    {
+      "bytes": 4978,
+      "path": "skills/archive/CVC MCP/TouchPanel1-buttons-layout.xpl2",
+      "sha256": "81117ee20160e078a3f11c5433ff723689603297c419e21df7eec4f69a43f783"
+    },
+    {
+      "bytes": 14596,
+      "path": "skills/archive/CVC MCP/TouchPanel1-room-layout.xpl2",
+      "sha256": "e6b36ac391b8038612dd559bdfc6f0e318d53c135759060271cadd68a3767e24"
+    },
+    {
+      "bytes": 2856,
+      "path": "skills/cue-visual-composer/SKILL.md",
+      "sha256": "9ab47736bc4661e723343255bf03d0e1a9dce9faf12b71b4e80476bcc0ae9a7d"
+    },
+    {
+      "bytes": 1485,
+      "path": "skills/cue-visual-composer/references/ARCHIVE.md",
+      "sha256": "3835166145b0fceb738154ffd7aedff37392cc1d834817cfa7ae54cb9897cd89"
+    },
+    {
+      "bytes": 5356,
+      "path": "skills/cue-visual-composer/references/CVCP-FORMAT.md",
+      "sha256": "7d1d90c1673c77383abfcb6791019a35b6b74c792e7a027b239f81b884c8cb0a"
+    },
+    {
+      "bytes": 2897,
+      "path": "skills/cue-visual-composer/references/DATA-LIBRARY.md",
+      "sha256": "3a3831c4c4e3a164e4a4243805b87c7f98dae4f62590065523383e076c404d06"
+    },
+    {
+      "bytes": 6287,
+      "path": "skills/cue-visual-composer/references/SESSION-KNOWLEDGE.md",
+      "sha256": "a3875c9422dce0116b61ac6fd46cc6de842b1e7a305ee43945a43ebbf88b1e5a"
+    },
+    {
+      "bytes": 2731,
+      "path": "skills/cue-visual-composer/scripts/driver.mjs",
+      "sha256": "8fb1b6b2467bde3dfe25f27d17d82e303306b450ff328dd2e3a062b185e2d17d"
+    },
+    {
+      "bytes": 5172,
+      "path": "skills/cue-visual-composer/scripts/inspect-project.mjs",
+      "sha256": "88a42ca094d0e05a22c05a9537c5cf33bd61f5f403354ed0aec233dec38eb247"
+    }
+  ],
+  "source": "CVC-Project-Skills.zip",
+  "sha256": "635a8e8b54ca2393d9cb9dd0f732daf862577a652363538f426c9b425b7c8a96"
+}

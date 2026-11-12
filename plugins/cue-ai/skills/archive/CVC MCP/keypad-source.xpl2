@@ -1,0 +1,291 @@
+Global DeviceClass keypadCUE_55
+
+Friend Callback
+Friend CButton
+
+Connector CUEwireConnector
+
+Protected Property Address As Byte := 2 WithAttributes
+{
+	EditMode := "Enum; '2':=2, '3':=3, '4':=4, '5':=5, '6':=6, '7':=7, '8':=8, '9':=9, '10':=10, '11':=11, '12':=12, '13':=13, '14':=14, '15':=15, '16':=16, '17':=17, '18':=18, '19':=19, '20':=20, '21':=21, '22':=22, '23':=23, '24':=24, '25':=25, '26':=26, '27':=27, '28':=28, '29':=29, '30':=30"
+}
+
+Private Const MAX_BRIGHTNESS_COEF As Double := 2.551
+
+Global Var Button1 As CButton
+Global Var Button2 As CButton
+Global Var Button3 As CButton
+Global Var Button4 As CButton
+Global Var Button5 As CButton
+Global Var Button6 As CButton
+Global Var Button7 As CButton
+Global Var Button8 As CButton
+
+
+Private Function Init()
+
+	Button1.m_MyOwner := Me
+	Button2.m_MyOwner := Me
+	Button3.m_MyOwner := Me
+	Button4.m_MyOwner := Me
+	Button5.m_MyOwner := Me
+	Button6.m_MyOwner := Me
+	Button7.m_MyOwner := Me
+	Button8.m_MyOwner := Me
+
+	Button1.m_ButtonCode := 1
+	Button2.m_ButtonCode := 2
+	Button3.m_ButtonCode := 3
+	Button4.m_ButtonCode := 4
+	Button5.m_ButtonCode := 5
+	Button6.m_ButtonCode := 6
+	Button7.m_ButtonCode := 7
+	Button8.m_ButtonCode := 8
+
+	CUEwireConnector.Register(Address, Me, Callback)
+	
+End Function
+
+
+Private Function SetButtonStatus(buttoncode As Byte, buttonstatus As Byte)
+Private Var ButtonIsPressed As Boolean
+
+	If buttonstatus = CUEwireConnector.BUTTON_STATUS_PRESSED Then
+		ButtonIsPressed := True
+	Else
+		ButtonIsPressed := False
+	End If
+
+	Select buttoncode
+		Case 1
+			Button1.SetIsPressed(ButtonIsPressed)
+		Case 2
+			Button2.SetIsPressed(ButtonIsPressed)
+		Case 3
+			Button3.SetIsPressed(ButtonIsPressed)
+		Case 4
+			Button4.SetIsPressed(ButtonIsPressed)
+		Case 5
+			Button5.SetIsPressed(ButtonIsPressed)
+		Case 6
+			Button6.SetIsPressed(ButtonIsPressed)
+		Case 7
+			Button7.SetIsPressed(ButtonIsPressed)
+		Case 8
+			Button8.SetIsPressed(ButtonIsPressed)
+	End Select
+	
+End Function
+
+
+Private Function LEDOff(buttonledcode As Byte)
+
+	CUEwireConnector.LedOff(Address, buttonledcode)
+	
+End Function
+
+
+Private Function LEDOn(buttonledcode As Byte)
+
+	CUEwireConnector.LedOn(Address, buttonledcode)
+	
+End Function
+
+
+Private Function LEDBlink400msec(buttonledcode As Byte)
+
+	CUEwireConnector.LEDBlink400(Address, buttonledcode)
+	
+End Function
+
+
+Private Function LEDBlink800msec(buttonledcode As Byte)
+
+	CUEwireConnector.LEDBlink800(Address, buttonledcode)
+	
+End Function
+
+
+Private Function LEDBlink1600msec(buttonledcode As Byte)
+
+	CUEwireConnector.LEDBlink1600(Address, buttonledcode)
+	
+End Function
+
+
+Private Function LEDGroup(buttonledcode As Byte, buttongroup As Byte)
+
+	CUEwireConnector.LEDGroup(Address, buttonledcode, buttongroup)
+	
+End Function
+
+
+Private Function LEDUngroup(buttonledcode As Byte)
+
+	CUEwireConnector.LEDUngroup(Address, buttonledcode)
+	
+End Function
+
+
+Global Function SetBackLightBrightness(newbrightness As Double)
+
+	newbrightness := Max (newbrightness, 0.0)
+	newbrightness := Min (newbrightness, 100.0)
+	CUEwireConnector.SetBackLightBrightness(Address, CalcBinBrightness(newbrightness))
+	
+End Function
+
+
+Global Function SetLEDBrightness(newbrightness As Double)
+
+	newbrightness := Max (newbrightness, 0.0)
+	newbrightness := Min (newbrightness, 100.0)
+	CUEwireConnector.SetLEDBrightness(Address, CalcBinBrightness(newbrightness))
+	
+End Function
+
+
+Private Function CalcBinBrightness (newbrightness As Double) As Byte
+Var LSB As Byte := CLong (newbrightness * MAX_BRIGHTNESS_COEF)
+Var MSB As Byte := LSB
+
+	LSB <<= 4
+	MSB >>= 4
+	
+	//DebugPrintFormat ("Brightness={n} ByteBrightness={n} MSB={n} LSB={n} Total={n}", newbrightness, CLong (newbrightness * MAX_BRIGHTNESS_COEF), MSB, LSB, MSB BitOr LSB)
+	
+	Return Value MSB BitOr LSB	
+
+End Function
+
+
+End DeviceClass
+/////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////////////////
+Private Function Callback(
+	anydeviceclass As Anything,
+	myaddress As Byte,
+	buttoncode As Long,
+	buttonstatus As Byte)
+
+Private Var ThisDeviceClass As AddressOf keypadCUE_55 := anydeviceclass
+
+	ThisDeviceClass.SetButtonStatus(buttoncode - 32 * myaddress, buttonstatus)
+	
+End Function
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////////////////
+Class CButton
+
+Friend keypadCUE_55
+
+Private Const WAIT_TIME_WHILE_PRESSED As Time := :.1
+
+Private Var m_MyOwner As AddressOf keypadCUE_55
+Private Var m_ButtonCode As Byte
+Private Var m_IsPressed As Boolean := False
+
+Public Event OnPush As Process()
+
+
+Global Function IsPressed() As Boolean
+
+	Return Value m_IsPressed
+	
+End Function
+
+
+Private Function SetIsPressed(status As Boolean)
+Private Var LastIsPressed As Boolean := m_IsPressed
+
+	m_IsPressed := status
+	
+	If status And (Not LastIsPressed) Then
+		RaiseEvent OnPush()
+	End If
+
+End Function
+
+
+Global Function WaitWhilePressed(Optional timeout As Time := _TIME_INFINITE) As Boolean
+Private Var EndTime As Time
+
+	// GetSystemTime() + _TIME_INFINITE causes time overflow
+	If timeout = _TIME_INFINITE Then
+		EndTime := _TIME_INFINITE
+	Else
+		EndTime := GetSystemTime() + timeout
+	End If
+
+	Do
+		If m_IsPressed = False Then
+			Return Value True
+		End If
+
+		If GetSystemTime() >= EndTime Then
+			Return Value False
+		End If
+
+		Wait(WAIT_TIME_WHILE_PRESSED)
+	End Do
+
+	Return Value False
+	
+End Function
+
+
+Global Function LEDOff()
+
+	m_MyOwner.LEDOff(m_ButtonCode)
+	
+End Function
+
+
+Global Function LEDOn()
+
+	m_MyOwner.LEDOn(m_ButtonCode)
+	
+End Function
+
+
+Global Function LEDBlink400msec()
+
+	m_MyOwner.LEDBlink400msec(m_ButtonCode)
+	
+End Function
+
+
+Global Function LEDBlink800msec()
+
+	m_MyOwner.LEDBlink800msec(m_ButtonCode)
+	
+End Function
+
+
+Global Function LEDBlink1600msec()
+
+	m_MyOwner.LEDBlink1600msec(m_ButtonCode)
+	
+End Function
+
+
+Global Function LEDGroup(buttongroup As Byte)
+
+	m_MyOwner.LEDGroup(m_ButtonCode, buttongroup)
+	
+End Function
+
+
+Global Function LEDUngroup()
+
+	m_MyOwner.LEDUngroup(m_ButtonCode)
+	
+End Function
+
+
+End Class
+/////////////////////////////////////////////////////////////////////////////////////////
+

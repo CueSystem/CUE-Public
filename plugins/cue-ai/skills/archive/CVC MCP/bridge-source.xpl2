@@ -1,0 +1,418 @@
+Structure DEVICE_INSTANCE
+	Var Instance As Anything
+	Var IsRegistered As Boolean
+	// callback function
+	Var CallBackFunc As AddressOf Function(
+		AnyDeviceClass As Anything,
+		Address As Byte,
+		ButtonCode As Long,
+		ButtonStatus As Byte)
+	// answered value
+	Var AnswerIsValid As Boolean
+	Var AnswerValue As Long
+	// input type of the answer
+	Var AnswerInput As Long
+End Structure
+
+Global Class CUEwire
+
+Friend RS485ToCUEwire
+
+// wait constants for drivers
+Public Const WAIT_TIME_FOR_ANSWER As Time := :.05
+Public Const MAX_COUNT_FOR_ANSWER As Long := 20
+Public Const WAIT_AFTER_SEND_COMMAND As Time := :.03
+
+// status constants for drivers
+Public Const BUTTON_STATUS_PRESSED As Byte := 1
+Public Const BUTTON_STATUS_RELEASED As Byte := 0
+
+// control characters
+Private Const SOH As Byte := 1
+Private Const ETX As Byte := 3
+Private Const XOFF As Byte := &h13
+Private Const XON As Byte := &h11
+// packet
+Private Const SEND_PACKET_LENGTH As Byte := 19
+Private Const RECV_PACKET_LENGTH As Byte := 17
+Private Const I_PACKET_TYPE As Byte := 7
+Private Const I_PACKET_ADDRESS As Byte := 8
+Private Const I_PACKET_CMD As Byte := 9
+
+// type of the answer
+Private Const ANSW_INPUT_NONE As Long := 0
+Private Const ANSW_INPUT_MIN_BUTTON As Long := 1
+Private Const ANSW_INPUT_MAX_BUTTON As Long := 8
+Private Const ANSW_INPUT_TEMPERATURE As Long := 9
+Private Const ANSW_INPUT_LIGHT_LEVEL As Long := 10
+
+// it is default maximum after the panel is switched on
+Private Const BAR_GRAPH_DEFAULT_MAXIMUM As Byte := 255
+// maximum address value = 208 = 207 + 1, 1: addressing from 0
+Private Const DEVICE_ADDRESS_COUNT As Byte := 208
+Private Var m_DeviceInstance[DEVICE_ADDRESS_COUNT] As DEVICE_INSTANCE
+
+Private Var m_RS485ToCUEwireAddress As AddressOf RS485ToCUEwire
+
+Private Var SendLock As _Semaphore
+
+
+Private Function Init()
+
+	StartProcess Receive()
+	
+End Function
+
+
+Public Function Register(
+	address As Byte,
+	instance As Anything,
+	callbackfunc As AddressOf Function(
+		anydeviceclass As Anything,
+		address As Byte,
+		buttoncode As Long,
+		buttonstatus As Byte))
+
+	If address < DEVICE_ADDRESS_COUNT Then
+		If m_DeviceInstance[address + 1].IsRegistered And address > 1 Then
+			DebugPrintFormat ("ERROR: two or more CUEwire devices have the same Address {n}", address)
+		End If
+		m_DeviceInstance[address + 1].IsRegistered := True
+		m_DeviceInstance[address + 1].Instance := instance
+		m_DeviceInstance[address + 1].CallBackFunc := callbackfunc
+	End If
+	
+End Function
+
+
+Private Process Receive()
+Private Var RcvChar As ByteString[1]
+Private Var RcvPacket As ByteString[RECV_PACKET_LENGTH - I_PACKET_TYPE - 1]
+Private Var HeaderPacket As ByteString[I_PACKET_TYPE - 1]
+Private Var FooterPacket As ByteString[2]
+Private Var FullPacket As ByteString[RECV_PACKET_LENGTH]
+Private Var iDeviceAddress As Byte
+Private Var AnswerPartX As Byte
+Private Var AnswerPartY As Long
+Private Var RcvHeader As ByteString[1]
+Private Var RcvFooter As ByteString[1]
+
+	SetByteStringActualLength(RcvHeader, GetByteStringDeclaredLength(RcvHeader))
+	RcvHeader[1] := SOH
+	
+	SetByteStringActualLength(RcvFooter, GetByteStringDeclaredLength(RcvFooter))
+	RcvFooter[1] := ETX
+
+	SetByteStringActualLength(HeaderPacket, GetByteStringDeclaredLength(HeaderPacket))
+	HeaderPacket[1] := XOFF
+	HeaderPacket[2] := &hff
+	HeaderPacket[3] := XOFF
+	HeaderPacket[4] := &hff
+	HeaderPacket[5] := XOFF
+	HeaderPacket[6] := SOH
+	
+	SetByteStringActualLength(FooterPacket, GetByteStringDeclaredLength(FooterPacket))
+	FooterPacket[1] := ETX
+	FooterPacket[2] := XON
+
+	Do
+	
+		If m_RS485ToCUEwireAddress.ReceiveHFPacket(RcvPacket, RcvHeader, RcvFooter, _TIME_INFINITE) Then
+
+			If (GetByteStringActualLength(RcvPacket) = GetByteStringDeclaredLength(RcvPacket)) Then
+				ConcatenateByteString(FullPacket, HeaderPacket, RcvPacket, FooterPacket)
+
+				// if its an answer, 'T' or 't'
+				If (FullPacket[I_PACKET_TYPE] = 84) Or (FullPacket[I_PACKET_TYPE] = 116) Then
+
+					iDeviceAddress := FullPacket[I_PACKET_ADDRESS] - 47 // -47 = -48 + 1
+					If (iDeviceAddress >= 1) And (iDeviceAddress <= DEVICE_ADDRESS_COUNT) Then
+						Select FullPacket[I_PACKET_CMD]
+							// answer for button_press
+							Case 66 // 'B'
+								FullPacket[I_PACKET_TYPE] += 1 // from 'T'/'t' to 'U'/'u'
+								// send message to device to no repeat answer
+								m_RS485ToCUEwireAddress.Send(FullPacket)
+
+								If m_DeviceInstance[iDeviceAddress].IsRegistered Then
+									VariableOf m_DeviceInstance[iDeviceAddress].CallBackFunc(
+										m_DeviceInstance[iDeviceAddress].Instance,
+										FullPacket[I_PACKET_ADDRESS] - 48,
+										ParseButtonCode(FullPacket),
+										BUTTON_STATUS_PRESSED)
+								End If
+
+							// answer for button_release
+							Case 67 // 'C'
+								FullPacket[I_PACKET_TYPE] += 1 // from 'T'/'t' to 'U'/'u'
+								// send message to device to no repeat answer
+								m_RS485ToCUEwireAddress.Send(FullPacket)
+
+								If m_DeviceInstance[iDeviceAddress].IsRegistered Then
+									VariableOf m_DeviceInstance[iDeviceAddress].CallBackFunc(
+										m_DeviceInstance[iDeviceAddress].Instance,
+										FullPacket[I_PACKET_ADDRESS] - 48,
+										ParseButtonCode(FullPacket),
+										BUTTON_STATUS_RELEASED)
+								End If
+
+							// answer for button_status_get
+							Case 69 // 'E'
+								If m_DeviceInstance[iDeviceAddress].IsRegistered Then
+									AnswerPartX := ParseAnswer(FullPacket, AnswerPartY)
+									AnswerPartY -= (FullPacket[I_PACKET_ADDRESS] - 48) * 32
+									If AnswerPartY = m_DeviceInstance[iDeviceAddress].AnswerInput Then
+										m_DeviceInstance[iDeviceAddress].AnswerValue := AnswerPartX
+										m_DeviceInstance[iDeviceAddress].AnswerIsValid := True
+									End If
+								End If
+
+							// answer for temperature and lighting
+							Case 55 // '7'
+								If m_DeviceInstance[iDeviceAddress].IsRegistered Then
+									AnswerPartX := ParseAnswer(FullPacket, AnswerPartY)
+									AnswerPartX += 8
+									If AnswerPartX = m_DeviceInstance[iDeviceAddress].AnswerInput Then
+										m_DeviceInstance[iDeviceAddress].AnswerValue := AnswerPartY
+										m_DeviceInstance[iDeviceAddress].AnswerIsValid := True
+									End If
+								End If
+						End Select
+						
+					End If
+
+				End If
+				
+			End If
+			
+		End If
+		
+	End Do
+	
+End Process
+
+
+Private Function SendUnderLock(message As ByteString)
+
+	SendLock.Lock()
+	m_RS485ToCUEwireAddress.Send(message)
+	Wait (WAIT_AFTER_SEND_COMMAND)
+	SendLock.Unlock()
+	
+End Function
+
+
+Private Function ParseAnswer(strtoparse As ByteString, ByRef buttoncode As Long) As Byte
+Private Var Status As Byte := 0
+Private Var StartStr As ByteString[9]
+
+	ParseByteString(strtoparse, &s"{sj9}{nhj2}{nhj4}", StartStr, Status, buttoncode)
+	Return Value Status
+	
+End Function
+
+
+Private Function ParseButtonCode(strtoparse As ByteString) As Long
+Private Var Status As Long := 0
+Private Var StartStr As ByteString[11]
+
+	ParseByteString(strtoparse, &s"{sj11}{nhj4}", StartStr, Status)
+	Return Value Status
+	
+End Function
+
+
+Public Function LedOff(address As Byte, buttonledcode As Byte)
+Private Var CmdStr As ByteString[SEND_PACKET_LENGTH]
+
+	FormatByteString(CmdStr, &s"\13\ff\13\ff\13\01U0a0000{nh04}\03\11", 32 * address + buttonledcode)
+	CmdStr[I_PACKET_ADDRESS] := address + 48
+	SendUnderLock(CmdStr)
+	
+End Function
+
+
+Public Function LedOn(address As Byte, buttonledcode As Byte)
+Private Var CmdStr As ByteString[SEND_PACKET_LENGTH]
+
+	FormatByteString(CmdStr, &s"\13\ff\13\ff\13\01U0a0001{nh04}\03\11", 32 * address + buttonledcode)	
+	CmdStr[I_PACKET_ADDRESS] := address + 48
+	SendUnderLock(CmdStr)
+	
+End Function
+
+
+Public Function LEDBlink400(address As Byte, buttonledcode As Byte)
+Private Var CmdStr As ByteString[SEND_PACKET_LENGTH]
+
+	FormatByteString(CmdStr, &s"\13\ff\13\ff\13\01U0a0003{nh04}\03\11", 32 * address + buttonledcode)
+	CmdStr[I_PACKET_ADDRESS] := address + 48
+	SendUnderLock(CmdStr)
+	
+End Function
+
+
+Public Function LEDBlink800(address As Byte, buttonledcode As Byte)
+Private Var CmdStr As ByteString[SEND_PACKET_LENGTH]
+
+	FormatByteString(CmdStr, &s"\13\ff\13\ff\13\01U0a0004{nh04}\03\11", 32 * address + buttonledcode)
+	CmdStr[I_PACKET_ADDRESS] := address + 48
+	SendUnderLock(CmdStr)
+	
+End Function
+
+
+Public Function LEDBlink1600(address As Byte, buttonledcode As Byte)
+Private Var CmdStr As ByteString[SEND_PACKET_LENGTH]
+
+	FormatByteString(CmdStr, &s"\13\ff\13\ff\13\01U0a0005{nh04}\03\11", 32 * address + buttonledcode)
+	CmdStr[I_PACKET_ADDRESS] := address + 48
+	SendUnderLock(CmdStr)
+	
+End Function
+
+
+Public Function LEDGroup(address As Byte, buttoncode As Byte, group As Byte)
+Var CmdStr As ByteString[SEND_PACKET_LENGTH]
+
+	FormatByteString(CmdStr, &s"\13\ff\13\ff\13\01U0b{nh04}{nh04}\03\11", group, 32 * address + buttoncode)
+	CmdStr[I_PACKET_ADDRESS] := address + 48
+	SendUnderLock(CmdStr)
+	
+End Function
+
+
+Public Function LEDUngroup(address As Byte, buttoncode As Byte)
+Private Var CmdStr As ByteString[SEND_PACKET_LENGTH]
+
+	FormatByteString(CmdStr, &s"\13\ff\13\ff\13\01U0b0000{nh04}\03\11", 32 * address + buttoncode)
+	CmdStr[I_PACKET_ADDRESS] := address + 48
+	SendUnderLock(CmdStr)
+	
+End Function
+
+
+Public Function SetBackLightBrightness(address As Byte, brigtness As Byte)
+Private Var CmdStr As ByteString[SEND_PACKET_LENGTH]
+
+	FormatByteString(CmdStr, &s"\13\ff\13\ff\13\01U0g0001{nh04}\03\11", brigtness)
+	CmdStr[I_PACKET_ADDRESS] := address + 48
+	SendUnderLock(CmdStr)
+	
+End Function
+
+
+Public Function SetLEDBrightness(address As Byte, brigtness As Byte)
+Private Var CmdStr As ByteString[SEND_PACKET_LENGTH]
+	
+	FormatByteString(CmdStr, &s"\13\ff\13\ff\13\01U0g0000{nh04}\03\11", brigtness)
+	CmdStr[I_PACKET_ADDRESS] := address + 48
+	SendUnderLock(CmdStr)
+	
+End Function
+
+
+Public Function SetBarGraphValue(address As Byte, bargraphcode As Byte, displayvalue As Long)
+Private Var CmdStr As ByteString[SEND_PACKET_LENGTH]
+Private Var CorrectedValue As Long := Max (displayvalue, 0)
+
+	CorrectedValue := Min (CorrectedValue, BAR_GRAPH_DEFAULT_MAXIMUM)
+
+	FormatByteString(CmdStr, &s"\13\ff\13\ff\13\01U0d{nh04}{nh04}\03\11", CorrectedValue, 32 * address + bargraphcode)
+	CmdStr[I_PACKET_ADDRESS] := address + 48
+	SendUnderLock(CmdStr)
+	
+End Function
+
+
+Public Function GetButtonStatus(address As Byte, buttoncode As Byte)
+Private Var CmdStr As ByteString[SEND_PACKET_LENGTH]
+
+	FormatByteString(CmdStr, &s"\13\ff\13\ff\13\01U0E00{nh04}\03\11", 32 * address + buttoncode)
+	CmdStr[I_PACKET_ADDRESS] := address + 48
+
+	m_DeviceInstance[address + 1].AnswerInput := buttoncode
+	m_DeviceInstance[address + 1].AnswerIsValid := False
+	SendUnderLock(CmdStr)
+	
+End Function
+
+
+Public Function GetTemperatureCelsius(address As Byte)
+Private Var CmdStr As ByteString := &s"\13\ff\13\ff\13\01U07010000\03\11"
+
+	CmdStr[I_PACKET_ADDRESS] := address + 48
+
+	m_DeviceInstance[address + 1].AnswerInput := ANSW_INPUT_TEMPERATURE
+	m_DeviceInstance[address + 1].AnswerIsValid := False
+	SendUnderLock(CmdStr)
+	
+End Function
+
+
+Public Function GetLightLevel(address As Byte)
+Private Var CmdStr As ByteString := &s"\13\ff\13\ff\13\01U07020000\03\11"
+
+	CmdStr[I_PACKET_ADDRESS] := address + 48
+
+	m_DeviceInstance[address + 1].AnswerInput := ANSW_INPUT_LIGHT_LEVEL
+	m_DeviceInstance[address + 1].AnswerIsValid := False
+	SendUnderLock(CmdStr)
+	
+End Function
+
+
+Public Function GetAnswerIsValid(address As Byte) As Boolean
+
+	Return Value m_DeviceInstance[address + 1].AnswerIsValid
+	
+End Function
+
+
+Public Function GetAnswerValue(address As Byte) As Long
+
+	Return Value m_DeviceInstance[address + 1].AnswerValue
+	
+End Function
+
+
+End Class
+/////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////////////////
+Global DeviceClass RS485ToCUEwire
+
+Connector RS485Connector
+Public Channel CUEwireConnector As CUEwire
+
+
+Private Function Init()
+
+	CUEwireConnector.m_RS485ToCUEwireAddress := Me
+
+	RS485Connector.SetSerialParameters(
+		_SERIAL_MODE_RS485,
+		38400,
+		8,
+		_SERIAL_PARITY_NO,
+		_SERIAL_STOPBITS_ONE,
+		_SERIAL_FLOWCONTROL_NONE)
+		
+End Function
+
+
+Public Function Send(SendData As ByteString)
+
+	RS485Connector.Send(SendData)
+	
+End Function
+
+
+Public Function ReceiveHFPacket (ByRef recvdata As ByteString, header As ByteString, footer As ByteString, Optional timeout As Time := :10.0) As Boolean
+
+	Return Value RS485Connector.ReceiveHFPacket(recvdata, header, footer, timeout)
+	
+End Function
+
+
+End DeviceClass

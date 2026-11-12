@@ -1,0 +1,24 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import {inflateSync,deflateSync} from 'node:zlib';
+import {parseProject,serializeProject} from './inspect-project.mjs';
+const original=fs.readFileSync('C:/Users/Jaroslav Dibitanzl/Desktop/FirstAIproject.cvcp');
+const p=parseProject(original),units=p.root[0].children[1].children;
+const read=n=>inflateSync(n.payload.subarray(4)).toString('utf16le');
+function write(n,text){const raw=Buffer.from(text,'utf16le'),size=Buffer.alloc(4);size.writeUInt32LE(raw.length);n.payload=Buffer.concat([size,deflateSync(raw)]);}
+const relay=units.find(n=>n.children[0].text==='SmartRelay1');
+const module=relay.children[7].children.find(n=>n.children[0].text==='RelayControl');
+const old=read(module.children[7]);
+assert.equal((old.match(/Public Function Relay1(?:On|Off)\(\)/g)||[]).length,2);
+const updated=old.replace(/Public Function (Relay1(?:On|Off)\(\))/g,'Public Process $1').replace(/End Function/g,'End Process');
+write(module.children[7],updated);
+const panel=units.find(n=>n.children[0].text==='TouchPanel1');
+const events=panel.children[7].children.find(n=>n.children[0].text==='RelayButtonEvents');
+const oldEvents=read(events.children[7]);
+const newEvents=oldEvents.replace(/^(\s*)SmartRelay1\.RelayControl\.(Relay1(?:On|Off)\(\))/gm,'$1StartProcess SmartRelay1.RelayControl.$2');
+assert.equal((newEvents.match(/StartProcess SmartRelay1/g)||[]).length,2);
+write(events.children[7],newEvents);
+const bytes=serializeProject(p);assert.deepEqual(serializeProject(parseProject(bytes)),bytes);
+fs.writeFileSync('cvc-driver-mcp/generated/FirstAIproject-before-public-processes.cvcp',original,{flag:'wx'});
+fs.writeFileSync('cvc-driver-mcp/generated/FirstAIproject-public-processes.cvcp',bytes);
+console.log(updated+'\n'+newEvents);

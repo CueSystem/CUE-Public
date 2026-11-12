@@ -1,0 +1,33 @@
+Global Event Relay1StateChanged As Process(isclosed As Boolean)
+
+Global Process Relay1On()
+    RE1.Close()
+    RaiseEvent Relay1StateChanged(RE1.IsClosed())
+End Process
+
+Global Process Relay1Off()
+    RE1.Open()
+    RaiseEvent Relay1StateChanged(RE1.IsClosed())
+End Process
+
+// One initial state request from the status panel; reply uses the same event.
+Global Process ReportRelay1State()
+    RaiseEvent Relay1StateChanged(RE1.IsClosed())
+End Process
+
+// TouchPanel2 / RelayStatus
+Public Function Initialize()
+    Home.Relay1Indicator.HideObject()
+    Home.StatusText.SetText("Relay 1: waiting for state")
+    StartProcess SmartRelay1.RelayControl.ReportRelay1State()
+End Function
+
+Private Process OnRelay1StateChanged(isclosed As Boolean) Link SmartRelay1.RelayControl.Relay1StateChanged
+    Home.Relay1Indicator.SetValue(isclosed)
+    Home.Relay1Indicator.ShowObject()
+    If isclosed Then
+        Home.StatusText.SetText("Relay 1: ON")
+    Else
+        Home.StatusText.SetText("Relay 1: OFF")
+    End If
+End Process

@@ -1,0 +1,214 @@
+Global Event InputPressed As Process(inputid As Long)
+Private Var LocalInput As Long := 0
+
+Private Process ProjectorOn_OnPush() Link AV.ProjectorOn.OnPush
+    StartProcess TouchPanel1.AVService.PowerOn()
+End Process
+
+Private Process ProjectorOff_OnPush() Link AV.ProjectorOff.OnPush
+    StartProcess TouchPanel1.AVService.PowerOff()
+End Process
+
+Private Process InputHDMI1_OnPush() Link AV.InputHDMI1.OnPush
+    ApplyInputSelection(1)
+    RaiseEvent InputPressed(1)
+End Process
+
+Private Process InputHDMI2_OnPush() Link AV.InputHDMI2.OnPush
+    ApplyInputSelection(2)
+    RaiseEvent InputPressed(2)
+End Process
+
+Private Process InputDP_OnPush() Link AV.InputDP.OnPush
+    ApplyInputSelection(3)
+    RaiseEvent InputPressed(3)
+End Process
+
+Private Process InputVGA_OnPush() Link AV.InputVGA.OnPush
+    ApplyInputSelection(4)
+    RaiseEvent InputPressed(4)
+End Process
+
+Private Process InputDVI_OnPush() Link AV.InputDVI.OnPush
+    ApplyInputSelection(5)
+    RaiseEvent InputPressed(5)
+End Process
+
+Private Process InputComponent_OnPush() Link AV.InputComponent.OnPush
+    ApplyInputSelection(6)
+    RaiseEvent InputPressed(6)
+End Process
+
+Private Process InputBNC_OnPush() Link AV.InputBNC.OnPush
+    ApplyInputSelection(7)
+    RaiseEvent InputPressed(7)
+End Process
+
+Private Process InputComposite_OnPush() Link AV.InputComposite.OnPush
+    ApplyInputSelection(8)
+    RaiseEvent InputPressed(8)
+End Process
+
+Private Process InputSVideo_OnPush() Link AV.InputSVideo.OnPush
+    ApplyInputSelection(9)
+    RaiseEvent InputPressed(9)
+End Process
+
+Private Process InputMagicInfo_OnPush() Link AV.InputMagicInfo.OnPush
+    ApplyInputSelection(10)
+    RaiseEvent InputPressed(10)
+End Process
+
+Private Process InputMagicInfoLite_OnPush() Link AV.InputMagicInfoLite.OnPush
+    ApplyInputSelection(11)
+    RaiseEvent InputPressed(11)
+End Process
+
+Private Process ReceiveAV(powertext As Text, inputtext As Text) Link TouchPanel1.AVService.AVStateChanged
+    AV.PowerState.SetText(powertext)
+    // Input indication is owned exclusively by button/peer events.
+End Process
+
+Public Function ApplyInputSelection(inputid As Long)
+    LocalInput := inputid
+    If inputid = 1 Then
+        AV.InputHDMI1.SetUpColor(&HFF2AA65A)
+        AV.InputHDMI1.SetDownColor(&HFF2AA65A)
+        AV.InputHDMI1.SetStateDown()
+    Else
+        AV.InputHDMI1.SetUpColor(&HFF2678C8)
+        AV.InputHDMI1.SetDownColor(&HFF2AA65A)
+        AV.InputHDMI1.SetStateUp()
+    End If
+    If inputid = 2 Then
+        AV.InputHDMI2.SetUpColor(&HFF2AA65A)
+        AV.InputHDMI2.SetDownColor(&HFF2AA65A)
+        AV.InputHDMI2.SetStateDown()
+    Else
+        AV.InputHDMI2.SetUpColor(&HFF2678C8)
+        AV.InputHDMI2.SetDownColor(&HFF2AA65A)
+        AV.InputHDMI2.SetStateUp()
+    End If
+    If inputid = 3 Then
+        AV.InputDP.SetUpColor(&HFF2AA65A)
+        AV.InputDP.SetDownColor(&HFF2AA65A)
+        AV.InputDP.SetStateDown()
+    Else
+        AV.InputDP.SetUpColor(&HFF2678C8)
+        AV.InputDP.SetDownColor(&HFF2AA65A)
+        AV.InputDP.SetStateUp()
+    End If
+    If inputid = 4 Then
+        AV.InputVGA.SetUpColor(&HFF2AA65A)
+        AV.InputVGA.SetDownColor(&HFF2AA65A)
+        AV.InputVGA.SetStateDown()
+    Else
+        AV.InputVGA.SetUpColor(&HFF2678C8)
+        AV.InputVGA.SetDownColor(&HFF2AA65A)
+        AV.InputVGA.SetStateUp()
+    End If
+    If inputid = 5 Then
+        AV.InputDVI.SetUpColor(&HFF2AA65A)
+        AV.InputDVI.SetDownColor(&HFF2AA65A)
+        AV.InputDVI.SetStateDown()
+    Else
+        AV.InputDVI.SetUpColor(&HFF2678C8)
+        AV.InputDVI.SetDownColor(&HFF2AA65A)
+        AV.InputDVI.SetStateUp()
+    End If
+    If inputid = 6 Then
+        AV.InputComponent.SetUpColor(&HFF2AA65A)
+        AV.InputComponent.SetDownColor(&HFF2AA65A)
+        AV.InputComponent.SetStateDown()
+    Else
+        AV.InputComponent.SetUpColor(&HFF2678C8)
+        AV.InputComponent.SetDownColor(&HFF2AA65A)
+        AV.InputComponent.SetStateUp()
+    End If
+    If inputid = 7 Then
+        AV.InputBNC.SetUpColor(&HFF2AA65A)
+        AV.InputBNC.SetDownColor(&HFF2AA65A)
+        AV.InputBNC.SetStateDown()
+    Else
+        AV.InputBNC.SetUpColor(&HFF2678C8)
+        AV.InputBNC.SetDownColor(&HFF2AA65A)
+        AV.InputBNC.SetStateUp()
+    End If
+    If inputid = 8 Then
+        AV.InputComposite.SetUpColor(&HFF2AA65A)
+        AV.InputComposite.SetDownColor(&HFF2AA65A)
+        AV.InputComposite.SetStateDown()
+    Else
+        AV.InputComposite.SetUpColor(&HFF2678C8)
+        AV.InputComposite.SetDownColor(&HFF2AA65A)
+        AV.InputComposite.SetStateUp()
+    End If
+    If inputid = 9 Then
+        AV.InputSVideo.SetUpColor(&HFF2AA65A)
+        AV.InputSVideo.SetDownColor(&HFF2AA65A)
+        AV.InputSVideo.SetStateDown()
+    Else
+        AV.InputSVideo.SetUpColor(&HFF2678C8)
+        AV.InputSVideo.SetDownColor(&HFF2AA65A)
+        AV.InputSVideo.SetStateUp()
+    End If
+    If inputid = 10 Then
+        AV.InputMagicInfo.SetUpColor(&HFF2AA65A)
+        AV.InputMagicInfo.SetDownColor(&HFF2AA65A)
+        AV.InputMagicInfo.SetStateDown()
+    Else
+        AV.InputMagicInfo.SetUpColor(&HFF2678C8)
+        AV.InputMagicInfo.SetDownColor(&HFF2AA65A)
+        AV.InputMagicInfo.SetStateUp()
+    End If
+    If inputid = 11 Then
+        AV.InputMagicInfoLite.SetUpColor(&HFF2AA65A)
+        AV.InputMagicInfoLite.SetDownColor(&HFF2AA65A)
+        AV.InputMagicInfoLite.SetStateDown()
+    Else
+        AV.InputMagicInfoLite.SetUpColor(&HFF2678C8)
+        AV.InputMagicInfoLite.SetDownColor(&HFF2AA65A)
+        AV.InputMagicInfoLite.SetStateUp()
+    End If
+    Select inputid
+        Case 1
+            AV.InputState.SetText("Požadovaný vstup: HDMI 1")
+        Case 2
+            AV.InputState.SetText("Požadovaný vstup: HDMI 2")
+        Case 3
+            AV.InputState.SetText("Požadovaný vstup: DisplayPort 1")
+        Case 4
+            AV.InputState.SetText("Požadovaný vstup: VGA 1")
+        Case 5
+            AV.InputState.SetText("Požadovaný vstup: DVI 1")
+        Case 6
+            AV.InputState.SetText("Požadovaný vstup: Component 1")
+        Case 7
+            AV.InputState.SetText("Požadovaný vstup: BNC 1")
+        Case 8
+            AV.InputState.SetText("Požadovaný vstup: Composite 1")
+        Case 9
+            AV.InputState.SetText("Požadovaný vstup: Svideo 1")
+        Case 10
+            AV.InputState.SetText("Požadovaný vstup: MagicInfo")
+        Case 11
+            AV.InputState.SetText("Požadovaný vstup: MagicInfoLite")
+    End Select
+End Function
+
+Private Process PeerInput(inputid As Long) Link TouchPanel2.SamsungControls.InputPressed
+    ApplyInputSelection(inputid)
+End Process
+
+Global Event InputSnapshot As Process(inputid As Long)
+Global Process ReportInputSelection()
+    If LocalInput > 0 Then
+        RaiseEvent InputSnapshot(LocalInput)
+    End If
+End Process
+
+Private Process PeerSnapshot(inputid As Long) Link TouchPanel2.SamsungControls.InputSnapshot
+    If LocalInput = 0 Then
+        ApplyInputSelection(inputid)
+    End If
+End Process

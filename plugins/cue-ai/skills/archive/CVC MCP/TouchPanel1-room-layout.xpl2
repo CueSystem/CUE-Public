@@ -1,0 +1,154 @@
+MyProperties { _DisplayWidth:=1280,_DisplayHeight:=800,_DefaultLanguageId:=0,_FullScreen:=False}
+Global _GraphicWindow Home As MyController.GenericObjects.Page WithProperties
+ { Left:=0,Top:=0,Width:=1280,Height:=800,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFF182434}
+Global GraphicObject NavHome As MyController.GenericObjects.PushButton WithProperties
+ { Left:=20,Top:=120,Width:=200,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtRoomHome,UpColor:=&HFF287D46,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject NavAV As MyController.GenericObjects.PushButton WithProperties
+ { Left:=20,Top:=230,Width:=200,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtRoomAV,UpColor:=&HFF24384B,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject NavLights As MyController.GenericObjects.PushButton WithProperties
+ { Left:=20,Top:=340,Width:=200,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtRoomLights,UpColor:=&HFF24384B,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject NavHVAC As MyController.GenericObjects.PushButton WithProperties
+ { Left:=20,Top:=450,Width:=200,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtRoomHVAC,UpColor:=&HFF24384B,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject PageTitle As MyController.GenericObjects.StaticText WithProperties
+ { Left:=280,Top:=25,Width:=920,Height:=55,Visible:=True,Locked:=0,_CollectionID:=0,stxText:=MyCommon.txtRoomHome,Color:=&HFFFFFFFF}
+ End GraphicObject
+Global GraphicObject Welcome As MyController.GenericObjects.StaticText WithProperties
+ { Left:=280,Top:=190,Width:=920,Height:=55,Visible:=True,Locked:=0,_CollectionID:=0,stxText:=MyCommon.txtRoomWelcome,Color:=&HFFFFFFFF}
+ End GraphicObject
+Global GraphicObject Intro As MyController.GenericObjects.StaticText WithProperties
+ { Left:=280,Top:=280,Width:=920,Height:=55,Visible:=True,Locked:=0,_CollectionID:=0,stxText:=MyCommon.txtRoomIntro,Color:=&HFFFFFFFF}
+ End GraphicObject
+End _GraphicWindow
+Global _GraphicWindow AV As MyController.GenericObjects.Page WithProperties
+ { Left:=0,Top:=0,Width:=1280,Height:=800,Visible:=False,Locked:=0,_CollectionID:=0,Color:=&HFF182434}
+Global GraphicObject NavHome As MyController.GenericObjects.PushButton WithProperties
+ { Left:=20,Top:=120,Width:=200,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtRoomHome,UpColor:=&HFF24384B,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject NavAV As MyController.GenericObjects.PushButton WithProperties
+ { Left:=20,Top:=230,Width:=200,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtRoomAV,UpColor:=&HFF287D46,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject NavLights As MyController.GenericObjects.PushButton WithProperties
+ { Left:=20,Top:=340,Width:=200,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtRoomLights,UpColor:=&HFF24384B,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject NavHVAC As MyController.GenericObjects.PushButton WithProperties
+ { Left:=20,Top:=450,Width:=200,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtRoomHVAC,UpColor:=&HFF24384B,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject PageTitle As MyController.GenericObjects.StaticText WithProperties
+ { Left:=280,Top:=25,Width:=920,Height:=55,Visible:=True,Locked:=0,_CollectionID:=0,stxText:=MyCommon.txtRoomAV,Color:=&HFFFFFFFF}
+ End GraphicObject
+Global GraphicObject ProjectorOn As MyController.GenericObjects.PushButton WithProperties
+ { Left:=280,Top:=120,Width:=450,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungProjectorOn,UpColor:=&HFF287D46,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject ProjectorOff As MyController.GenericObjects.PushButton WithProperties
+ { Left:=760,Top:=120,Width:=450,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungProjectorOff,UpColor:=&HFFA43D3D,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject InputHDMI1 As MyController.GenericObjects.PushButton WithProperties
+ { Left:=280,Top:=250,Width:=300,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungInputHDMI1,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject InputHDMI2 As MyController.GenericObjects.PushButton WithProperties
+ { Left:=600,Top:=250,Width:=300,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungInputHDMI2,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject InputDP As MyController.GenericObjects.PushButton WithProperties
+ { Left:=920,Top:=250,Width:=300,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungInputDP,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject InputVGA As MyController.GenericObjects.PushButton WithProperties
+ { Left:=280,Top:=360,Width:=300,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungInputVGA,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject InputDVI As MyController.GenericObjects.PushButton WithProperties
+ { Left:=600,Top:=360,Width:=300,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungInputDVI,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject InputComponent As MyController.GenericObjects.PushButton WithProperties
+ { Left:=920,Top:=360,Width:=300,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungInputComponent,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject InputBNC As MyController.GenericObjects.PushButton WithProperties
+ { Left:=280,Top:=470,Width:=300,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungInputBNC,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject InputComposite As MyController.GenericObjects.PushButton WithProperties
+ { Left:=600,Top:=470,Width:=300,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungInputComposite,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject InputSVideo As MyController.GenericObjects.PushButton WithProperties
+ { Left:=920,Top:=470,Width:=300,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungInputSVideo,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject InputMagicInfo As MyController.GenericObjects.PushButton WithProperties
+ { Left:=280,Top:=580,Width:=300,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungInputMagicInfo,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject InputMagicInfoLite As MyController.GenericObjects.PushButton WithProperties
+ { Left:=600,Top:=580,Width:=300,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungInputMagicInfoLite,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+End _GraphicWindow
+Global _GraphicWindow Lights As MyController.GenericObjects.Page WithProperties
+ { Left:=0,Top:=0,Width:=1280,Height:=800,Visible:=False,Locked:=0,_CollectionID:=0,Color:=&HFF182434}
+Global GraphicObject NavHome As MyController.GenericObjects.PushButton WithProperties
+ { Left:=20,Top:=120,Width:=200,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtRoomHome,UpColor:=&HFF24384B,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject NavAV As MyController.GenericObjects.PushButton WithProperties
+ { Left:=20,Top:=230,Width:=200,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtRoomAV,UpColor:=&HFF24384B,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject NavLights As MyController.GenericObjects.PushButton WithProperties
+ { Left:=20,Top:=340,Width:=200,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtRoomLights,UpColor:=&HFF287D46,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject NavHVAC As MyController.GenericObjects.PushButton WithProperties
+ { Left:=20,Top:=450,Width:=200,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtRoomHVAC,UpColor:=&HFF24384B,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject PageTitle As MyController.GenericObjects.StaticText WithProperties
+ { Left:=280,Top:=25,Width:=920,Height:=55,Visible:=True,Locked:=0,_CollectionID:=0,stxText:=MyCommon.txtRoomLights,Color:=&HFFFFFFFF}
+ End GraphicObject
+Global GraphicObject Circuit1Title As MyController.GenericObjects.StaticText WithProperties
+ { Left:=280,Top:=110,Width:=920,Height:=55,Visible:=True,Locked:=0,_CollectionID:=0,stxText:=MyCommon.txtRoomCircuit1,Color:=&HFFFFFFFF}
+ End GraphicObject
+Global GraphicObject Button1 As MyController.GenericObjects.PushButton WithProperties
+ { Left:=300,Top:=175,Width:=280,Height:=80,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtRoomOn,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject Button2 As MyController.GenericObjects.PushButton WithProperties
+ { Left:=640,Top:=175,Width:=280,Height:=80,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtRoomOff,UpColor:=&HFFA43D3D,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject Circuit2Title As MyController.GenericObjects.StaticText WithProperties
+ { Left:=280,Top:=290,Width:=920,Height:=55,Visible:=True,Locked:=0,_CollectionID:=0,stxText:=MyCommon.txtRoomCircuit2,Color:=&HFFFFFFFF}
+ End GraphicObject
+Global GraphicObject Circuit2On As MyController.GenericObjects.PushButton WithProperties
+ { Left:=300,Top:=355,Width:=280,Height:=80,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtRoomOn,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject Circuit2Off As MyController.GenericObjects.PushButton WithProperties
+ { Left:=640,Top:=355,Width:=280,Height:=80,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtRoomOff,UpColor:=&HFFA43D3D,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject DimmerTitle As MyController.GenericObjects.StaticText WithProperties
+ { Left:=280,Top:=470,Width:=920,Height:=55,Visible:=True,Locked:=0,_CollectionID:=0,stxText:=MyCommon.txtRoomDimmer,Color:=&HFFFFFFFF}
+ End GraphicObject
+Global GraphicObject DimmerLevel As MyController.GenericObjects.HorizontalSlider WithProperties
+ { Left:=310,Top:=545,Width:=850,Height:=65,Visible:=True,Locked:=0,_CollectionID:=0,Minimum:=0,Maximum:=100,StepValue:=1,DefaultValue:=0,AutoSetValue:=True,Events:=True,BackgroundColor:=&HFF35485B,FloodColor:=&HFF38A96B,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject DimmerOff As MyController.GenericObjects.PushButton WithProperties
+ { Left:=310,Top:=635,Width:=260,Height:=65,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtRoomZero,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject DimmerFull As MyController.GenericObjects.PushButton WithProperties
+ { Left:=900,Top:=635,Width:=260,Height:=65,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtRoomFull,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject DimmerNote As MyController.GenericObjects.StaticText WithProperties
+ { Left:=280,Top:=715,Width:=920,Height:=45,Visible:=True,Locked:=0,_CollectionID:=0,stxText:=MyCommon.txtRoomDimmerNote,Color:=&HFFFFFFFF}
+ End GraphicObject
+End _GraphicWindow
+Global _GraphicWindow HVAC As MyController.GenericObjects.Page WithProperties
+ { Left:=0,Top:=0,Width:=1280,Height:=800,Visible:=False,Locked:=0,_CollectionID:=0,Color:=&HFF182434}
+Global GraphicObject NavHome As MyController.GenericObjects.PushButton WithProperties
+ { Left:=20,Top:=120,Width:=200,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtRoomHome,UpColor:=&HFF24384B,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject NavAV As MyController.GenericObjects.PushButton WithProperties
+ { Left:=20,Top:=230,Width:=200,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtRoomAV,UpColor:=&HFF24384B,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject NavLights As MyController.GenericObjects.PushButton WithProperties
+ { Left:=20,Top:=340,Width:=200,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtRoomLights,UpColor:=&HFF24384B,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject NavHVAC As MyController.GenericObjects.PushButton WithProperties
+ { Left:=20,Top:=450,Width:=200,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtRoomHVAC,UpColor:=&HFF287D46,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject PageTitle As MyController.GenericObjects.StaticText WithProperties
+ { Left:=280,Top:=25,Width:=920,Height:=55,Visible:=True,Locked:=0,_CollectionID:=0,stxText:=MyCommon.txtRoomHVAC,Color:=&HFFFFFFFF}
+ End GraphicObject
+Global GraphicObject Notice As MyController.GenericObjects.StaticText WithProperties
+ { Left:=280,Top:=220,Width:=920,Height:=55,Visible:=True,Locked:=0,_CollectionID:=0,stxText:=MyCommon.txtRoomHVACNote,Color:=&HFFFFFFFF}
+ End GraphicObject
+End _GraphicWindow

@@ -1,0 +1,991 @@
+Global DeviceClass SamsungDisplay_Generic
+//Connector SerialConnector
+Connector TcpClientConnector
+
+Protected Property ModelName As Byte := 1 WithAttributes
+{	PropertyGroup := "DisplaySettings",
+	DisplayName := "Model name", 
+	EditMode := "Enum; '[1]DX-series':=1, '[2]EX-series':=2, '[3]UX-series':=3, '[4]DE-series':=4, '[5]UD-series':=5"}
+
+Protected Property UnitID As Byte := 255 WithAttributes
+{	PropertyGroup := "DisplaySettings",
+	DisplayName := "Unit ID number",
+	EditMode := "Enum; '0':=0, '1':=1, '2':=2, '3':=3, '4':=4, '5':=5, '6':=6, '7':=7, '8':=8, '9':=9, '10':=10, '11':=11, '12':=12, '13':=13, '14':=14, '15':=15, '16':=16, '254':=254, '255':=255"}
+
+	
+Protected Property IPAddress As Text[15] :=  "127.0.0.1" WithAttributes {PropertyGroup := "IP Settings", DisplayName := "IP address"}
+Protected Property TCPPort As Long :=  1515 WithAttributes {PropertyGroup := "IP Settings", DisplayName := "Port"}
+Protected Property MacAddress As Text [18]:=  "00:00:00:00:00:00" WithAttributes {PropertyGroup := "IP Settings", DisplayName := "MAC address"}
+Protected Property Timeout As Time := 0:1.0 WithAttributes {PropertyGroup := "IP Settings", DisplayName := "Timeout", EditMode := "TimeInterval"}
+Protected Property DebugMessage As Boolean :=False WithAttributes
+{	PropertyGroup := "DebugSettings", DisplayName := "DebugMessages",EditMode := "Boolean; 'True':=True, 'False':=False"}
+
+Private Const MESSAGE_HEADER As ByteString [5]:= &S"\AA"
+Private Var MESSAGE_FOOTER As ByteString [5]:= &S""
+Private Const DeviceName As Text [15]:="Samsung"
+Private Var DataLenghtStr As ByteString[1]
+Private Var DataLenght As Long
+Private Const COMMAND_WAIT_TIME As Time := :0.1
+
+Private Var MessageHeaderLenght As Long
+Private Var MessageFooterLenght As Long
+Private Var AnswerType As ByteString [10]
+Private Var AnswerPos As Long
+Private Var MessageLen As Long
+
+Private Var CommandSemaphore As _Semaphore
+
+Private Var PowerStatus As Long //[5]:=&s""
+Private Var PowerStatusStr As ByteString [10]:=&s""
+Private Var PowerStatusStrPrev As ByteString [10]:=&s"99"
+Private Var Temperature As Long
+Private Var TemperaturePrev As Long
+
+Var SoftVersionStr As ByteString [30]
+Var SoftVersion As Text [30]
+Var SerialNumberStr As ByteString [30]
+Var SerialNumber As Text [30]
+Var ModelStr As ByteString [30]
+
+
+Private Var Lamp1Hours As Long
+Private Var Lamp1HoursStr As ByteString [10]:=&s"0"
+Private Var Lamp1HoursStrPrev As ByteString [10]:=&s"9999"
+
+Private Var CommunicationErrorIsRaised As Boolean
+
+
+Global Event OnMessage As Process (messagebody As ByteString)
+Global Event OnPowerStatusChange As Process (PowerStatus As Long)
+Global Event OnTemperatureChange As Process (Temperature As Long)
+
+Global Event OnError_Device As Process (ErrorCode As ByteString)
+Global Event OnError_Communication As Process (ErrorCode As ByteString)
+//Global Event OnError_Cover1 As Process (ErrorCode As ByteString)
+Global Event OnError_Fan1 As Process (ErrorCode As ByteString)
+Global Event OnError_Lamp1 As Process (ErrorCode As ByteString)
+Global Event OnError_Temp1 As Process (ErrorCode As ByteString)
+//Global Event OnError_Filter1 As Process (ErrorCode As ByteString)
+//Global Event OnError_Power As Process (ErrorCode As ByteString)
+//Global Event OnWarning_Lamp1 As Process (WarningCode As ByteString)
+//Global Event OnWarning_Temp1 As Process (WarningCode As ByteString)
+Global Event OnRecovery As Process (RecoveryCode As ByteString)
+Global Event OnRecovery_Communication As Process ()
+Global Event OnDeviceInfo_Firmware As Process (FirmwareVersion As ByteString)
+Global Event OnDeviceInfo_SoftwareVersion As Process (SoftVersion As Text)
+Global Event OnDeviceInfo_SerialNumber As Process (SerialNumber As ByteString)
+Global Event OnDeviceInfo_Model As Process (Model As ByteString)
+Global Event OnDeviceInfo_IntTemperature As Process (Temperature As Long)
+Global Event OnDeviceInfo_Manufacturer As Process (Manufacturer As ByteString)
+//Global Event OnLamp1HoursChange As Process (Lamp1Hours As Long)
+
+
+Private Function Init()
+	Connect()
+	DisplayStatusCheckLoop_Enable() // enable receive
+End Function
+
+Public Function SendCommand (command As ByteString) As Boolean
+Private Var CommandContent As ByteString [256]
+Private Var DataLenght As Byte
+Private Var Chksum As Long
+Private Var Count As Byte
+Private Var receiveddata As ByteString [256]
+Private Var MessageBody As ByteString [256]
+
+	CommandSemaphore.Lock ()
+//	If Connect()=True Then
+//		If DebugMessage Then DebugPrint("LAN connect is TRUE ???") End If
+		CommandContent:=command
+		// add correct ID	
+		CommandContent [3]:= UnitID
+		// calculate CHKS
+		DataLenght:=CommandContent [4]
+		For Count := 2 To DataLenght+4
+    		Chksum:=Chksum+CommandContent [Count]
+		End For
+		
+		Do While Chksum>255
+			Chksum := Chksum - 256
+		End Do
+	//write Checksum	 
+		CommandContent [DataLenght+5]:= Chksum
+	//	SerialConnector.Send (CommandContent)
+			TcpClientConnector.ClearReceiveBuffer()
+	//		Wait(0:0.1)
+			If TcpClientConnector.Send(CommandContent) Then
+				If DebugMessage Then DebugPrintFormat("{t} {t} SentData >> {s}", DeviceName, IPAddress, CommandContent) End If
+			Else
+//				DebugPrintFormat("{t} {t} SentData >> {s} - FAILED, try to recconect and send once more", DeviceName, IPAddress, CommandContent)
+				If DebugMessage Then DebugPrintFormat("{t} {t} SentData >> {s} - FAILED", DeviceName, IPAddress, CommandContent) End If
+				Connect()
+				TcpClientConnector.Send(CommandContent)
+			End If	
+//			Wait (COMMAND_WAIT_TIME) // wait to have response from channel
+//			TcpClientConnector.WaitForData()
+//			TcpClientConnector.Receive(receiveddata,0:0.1)
+//			DebugPrintFormat("SentDataRxBuffer> {s}",receiveddata)
+//			If GetMessageBodyFromBuffer (receiveddata, MessageBody) = True Then
+//				DebugPrintFormat("{t} {t} MessageBody >> {s}", DeviceName, IPAddress,MessageBody) 
+//				ProcessMessageBody (MessageBody)
+//			Else
+//				DebugPrintFormat("GetMessageBodyFromBuffer is FALSE")
+//			End If
+//		Disconnect()
+		CommandSemaphore.Unlock ()
+		Return Value True
+//	Else // connection failed
+//		If DebugMessage Then DebugPrintFormat ("Connect() is FALSE ???") End If
+//		CommandSemaphore.Unlock ()
+//		Return Value False
+//	End If	
+End Function
+
+
+Private Process StatusRequest_FastLoop ()
+	Do
+		Wait(0:5)
+//		GetPowerStatus()
+		Wait(0:10)
+	End Do
+End Process
+
+Private Process StatusRequest_SlowLoop ()
+	Get_DeviceInfo_Manufacturer()
+	Wait(0:5.0)
+	Get_DeviceInfo_ModelName()
+	Wait(0:5.0)
+	GetSoftwareVersion() // only at startup
+	Wait(0:5.0)
+	Get_DeviceInfo_SerialNumber()
+	Wait(0:5.0)
+	GetDeviceStatus()
+	Do
+		Wait(3:00:10)	//:10
+		GetDeviceStatus()
+//		GetPowerStatus()
+//		Wait(0:25)
+	End Do
+End Process
+
+
+
+Private Process ReceiveProcess () 
+Var receiveddata As ByteString [255]
+Var MessageBody As ByteString [255]
+	Wait(0:1.0)
+	If DebugMessage Then DebugPrintFormat("{t} {t} ReceiveProcess started", DeviceName, IPAddress) End If
+	Do While True
+		If TcpClientConnector.WaitForData(365:0:0:0) Then // timeout 1 year or ~ infinity
+//		If	TcpClientConnector.ReceiveAnything(receiveddata, 0:5.0) Then
+			TcpClientConnector.ReceiveAnything(receiveddata, 0:1.0)
+			TcpClientConnector.ClearReceiveBuffer()
+//			ReceivedDataProcess(receiveddata)
+//		If TcpClientConnector.WaitForData(0:5:0) Then // timeout 1 year or ~ infinity
+//		If TcpClientConnector.Receive(receiveddata, 0:5.0) Then 
+//			TcpClientConnector.Receive(receiveddata)
+//			TcpClientConnector.ClearReceiveBuffer()
+			
+			If DebugMessage Then DebugPrintFormat("{t} {t} RxBuffer >> {s}", DeviceName, IPAddress, receiveddata) End If
+			If GetMessageBodyFromBuffer (receiveddata, MessageBody) = True Then
+				If DebugMessage Then DebugPrintFormat("{t} {t} MessageBody >> {s}", DeviceName, IPAddress,MessageBody) End If
+				ProcessMessageBody (MessageBody)
+			End If
+		Else
+			If DebugMessage Then DebugPrintFormat("{t} {t} Connector.WaitForData - FAILED with error {n}, try to recconect", DeviceName, IPAddress, GetLastError()) End If
+			Wait(0:0.3)
+//			If ConnectionAttemptCounter <3 Then Connect() End If
+			Connect()
+		End If
+	End Do
+End Process
+
+
+Private Function GetMessageBodyFromBuffer (ByRef buffer As ByteString, ByRef messagebody As ByteString) As Boolean
+Private Var StartPosition As Long 
+Private Var EndPosition As Long 
+Private Var ActualLength As Long
+Private Var AnswerValidity As ByteString [1]
+Private Var buffer1st As ByteString [50]
+	
+	// clear strange \00 value from beginning
+	GetByteStringLeft(buffer,1,buffer1st)
+	If CompareByteString(buffer1st, &s"\00") = 2 Then
+		TrimByteStringLeft(buffer,buffer,&S"\00")
+	End If
+
+	StartPosition := GetSubByteStringPosition (buffer, MESSAGE_HEADER)
+	If StartPosition > 0 Then
+		// Answer validity check - ACK or NAK
+		GetByteStringMiddle(buffer,5,1,AnswerValidity)
+		If AnswerValidity=&s"A" Then // answer is correct, proceed
+			GetByteStringMiddle(buffer,4,1,DataLenghtStr)
+//			debugprint(DataLenghtStr)
+			DataLenght:=DataLenghtStr[1]
+//			debugprint(DataLenght)
+			EndPosition := 4+DataLenght
+		 	GetByteStringMiddle (buffer, 6, EndPosition - 5, messagebody)// Extract message body from buffer, incl. CMD code as first byte
+//			debugprint(messagebody)		
+//					ActualLength := GetByteStringActualLength(buffer)				    
+//					GetByteStringRight (buffer, ActualLength - EndPosition - MessageFooterLenght + 1, buffer)
+			
+			Return Value True		
+		Else // answer error
+//			DebugPrint("ERROR - Feedback value is not valid - no ACK")
+//			Controller1.Files_Log.WriteLogFile_Alerts("Feedback value is not valid - no ACK")
+			Return Value False
+		End If
+		
+	Else
+		DebugPrint("ERROR - Feedback value do not have Header")
+		Return Value False	
+	End If	
+End Function
+
+
+Private Function ProcessMessageBody (messagebody As ByteString)
+
+//	AnswerPos:=GetSubByteStringPosition(messagebody, &s"=")
+//	MessageLen:=GetByteStringActualLength(messagebody)	
+	GetByteStringLeft(messagebody,1, AnswerType)
+//	debugprint(&S"AnswerPos",AnswerPos)
+//	debugprint(&S"AnswerType", AnswerType)
+	Select AnswerType
+	
+		Case &s"\11"// POWER STATUS
+			GetByteStringMiddle(messagebody, 2, 1, PowerStatusStr)
+			If PowerStatusStr<>PowerStatusStrPrev Then
+				PowerStatusStrPrev:=PowerStatusStr
+				Select PowerStatusStr
+					Case &s"\00"
+						PowerStatus:=0
+						RaiseEvent OnPowerStatusChange (PowerStatus)
+					Case &s"\01"
+						PowerStatus:=1
+						RaiseEvent OnPowerStatusChange (PowerStatus)
+					Case Else
+						PowerStatus:=-1
+						RaiseEvent OnPowerStatusChange (PowerStatus)
+				End Select
+//				debugprint(PowerStatus)
+			End If
+			
+
+		Case &s"\0B" //Serial number
+			GetByteStringMiddle(messagebody, 2, 14, SerialNumberStr)
+//			ByteStringToText(SerialNumberStr,SerialNumber,_ASCII_TO_TEXT)
+//			debugprint("SerialNumber>>>", SerialNumber)	
+			RaiseEvent OnDeviceInfo_SerialNumber (SerialNumberStr)
+			
+		Case &s"\0D" //DEVICE STATUS
+//			GetByteStringMiddle(messagebody, AnswerPos+1, MessageLen-AnswerPos, Lamp1HoursStr)
+//			If Lamp1HoursStr<>Lamp1HoursStrPrev Then
+//				Lamp1HoursStrPrev:=Lamp1HoursStr
+//				ParseByteString(Lamp1HoursStr,&S"{n}", Lamp1Hours)
+//				RaiseEvent OnLamp1HoursChange (Lamp1Hours)
+//			End If
+			Temperature:=messagebody[6]
+			If Temperature<>TemperaturePrev Then
+				TemperaturePrev:=Temperature
+				RaiseEvent OnTemperatureChange (Temperature)
+			End If
+//Global Event OnError_Fan1 As Process (ErrorCode As ByteString)
+//Global Event OnError_Lamp1 As Process (ErrorCode As ByteString)
+//Global Event OnError_Temp1 As Process (ErrorCode As ByteString)
+
+		Case &s"\0E" //Software version
+			GetByteStringMiddle(messagebody, 2, 18, SoftVersionStr)
+//			DebugPrintFormat("SoftVersion>>> {s}", SoftVersionStr)	
+			RaiseEvent OnDeviceInfo_Firmware (SoftVersionStr)
+//			ByteStringToText(SoftVersionStr,SoftVersion,_ASCII_TO_TEXT)
+//			RaiseEvent OnDeviceInfo_SoftwareVersion (SoftVersion)
+
+		Case &s"\8A" //model name
+			GetByteStringMiddle(messagebody, 2, 18, ModelStr)	
+			RaiseEvent OnDeviceInfo_Model (ModelStr)
+						
+		Case Else
+			DebugPrint(&s"OnMessage",messagebody)
+			RaiseEvent OnMessage (messagebody)
+	End Select
+
+End Function
+
+
+
+////////////////////////////
+// LAN specific functions //
+////////////////////////////
+
+
+Public Function Connect () As Boolean
+Private Var errorrecnumber As Long
+Private Var i As Long
+Private Var TxtStr As ByteString [50]
+Private Var LanConnectionIsOK As Boolean
+Var IPAddressInfo As Text [15]
+Var port As Long
+Var ErrorNum As Long
+	For i:=1 To 3
+		If Not TcpClientConnector.Connect (IPAddress, TCPPort, Timeout) Then
+	//		RaiseEvent OnError_TelnetNetwork (GetLastError())
+			ErrorNum:=GetLastError()
+			If DebugMessage Then DebugPrintFormat("{t} {t} LAN connection FAILED with error {n}", DeviceName, IPAddress, ErrorNum) End If
+//			DebugPrint (TxtStr)
+			If ErrorNum=89 Then // channel already connected
+				LanConnectionIsOK:=True
+				Exit For
+			Else // other error		
+				LanConnectionIsOK:=False
+			End If
+		Else
+			If DebugMessage Then DebugPrintFormat ("{t} {t} connected and LAN connection OK", DeviceName, IPAddress) End If
+			LanConnectionIsOK:=True
+			If  CommunicationErrorIsRaised=True Then 
+				CommunicationErrorIsRaised:=False
+//				RaiseEvent OnRecovery (&s"LAN Recovery")
+				RaiseEvent OnRecovery_Communication()
+			End If 
+			Exit For
+		End If
+	End For
+	If LanConnectionIsOK=False And CommunicationErrorIsRaised=False Then 
+		CommunicationErrorIsRaised:=True 
+		RaiseEvent OnError_Communication (&s"LAN error") //ErrorNum ?
+		Return Value False
+	Else
+		Return Value True
+	End If
+End Function
+
+Public Function Disconnect ()
+	TcpClientConnector.Disconnect ()
+End Function
+
+Global Function PowerOn_WOL ()
+	WakeOnLAN(MacAddress)
+End Function
+
+Global Function PowerOn_WOL_MAC (MAC As Text)
+	WakeOnLAN(MAC)
+	DebugPrintFormat("Samsung WakeOnLAN to {t}",MAC)
+End Function
+
+Global Function PowerOn_WOL_MAC_WithStatusCheck (MAC As Text) As Boolean
+Var i As Long
+Var LanConnectionIsOK As Boolean
+Var ErrorNum As Long
+	WakeOnLAN(MAC)
+	For i:=1 To 30
+		If Not TcpClientConnector.Connect (IPAddress, TCPPort, 0:11.0) Then
+			ErrorNum:=GetLastError()
+			DebugPrintFormat("{t} {t} after WOL - FAILED {n} with error {n}", DeviceName, IPAddress, i, ErrorNum)
+			If ErrorNum=89 Then // channel already connected
+				LanConnectionIsOK:=True
+				Exit For
+			Else // other error		
+				LanConnectionIsOK:=False
+				WakeOnLAN(MAC)
+			End If
+		Else
+			DebugPrintFormat ("{t} {t} after WOL - connection OK", DeviceName, IPAddress)
+			LanConnectionIsOK:=True
+			RaiseEvent OnRecovery_Communication()
+			Exit For
+		End If
+	End For	
+	Return Value LanConnectionIsOK
+End Function
+
+
+
+//////////////////////
+// global functions //
+//////////////////////
+
+
+Global Function GetPowerStatus() As Boolean
+	Return Value SendCommand (&s"\AA\11\FF\00\BA")
+End Function
+
+Global Function GetDeviceStatus() As Boolean
+	Return Value SendCommand (&s"\AA\0D\FF\00\B6")
+//	Return Value SendCommand (&s"\AA\0D\FF\00\0C")
+End Function
+
+Global Function GetMaintenanceStatus() As Boolean
+	Return Value SendCommand (&s"\AA\08\FF\00\07")
+End Function
+
+Global Function Get_DeviceInfo_SerialNumber() As Boolean
+	Return Value SendCommand (&s"\AA\0B\FF\00\00")
+End Function
+
+Global Function Get_DeviceInfo_Manufacturer() 
+	RaiseEvent OnDeviceInfo_Manufacturer (&s"Samsung")
+End Function
+
+Global Function GetSoftwareVersion() As Boolean
+//	Debugprint("GetSoft")
+	Return Value SendCommand (&s"\AA\0E\FF\00\00")
+End Function
+
+
+Global Function Get_DeviceInfo_ModelName() As Boolean
+	Return Value SendCommand (&S"\AA\8A\FF\00\00")
+End Function
+
+Global Function GetAutoLampStatus() As Boolean
+	Return Value SendCommand (&s"\AA\57\FF\00\56")
+End Function
+
+//Global Function SetAutoLampStatus_On() As Boolean
+//	Return Value SendCommand (&s"\AA\57\FF\00\56")
+//End Function
+//
+//Global Function SetAutoLampStatus_Off() As Boolean
+//	Return Value SendCommand (&s"\AA\57\FF\00\56")
+//End Function
+
+Global Function GetLampControl() As Boolean
+	Return Value SendCommand (&s"\AA\58\FF\00\57")
+End Function
+
+Global Function GetVideoWallControl() As Boolean
+	Return Value SendCommand (&s"\AA\89\FF\00\88")
+End Function
+
+Global Function GetInputSource() As Boolean
+	Return Value SendCommand (&s"\AA\14\FF\00\13")
+End Function
+
+Global Function GetPictureSize() As Boolean
+	Select ModelName
+		Case 3 // 460UX , 460UT
+			Return Value SendCommand  (&S"\AA\15\FF\00\00")
+		Case Else
+			Return Value SendCommand  (&S"\AA\15\FF\00\00")
+	End Select
+End Function
+
+Global Function GetColorTone() As Boolean
+	Select ModelName
+		Case 3 // 460UX , 460UT
+			Return Value SendCommand  (&S"\AA\3E\FF\00\00")
+		Case Else
+			Return Value SendCommand  (&S"\AA\3E\FF\00\00")
+	End Select
+End Function
+
+Global Function GetPictureMode() As Boolean
+	Select ModelName
+		Case 3 // 460UX , 460UT
+			Return Value SendCommand  (&S"\AA\71\FF\00\00")
+		Case Else
+			Return Value SendCommand  (&S"\AA\71\FF\00\00")
+	End Select
+End Function
+
+Global Function GetVideoValues() As Boolean
+	Select ModelName
+		Case 3 // 460UX , 460UT
+			Return Value SendCommand  (&S"\AA\04\FF\00\00")
+		Case Else
+			Return Value SendCommand  (&S"\AA\04\FF\00\00")
+	End Select
+End Function
+
+Global Function GetVideo_Tint() As Boolean
+	Select ModelName
+		Case 3 // 460UX , 460UT
+			Return Value SendCommand  (&S"\AA\28\FF\00\00")
+		Case Else
+			Return Value SendCommand  (&S"\AA\28\FF\00\00")
+	End Select
+End Function
+
+Global Function PowerOn () As Boolean
+	Return Value SendCommand (&S"\AA\11\FF\01\01\12")
+End Function
+
+Global Function PowerOff () As Boolean
+	Return Value SendCommand (&S"\AA\11\FF\01\00\11")
+//	If SendCommand(&S"\AA\11\FF\01\00\11") Then
+//		Disconnect()
+//		Return Value True
+//	Else
+//		Return Value False
+//	End If
+End Function
+
+Global Function PanelOn () As Boolean
+	Return Value SendCommand (&S"\AA\F9\FF\01\00\00")
+End Function
+
+Global Function PanelOff () As Boolean
+	Return Value SendCommand (&S"\AA\F9\FF\01\01\00")
+End Function
+
+//////////////
+/// inputs ///
+//////////////
+
+Global Function Input_VGA_1 () As Boolean
+	Return Value SendCommand (&S"\AA\14\FF\01\14\28")
+End Function
+
+Global Function Input_DVI_1 () As Boolean
+	Select ModelName
+		Case 3 // 460UX
+			Return Value SendCommand  (&S"\AA\14\FE\01\1F\32")
+		Case 4 // DE46
+			Return Value SendCommand  (&S"\AA\14\FE\01\18\2C") //?
+//			Return Value SendCommand  (&S"\AA\14\FE\01\1F\32")
+		Case Else
+			Return Value SendCommand  (&S"\AA\14\FF\01\18\2C")
+	End Select	
+End Function
+
+Global Function Input_HDMI_1 () As Boolean
+	Select ModelName
+		Case 3,4 // 460UX , 460UT
+			Return Value SendCommand  (&S"\AA\14\FF\01\21\35")
+		Case Else
+			Return Value SendCommand  (&S"\AA\14\FF\01\21\35")
+	End Select
+End Function
+
+Global Function Input_HDMI_2 () As Boolean
+	Select ModelName
+		Case 3,4 // 460UX , 460UT
+			Return Value SendCommand  (&S"\AA\14\FF\01\23\00")
+		Case Else
+			Return Value SendCommand  (&S"\AA\14\FF\01\23\00")
+	End Select
+End Function
+
+Global Function Input_Component_1 () As Boolean
+	Return Value SendCommand  (&S"\AA\14\FF\01\08\1C")
+End Function
+
+Global Function Input_BNC_1 () As Boolean
+	Return Value SendCommand  (&S"\AA\14\FF\01\1E\32")
+End Function
+
+Global Function Input_Composite_1 () As Boolean
+	Return Value SendCommand  (&S"\AA\14\FF\01\0C\20")
+End Function
+
+Global Function Input_Svideo_1 () As Boolean
+	Return Value SendCommand  (&S"\AA\14\FF\01\04\18")
+End Function
+
+Global Function Input_DisplayPort_1 () As Boolean
+	Return Value SendCommand  (&S"\AA\14\FF\01\25\39")
+End Function
+
+Global Function Input_MagicInfoLite () As Boolean
+	Return Value SendCommand  (&S"\AA\14\FF\01\60\18")
+End Function
+
+Global Function Input_MagicInfo () As Boolean
+	Return Value SendCommand  (&S"\AA\14\FF\01\20\18")
+End Function
+
+Global Function PictureAutoAdjust() As Boolean
+	Return Value SendCommand  (&S"\AA\3D\FF\01\00\3D")
+End Function
+
+Global Function StandbyControl_Off() As Boolean
+	Return Value SendCommand  (&S"\AA\4A\FF\01\00\4A")
+End Function
+
+Global Function StandbyControl_On() As Boolean
+	Return Value SendCommand  (&S"\AA\4A\FF\01\01\4B")
+End Function
+
+Global Function StandbyControl_Auto() As Boolean
+	Return Value SendCommand  (&S"\AA\4A\FF\01\02\4C")
+End Function
+
+///////////////////
+/// OSD control ///
+///////////////////
+
+Global Function OSD_On_All() As Boolean
+	Return Value SendCommand  (&S"\AA\70\FF\01\01\71")
+End Function
+
+Global Function OSD_Off_All() As Boolean
+	Return Value SendCommand  (&S"\AA\70\FF\01\00\70")
+End Function
+
+Global Function OSD_On_Source() As Boolean
+	Return Value SendCommand  (&S"\AA\A3\FF\02\00\01\00") //nekorekta kontrolsumma
+End Function
+
+Global Function OSD_Off_Source() As Boolean
+	Return Value SendCommand  (&S"\AA\A3\FF\02\00\00\00") //nekorekta kontrolsumma
+End Function
+
+Global Function OSD_On_NoOptimumMode() As Boolean
+	Return Value SendCommand  (&S"\AA\A3\FF\02\01\01\00") //nekorekta kontrolsumma
+End Function
+
+Global Function OSD_Off_NoOptimumMode() As Boolean
+	Return Value SendCommand  (&S"\AA\A3\FF\02\01\00\00") //nekorekta kontrolsumma
+End Function
+
+Global Function OSD_On_NoSignal() As Boolean
+	Return Value SendCommand  (&S"\AA\A3\FF\02\02\01\00") //nekorekta kontrolsumma
+End Function
+
+Global Function OSD_Off_NoSignal() As Boolean
+	Return Value SendCommand  (&S"\AA\A3\FF\02\02\00\00") //nekorekta kontrolsumma
+End Function
+
+Global Function OSD_On_MDC() As Boolean
+	Return Value SendCommand  (&S"\AA\A3\FF\02\03\01\00") //nekorekta kontrolsumma
+End Function
+
+Global Function OSD_Off_MDC() As Boolean
+	Return Value SendCommand  (&S"\AA\A3\FF\02\03\00\00") //nekorekta kontrolsumma
+End Function
+
+/////////////////////
+/// Energy saving ///
+/////////////////////
+
+Global Function EnergySaving_On() As Boolean
+	Return Value SendCommand  (&S"\AA\92\FF\01\01\93")
+End Function
+
+Global Function EnergySaving_Off() As Boolean
+	Return Value SendCommand  (&S"\AA\92\FF\01\00\92")
+End Function
+
+Global Function BurnProtection_SafetyScreen_Bar() As Boolean
+	Return Value SendCommand  (&S"\AA\59\FF\01\04\00") // nekorekta kontrolsumma
+End Function
+
+Global Function BurnProtection_SafetyScreen_Eraser() As Boolean
+	Return Value SendCommand  (&S"\AA\59\FF\01\06\00") // nekorekta kontrolsumma
+End Function
+
+Global Function BurnProtection_SafetyScreen_Pixel() As Boolean
+	Return Value SendCommand  (&S"\AA\59\FF\01\07\00") // nekorekta kontrolsumma
+End Function
+
+Global Function BurnProtection_SafetyScreen_Off() As Boolean
+	Return Value SendCommand  (&S"\AA\59\FF\01\00\00") // nekorekta kontrolsumma
+End Function
+
+Global Function ResetDisplay_All() As Boolean
+	Return Value SendCommand  (&S"\AA\9F\FF\01\03\92")
+End Function
+
+Global Function LampControl(LampVal As Byte) As Boolean
+Private Var SendStr As ByteString [25]:=&S"\AA\58\FF\01\00\00"
+	SendStr[5]:=LampVal
+	Return Value SendCommand  (SendStr) //mainīga kontrolsumma!
+End Function
+
+
+Global Function BrightnessControl(BrightnessVal As Byte) As Boolean
+Private Var SendStr As ByteString [25]:=&S"\AA\25\FF\01\00\00"
+	SendStr[5]:=BrightnessVal
+	Return Value SendCommand  (SendStr) //mainīga kontrolsumma!
+End Function
+
+Global Function BrightnessControl_RGB(BrightnessVal As Byte) As Boolean
+Private Var SendStr As ByteString [25]:=&S"\AA\38\FF\01\00\00"
+	SendStr[5]:=BrightnessVal
+	Return Value SendCommand  (SendStr) //mainīga kontrolsumma!
+End Function
+
+Global Function ContrastControl(ContrastVal As Byte) As Boolean
+Private Var SendStr As ByteString [25]:=&S"\AA\24\FF\01\00\00"
+	SendStr[5]:=ContrastVal
+	Return Value SendCommand  (SendStr) //mainīga kontrolsumma!
+End Function
+
+Global Function ContrastControl_Dynamic_Off() As Boolean
+Private Var SendStr As ByteString [25]:=&S"\AA\87\FF\01\00\00"
+	Return Value SendCommand  (SendStr) //mainīga kontrolsumma!
+End Function
+
+Global Function ContrastControl_Dynamic_On() As Boolean
+Private Var SendStr As ByteString [25]:=&S"\AA\87\FF\01\01\00"
+	Return Value SendCommand  (SendStr) //mainīga kontrolsumma!
+End Function
+
+Global Function SharpnessControl(SharpnessVal As Byte) As Boolean
+Private Var SendStr As ByteString [25]:=&S"\AA\26\FF\01\00\00"
+	SendStr[5]:=SharpnessVal
+	Return Value SendCommand  (SendStr) //mainīga kontrolsumma!
+End Function
+
+Global Function PictureSize_JustScan() As Boolean
+	Return Value SendCommand  (&S"\AA\15\FF\01\09\00") //nekorekta kontrolsumma!
+End Function
+
+Global Function PictureSize_16_9() As Boolean
+	Return Value SendCommand  (&S"\AA\15\FF\01\01\00") //nekorekta kontrolsumma!
+End Function
+
+Global Function PictureSize_4_3() As Boolean
+	Return Value SendCommand  (&S"\AA\15\FF\01\0B\00") //nekorekta kontrolsumma!
+End Function
+
+Global Function PictureSize_Zoom() As Boolean
+	Return Value SendCommand  (&S"\AA\15\FF\01\04\00") //nekorekta kontrolsumma!
+End Function
+
+Global Function PictureSize_WideZoom() As Boolean
+	Return Value SendCommand  (&S"\AA\15\FF\01\31\00") //nekorekta kontrolsumma!
+End Function
+
+Global Function PictureSize_WideFit() As Boolean
+	Return Value SendCommand  (&S"\AA\15\FF\01\0C\00") //nekorekta kontrolsumma!
+End Function
+
+Global Function SetEditNameControl_None() As Boolean
+	Return Value SendCommand  (&S"\AA\AF\FF\01\00\00") //nekorekta kontrolsumma!
+End Function
+
+Global Function SetEditNameControl_PC() As Boolean
+	Return Value SendCommand  (&S"\AA\AF\FF\01\09\00") //nekorekta kontrolsumma!
+End Function
+
+Global Function SetEditNameControl_DVIPC() As Boolean
+	Return Value SendCommand  (&S"\AA\AF\FF\01\0A\00") //nekorekta kontrolsumma!
+End Function
+
+//////////////////
+/// Video wall ///
+//////////////////
+
+Global Function VideoWall_On() As Boolean
+	Return Value SendCommand  (&S"\AA\84\FF\01\01\85")
+End Function
+
+Global Function VideoWall_Off() As Boolean
+	Return Value SendCommand  (&S"\AA\89\FF\02\00\01\00") //nekorekta kontrolsumma!
+End Function
+
+Global Function VideoWall_2x2_1() As Boolean
+	Return Value SendCommand  (&S"\AA\89\FF\02\22\01\00") //nekorekta kontrolsumma!
+End Function
+
+Global Function VideoWall_2x2_2() As Boolean
+	Return Value SendCommand  (&S"\AA\89\FF\02\22\02\00") //nekorekta kontrolsumma!
+End Function
+
+Global Function VideoWall_2x2_3() As Boolean
+	Return Value SendCommand  (&S"\AA\89\FF\02\22\03\00") //nekorekta kontrolsumma!
+End Function
+
+Global Function VideoWall_2x2_4() As Boolean
+	Return Value SendCommand  (&S"\AA\89\FF\02\22\04\00") //nekorekta kontrolsumma!
+End Function
+
+Global Function VideoWall_3x3_1() As Boolean
+	Return Value SendCommand  (&S"\AA\89\FF\02\33\01\00") //nekorekta kontrolsumma!
+End Function
+
+Global Function VideoWall_3x3_2() As Boolean
+	Return Value SendCommand  (&S"\AA\89\FF\02\33\02\00") //nekorekta kontrolsumma!
+End Function
+
+Global Function VideoWall_3x3_3() As Boolean
+	Return Value SendCommand  (&S"\AA\89\FF\02\33\03\00") //nekorekta kontrolsumma!
+End Function
+
+Global Function VideoWall_3x3_4() As Boolean
+	Return Value SendCommand  (&S"\AA\89\FF\02\33\04\00") //nekorekta kontrolsumma!
+End Function
+
+Global Function VideoWall_3x3_5() As Boolean
+	Return Value SendCommand  (&S"\AA\89\FF\02\33\05\00") //nekorekta kontrolsumma!
+End Function
+
+Global Function VideoWall_3x3_6() As Boolean
+	Return Value SendCommand  (&S"\AA\89\FF\02\33\06\00") //nekorekta kontrolsumma!
+End Function
+
+Global Function VideoWall_3x3_7() As Boolean
+	Return Value SendCommand  (&S"\AA\89\FF\02\33\07\00") //nekorekta kontrolsumma!
+End Function
+
+Global Function VideoWall_3x3_8() As Boolean
+	Return Value SendCommand  (&S"\AA\89\FF\02\33\08\00") //nekorekta kontrolsumma!
+End Function
+
+Global Function VideoWall_3x3_9() As Boolean
+	Return Value SendCommand  (&S"\AA\89\FF\02\33\09\00") //nekorekta kontrolsumma!
+End Function
+
+Global Function VideoWallMode_Full() As Boolean
+	Return Value SendCommand  (&S"\AA\5C\FF\01\01\00") //nekorekta kontrolsumma!
+End Function
+
+Global Function VideoWallMode_Natural() As Boolean
+	Return Value SendCommand  (&S"\AA\5C\FF\01\00\00") //nekorekta kontrolsumma!
+End Function
+
+
+//////////////
+/// Volume ///
+//////////////
+
+Global Function Volume(VolLevel As Byte) As Boolean
+Private Var SendStr As ByteString [25]:=&S"\AA\12\FF\01\00\00"
+	SendStr[5]:=VolLevel
+	Return Value SendCommand  (SendStr) //mainīga kontrolsumma!
+End Function
+
+Global Function Mute(MuteStatus As Long) As Boolean
+Private Var SendStr As ByteString [25]:=&S"\AA\13\FF\01\00\00"
+	SendStr[5]:=MuteStatus
+	Return Value SendCommand  (SendStr) //mainīga kontrolsumma!
+End Function
+
+//////////////
+
+Global Function SetColorTone_Normal() As Boolean
+	Select ModelName
+		Case 3 // 460UX , 460UT
+			Return Value SendCommand  (&S"\AA\3E\FF\01\02\00") //nekorekta kontrolsumma!
+		Case Else
+			Return Value SendCommand  (&S"\AA\3E\FF\01\02\00")
+	End Select
+End Function
+
+Global Function SetPictureMode_Standard() As Boolean
+	Select ModelName
+		Case 3 // 460UX , 460UT
+			Return Value SendCommand  (&S"\AA\71\FF\01\01\00") //nekorekta kontrolsumma!
+		Case Else
+			Return Value SendCommand  (&S"\AA\71\FF\01\01\00")
+	End Select
+End Function
+
+Global Function SetPictureMode_Dynamic() As Boolean
+	Select ModelName
+		Case 3 // 460UX , 460UT
+			Return Value SendCommand  (&S"\AA\71\FF\01\00\00") //nekorekta kontrolsumma!
+		Case Else
+			Return Value SendCommand  (&S"\AA\71\FF\01\00\00")
+	End Select
+End Function
+
+Global Function SetPictureMode_Information() As Boolean
+	Select ModelName
+		Case 3 // 460UX , 460UT
+			Return Value SendCommand  (&S"\AA\71\FF\01\15\00") //nekorekta kontrolsumma!
+		Case Else
+			Return Value SendCommand  (&S"\AA\71\FF\01\15\00")
+	End Select
+End Function
+
+Global Function SetPictureMode_Calibration() As Boolean
+//	Select ModelName
+//		Case 3 // 460UX , 460UT
+////			Return Value SendCommand  (&S"\AA\71\FF\01\15\00") //nekorekta kontrolsumma!
+//		Case Else
+			Return Value SendCommand  (&S"\AA\71\FF\01\16\00")
+//	End Select
+End Function
+
+Global Function SetHdmiBlackLevel_Low() As Boolean
+	Select ModelName
+		Case 3 // 460UX , 460UT
+			Return Value SendCommand  (&S"\AA\94\FF\01\01\00") //nekorekta kontrolsumma!
+		Case Else
+			Return Value SendCommand  (&S"\AA\94\FF\01\01\00")
+	End Select
+End Function
+
+Global Function SetHdmiBlackLevel_Normal() As Boolean
+	Select ModelName
+		Case 3 // 460UX , 460UT
+			Return Value SendCommand  (&S"\AA\94\FF\01\00\00") //nekorekta kontrolsumma!
+		Case Else
+			Return Value SendCommand  (&S"\AA\94\FF\01\00\00")
+	End Select
+End Function
+
+Global Function SetVideo_Tint(TintVal As Byte) As Boolean
+Private Var SendStr As ByteString [25]:=&S"\AA\28\FF\01\00\00"
+	SendStr[5]:=TintVal
+	Return Value SendCommand  (SendStr) //mainīga kontrolsumma!
+End Function
+
+Global Function SetVideo_Color(ColorVal As Byte) As Boolean
+Private Var SendStr As ByteString [25]:=&S"\AA\27\FF\01\00\00"
+	SendStr[5]:=ColorVal
+	Return Value SendCommand  (SendStr) //mainīga kontrolsumma!
+End Function
+
+Global Function SetPresentInput_EditName_None() As Boolean
+	Return Value SendCommand  (&S"\AA\AF\FF\01\00\00") //mainīga kontrolsumma!
+End Function
+
+Global Function SetPresentInput_EditName_DVD() As Boolean
+	Return Value SendCommand  (&S"\AA\AF\FF\01\02\00") //mainīga kontrolsumma!
+End Function
+
+Global Function SetPresentInput_EditName_PC() As Boolean
+	Return Value SendCommand  (&S"\AA\AF\FF\01\09\00") //mainīga kontrolsumma!
+End Function
+
+Global Function SetPresentInput_EditName_DVIPC() As Boolean
+	Return Value SendCommand  (&S"\AA\AF\FF\01\0A\00") //mainīga kontrolsumma!
+End Function
+
+Global Function SetPresentInput_EditName_BluRay() As Boolean
+	Return Value SendCommand  (&S"\AA\AF\FF\01\0E\00") //mainīga kontrolsumma!
+End Function
+
+Global Function SetDisplayModelSeries(ModelNum As Byte) As Boolean
+	ModelName:=ModelNum
+	Return Value True
+End Function
+
+
+Global Function DisplayStatusCheckLoop_Enable()
+	StartProcess ReceiveProcess ()
+	StartProcess StatusRequest_FastLoop ()
+	StartProcess StatusRequest_SlowLoop ()
+End Function
+
+
+Global Function DisplayStatusCheckLoop_Disable()
+	StopProcess ReceiveProcess ()
+	StopProcess StatusRequest_FastLoop ()
+	StopProcess StatusRequest_SlowLoop () 
+End Function
+
+
+/// Overwrite CVC configuration value ///
+
+Global Function OverwriteCVCconfig_Device_Model(ModelN As Byte) // Use correct driver type
+	ModelName:=ModelN
+End Function
+
+Global Function OverwriteCVCconfig_Device_IPaddress(IPAddressNew As Text)
+	DisplayStatusCheckLoop_Disable()
+	IPAddress:=IPAddressNew
+	Wait(0:1.0)
+	DisplayStatusCheckLoop_Enable()
+End Function
+
+Global Function OverwriteCVCconfig_Device_TCPport(TCPPortNew As Long)
+	TCPPort:=TCPPortNew
+End Function
+
+Global Function OverwriteCVCconfig_Device_MacAddress(MacAddressNew As Text)
+	MacAddress:=MacAddressNew
+End Function
+
+End DeviceClass

@@ -1,0 +1,42 @@
+Private Process DimmerChanged(level As Double) Link Lights.DimmerLevel.OnValueChange
+    StartProcess SmartRelay1.RelayControl.SetDimmerLevel(level)
+End Process
+
+Private Process DimmerOff() Link Lights.DimmerOff.OnPush
+    StartProcess SmartRelay1.RelayControl.SetDimmerLevel(0)
+End Process
+
+Private Process DimmerFull() Link Lights.DimmerFull.OnPush
+    StartProcess SmartRelay1.RelayControl.SetDimmerLevel(100)
+End Process
+
+Private Process Circuit2On() Link Lights.Circuit2On.OnPush
+    StartProcess SmartRelay1.RelayControl.Relay2On()
+End Process
+
+Private Process Circuit2Off() Link Lights.Circuit2Off.OnPush
+    StartProcess SmartRelay1.RelayControl.Relay2Off()
+End Process
+
+Private Process ReceiveDimmer(level As Double) Link SmartRelay1.RelayControl.DimmerLevelChanged
+    Private Var caption As Text[64]
+    Lights.DimmerLevel.SetValue(level)
+    FormatText(caption, "{n} %", level)
+    Lights.DimmerValue.SetText(caption)
+End Process
+
+Private Process ReceiveRelay1(isclosed As Boolean) Link SmartRelay1.RelayControl.Relay1StateChanged
+    If isclosed Then
+        Lights.Circuit1State.SetText("Zapnuto")
+    Else
+        Lights.Circuit1State.SetText("Vypnuto")
+    End If
+End Process
+
+Private Process ReceiveRelay2(isclosed As Boolean) Link SmartRelay1.RelayControl.Relay2StateChanged
+    If isclosed Then
+        Lights.Circuit2State.SetText("Zapnuto")
+    Else
+        Lights.Circuit2State.SetText("Vypnuto")
+    End If
+End Process

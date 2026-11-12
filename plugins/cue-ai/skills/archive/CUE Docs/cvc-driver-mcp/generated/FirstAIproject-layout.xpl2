@@ -1,0 +1,10 @@
+MyProperties { _DisplayWidth:=1280,_DisplayHeight:=800,_DefaultLanguageId:=0,_FullScreen:=False}
+Global _GraphicWindow Home As MyController.GenericObjects.Page WithProperties
+ { Left:=0,Top:=0,Width:=1280,Height:=800,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFF182434}
+Global GraphicObject Button1 As MyController.GenericObjects.PushButton WithProperties
+ { Left:=300,Top:=330,Width:=300,Height:=140,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtButton1,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject Button2 As MyController.GenericObjects.PushButton WithProperties
+ { Left:=680,Top:=330,Width:=300,Height:=140,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtButton2,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+End _GraphicWindow

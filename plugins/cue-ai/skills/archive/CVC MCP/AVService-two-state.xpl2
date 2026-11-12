@@ -1,0 +1,163 @@
+Private Var SelectedInput As Long := 0
+Global Event InputSelectionChanged As Process(inputid As Long)
+
+Private Var PowerCaption As Text[128] := "Monitor: stav neznámý"
+Private Var InputCaption As Text[128] := "Vstup: dosud nezvolen"
+Global Event AVStateChanged As Process(powertext As Text, inputtext As Text)
+
+Global Process ReportState()
+    RaiseEvent InputSelectionChanged(SelectedInput)
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+End Process
+
+Private Process PowerFeedback(status As Long) Link SamsungMonitor1.OnPowerStatusChange
+    If status = 1 Then
+        PowerCaption := "Monitor: zapnutý"
+    Else
+        If status = 0 Then
+            PowerCaption := "Monitor: vypnutý"
+        Else
+            PowerCaption := "Monitor: stav neznámý"
+        End If
+    End If
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+End Process
+
+Global Process PowerOn()
+    If SamsungMonitor1.PowerOn() Then
+        PowerCaption := "Zapnutí: příkaz odeslán"
+    Else
+        PowerCaption := "Chyba odeslání povelu"
+    End If
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+End Process
+
+Global Process PowerOff()
+    If SamsungMonitor1.PowerOff() Then
+        PowerCaption := "Vypnutí: příkaz odeslán"
+    Else
+        PowerCaption := "Chyba odeslání povelu"
+    End If
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+End Process
+
+Global Process Input_HDMI_1()
+    If SamsungMonitor1.Input_HDMI_1() Then
+        SelectedInput := 1
+        RaiseEvent InputSelectionChanged(SelectedInput)
+        InputCaption := "Požadovaný vstup: HDMI 1"
+    Else
+        InputCaption := "Chyba odeslání povelu"
+    End If
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+End Process
+
+Global Process Input_HDMI_2()
+    If SamsungMonitor1.Input_HDMI_2() Then
+        SelectedInput := 2
+        RaiseEvent InputSelectionChanged(SelectedInput)
+        InputCaption := "Požadovaný vstup: HDMI 2"
+    Else
+        InputCaption := "Chyba odeslání povelu"
+    End If
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+End Process
+
+Global Process Input_DisplayPort_1()
+    If SamsungMonitor1.Input_DisplayPort_1() Then
+        SelectedInput := 3
+        RaiseEvent InputSelectionChanged(SelectedInput)
+        InputCaption := "Požadovaný vstup: DisplayPort 1"
+    Else
+        InputCaption := "Chyba odeslání povelu"
+    End If
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+End Process
+
+Global Process Input_VGA_1()
+    If SamsungMonitor1.Input_VGA_1() Then
+        SelectedInput := 4
+        RaiseEvent InputSelectionChanged(SelectedInput)
+        InputCaption := "Požadovaný vstup: VGA 1"
+    Else
+        InputCaption := "Chyba odeslání povelu"
+    End If
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+End Process
+
+Global Process Input_DVI_1()
+    If SamsungMonitor1.Input_DVI_1() Then
+        SelectedInput := 5
+        RaiseEvent InputSelectionChanged(SelectedInput)
+        InputCaption := "Požadovaný vstup: DVI 1"
+    Else
+        InputCaption := "Chyba odeslání povelu"
+    End If
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+End Process
+
+Global Process Input_Component_1()
+    If SamsungMonitor1.Input_Component_1() Then
+        SelectedInput := 6
+        RaiseEvent InputSelectionChanged(SelectedInput)
+        InputCaption := "Požadovaný vstup: Component 1"
+    Else
+        InputCaption := "Chyba odeslání povelu"
+    End If
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+End Process
+
+Global Process Input_BNC_1()
+    If SamsungMonitor1.Input_BNC_1() Then
+        SelectedInput := 7
+        RaiseEvent InputSelectionChanged(SelectedInput)
+        InputCaption := "Požadovaný vstup: BNC 1"
+    Else
+        InputCaption := "Chyba odeslání povelu"
+    End If
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+End Process
+
+Global Process Input_Composite_1()
+    If SamsungMonitor1.Input_Composite_1() Then
+        SelectedInput := 8
+        RaiseEvent InputSelectionChanged(SelectedInput)
+        InputCaption := "Požadovaný vstup: Composite 1"
+    Else
+        InputCaption := "Chyba odeslání povelu"
+    End If
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+End Process
+
+Global Process Input_Svideo_1()
+    If SamsungMonitor1.Input_Svideo_1() Then
+        SelectedInput := 9
+        RaiseEvent InputSelectionChanged(SelectedInput)
+        InputCaption := "Požadovaný vstup: Svideo 1"
+    Else
+        InputCaption := "Chyba odeslání povelu"
+    End If
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+End Process
+
+Global Process Input_MagicInfo()
+    If SamsungMonitor1.Input_MagicInfo() Then
+        SelectedInput := 10
+        RaiseEvent InputSelectionChanged(SelectedInput)
+        InputCaption := "Požadovaný vstup: MagicInfo"
+    Else
+        InputCaption := "Chyba odeslání povelu"
+    End If
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+End Process
+
+Global Process Input_MagicInfoLite()
+    If SamsungMonitor1.Input_MagicInfoLite() Then
+        SelectedInput := 11
+        RaiseEvent InputSelectionChanged(SelectedInput)
+        InputCaption := "Požadovaný vstup: MagicInfoLite"
+    Else
+        InputCaption := "Chyba odeslání povelu"
+    End If
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+End Process

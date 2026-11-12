@@ -1,0 +1,49 @@
+MyProperties { _DisplayWidth:=1280,_DisplayHeight:=800,_DefaultLanguageId:=0,_FullScreen:=False}
+Global _GraphicWindow Home As MyController.GenericObjects.Page WithProperties
+ { Left:=0,Top:=0,Width:=1280,Height:=800,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFF182434}
+Global GraphicObject Button1 As MyController.GenericObjects.PushButton WithProperties
+ { Left:=40,Top:=30,Width:=580,Height:=80,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtButton1,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject Button2 As MyController.GenericObjects.PushButton WithProperties
+ { Left:=660,Top:=30,Width:=580,Height:=80,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtButton2,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject ProjectorOn As MyController.GenericObjects.PushButton WithProperties
+ { Left:=40,Top:=150,Width:=580,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungProjectorOn,UpColor:=&HFF287D46,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject ProjectorOff As MyController.GenericObjects.PushButton WithProperties
+ { Left:=660,Top:=150,Width:=580,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungProjectorOff,UpColor:=&HFFA43D3D,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject InputHDMI1 As MyController.GenericObjects.PushButton WithProperties
+ { Left:=40,Top:=280,Width:=380,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungInputHDMI1,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject InputHDMI2 As MyController.GenericObjects.PushButton WithProperties
+ { Left:=450,Top:=280,Width:=380,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungInputHDMI2,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject InputDP As MyController.GenericObjects.PushButton WithProperties
+ { Left:=860,Top:=280,Width:=380,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungInputDP,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject InputVGA As MyController.GenericObjects.PushButton WithProperties
+ { Left:=40,Top:=390,Width:=380,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungInputVGA,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject InputDVI As MyController.GenericObjects.PushButton WithProperties
+ { Left:=450,Top:=390,Width:=380,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungInputDVI,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject InputComponent As MyController.GenericObjects.PushButton WithProperties
+ { Left:=860,Top:=390,Width:=380,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungInputComponent,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject InputBNC As MyController.GenericObjects.PushButton WithProperties
+ { Left:=40,Top:=500,Width:=380,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungInputBNC,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject InputComposite As MyController.GenericObjects.PushButton WithProperties
+ { Left:=450,Top:=500,Width:=380,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungInputComposite,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject InputSVideo As MyController.GenericObjects.PushButton WithProperties
+ { Left:=860,Top:=500,Width:=380,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungInputSVideo,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject InputMagicInfo As MyController.GenericObjects.PushButton WithProperties
+ { Left:=40,Top:=610,Width:=380,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungInputMagicInfo,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+Global GraphicObject InputMagicInfoLite As MyController.GenericObjects.PushButton WithProperties
+ { Left:=450,Top:=610,Width:=380,Height:=85,Visible:=True,Locked:=0,_CollectionID:=0,UpText:=MyCommon.txtSamsungInputMagicInfoLite,UpColor:=&HFF2678C8,DownColor:=&HFF18508C,UpFontColor:=&HFFFFFFFF,BevelWidth:=0}
+ End GraphicObject
+End _GraphicWindow

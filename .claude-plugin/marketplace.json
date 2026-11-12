@@ -1,0 +1,11 @@
+{
+  "name": "cue-ai-local",
+  "owner": { "name": "CUE AI Plugin Maintainer" },
+  "plugins": [
+    {
+      "name": "cue-ai",
+      "source": "./plugins/cue-ai",
+      "description": "CUE Visual Composer MCP, documentation and project skills."
+    }
+  ]
+}

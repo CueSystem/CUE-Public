@@ -1,0 +1,13 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "cvc": {
+      "type": "streamable-http",
+      "url": "http://127.0.0.1:8765/mcp"
+    },
+    "cue-docs": {
+      "type": "streamable-http",
+      "url": "https://www.cuesystem.com/docs-mcp"
+    }
+  }
+}

@@ -1,0 +1,6652 @@
+// Start of collection ***************************************************************** 
+// GenericObjects
+// Revised: 16.6.2022
+// Author: Malcová Radka
+
+
+// Start of group ***************************************************************** 
+// Windows
+// Revised: 27.3.2012
+// Author: Miroslav Pechát
+
+
+// Start of object -----------------------------------------------------------------------
+// BaseWindow
+
+//constant declaration
+Const PICTURE_ALIGNLEFT As Long := _TEXT_ALIGNLEFT
+Const PICTURE_ALIGNHCENTER As Long := _TEXT_ALIGNHCENTER
+Const PICTURE_ALIGNRIGHT As Long := _TEXT_ALIGNRIGHT
+Const PICTURE_ALIGNTOP As Long := _TEXT_ALIGNTOP
+Const PICTURE_ALIGNVCENTER As Long := _TEXT_ALIGNVCENTER
+Const PICTURE_ALIGNBOTTOM As Long := _TEXT_ALIGNBOTTOM
+
+Const FITTING_NONE As Long := 0
+Const FITTING_FIT_CONTENT_TO_OBJECT As Long := 2
+Const FITTING_FIT_CONTENT_PROPORTIONALLY As Long := 4
+Const FITTING_FILL_OBJECT_PROPORTIONALLY As Long := 5
+
+Public GraphicClass BaseWindow Inherits BaseGraphicWindow WithAttributes {hiddeninide}	
+
+
+
+// Appearance Var Group
+Protected Var MColor As Long := _COLOR_GREY 
+Protected Var MPicture As AddressOf _Picture := Nothing 
+Protected Var MPictureAlign As Long := PICTURE_ALIGNHCENTER BitOr PICTURE_ALIGNVCENTER 
+Protected Var MPictureFitting As Long := 0 
+Protected Var MPictureOffsetX As Long := 0 
+Protected Var MPictureOffsetY As Long := 0 
+Protected Var MOpacity As Byte := 255 
+
+// Protected variables declaration
+Protected Var ObjectX As Long
+Protected Var ObjectY As Long
+Protected Var ObjectWidth As Long
+Protected Var ObjectHeight As Long
+Protected Var OpenFlags As Long := _OW_CLOSESTANDARD
+Protected Var PictureLayer As BasePictureBox
+
+// Common declaration
+Private Var ColorDraw As Long
+Private Var PictureX As Long
+Private Var PictureY As Long
+
+Public Event OnHideObject As Function()
+Public Event OnTouch As Process()
+Public Event OnShowObject As Function()
+
+
+Private Function Init()
+
+	UpdateDrawColors()
+
+End Function
+
+
+Protected Function UpdateDrawColors()
+
+	ColorDraw := SetColorComponentOpacity(MColor, GetColorComponentOpacity(MColor) * MOpacity / 255)
+
+End Function
+
+
+Protected Function SetDrawParameters()
+
+//	If MPicture <> Nothing Then
+		PictureLayer.SetPicture(MPicture)
+		PictureLayer.SetObjectDimensions(ObjectWidth, ObjectHeight)
+		PictureLayer.SetAlign(MPictureAlign)
+		PictureLayer.SetFitting(MPictureFitting)
+		PictureLayer.SetPictureOffsetX(MPictureOffsetX) 
+		PictureLayer.SetPictureOffsetY(MPictureOffsetY)
+		PictureLayer.SetOpacity(MOpacity) 
+//	End If
+	
+End Function
+
+
+Protected Function OnDraw()
+
+	DrawRectangle(ColorDraw)
+	
+End Function
+
+
+Protected Function OnDown(x As Long, y As Long, eventtime As Time) As Boolean
+
+	RaiseEvent OnTouch()
+	Return Value True
+
+End Function
+
+
+Protected Function OnShow()
+
+	RaiseEvent OnShowObject()
+
+End Function
+
+
+Protected Function OnHide()
+
+	RaiseEvent OnHideObject()
+
+End Function
+
+
+Public Function ShowObject()
+	
+	If Not GetVisible() Then
+		Open(ObjectX, ObjectY, OpenFlags)
+	End If
+
+End Function
+
+
+Public Function HideObject()
+	
+	Close()
+
+End Function
+
+
+Public Function IsObjectVisible() As Boolean
+
+	Return Value GetVisible()
+
+End Function
+
+
+End GraphicClass
+
+// BaseWindow
+// End of object -------------------------------------------------------------------------
+
+
+// Start of object -----------------------------------------------------------------------
+// Page
+
+Public GraphicClass BasePage Inherits BaseWindow WithAttributes {hiddeninide}	
+
+// Behavior Var Group
+Protected Var MNavigationBarButtonID As Long := 0 
+
+
+Private Function Init()
+
+	ObjectX := 0
+	ObjectY := 0
+	ObjectWidth := GetPrimaryDisplay().GetWidth()
+	ObjectHeight := GetPrimaryDisplay().GetHeight()
+	SetSize(ObjectWidth, ObjectHeight)
+	SetDrawParameters()
+
+End Function
+
+
+Protected Function OnJoinMessage(msgobject As BaseGraphicClass, messageid As Long, ParamArray)
+Private Var Button As Long := ParamArray[1]
+	If messageid = 1 Then
+		If Button = MNavigationBarButtonID Then
+			ShowObject()
+		Else
+			HideObject()
+		End If
+	End If
+
+End Function
+
+
+End GraphicClass
+
+// Page
+// End of object -------------------------------------------------------------------------
+
+
+// Start of object -----------------------------------------------------------------------
+// FloatingWindow
+
+Public GraphicClass BaseFloatingWindow Inherits BaseWindow WithAttributes {hiddeninide}	
+
+// Behavior Var Group
+Protected Var MOpenMode As Long := _OW_TOPMOST 
+Protected Var MNavigationBarButtonID As Long := 0 
+
+Private Function Init()
+
+	GetPosition(ObjectX, ObjectY)
+	GetSize(ObjectWidth, ObjectHeight)
+	SetDrawParameters()
+	OpenFlags := MOpenMode
+
+End Function
+
+Protected Function OnJoinMessage(msgobject As BaseGraphicClass, messageid As Long, ParamArray)
+Private Var Button As Long := ParamArray[1]
+
+	If messageid = 1 Then
+		If Button = MNavigationBarButtonID Then
+			ShowObject()
+		Else
+			HideObject()
+		End If
+	End If
+
+End Function
+
+End GraphicClass
+
+// FloatingWindow
+// End of object -------------------------------------------------------------------------
+
+
+// Windows
+// End of group ******************************************************************* 
+
+
+
+// Start of group ***************************************************************** 
+// Buttons
+// Revised: 16.4.2014
+// Author: Miroslav Pechlát
+
+
+// Start of object -----------------------------------------------------------------------
+// Button
+// Protected constant declaration
+Const ICON_ALIGNLEFT As Long := &H00000001	// Horizontal align left
+Const ICON_ALIGNHCENTER As Long := &H00000002	// Horizontal align center
+Const ICON_ALIGNRIGHT As Long :=	&H00000004	// Horizontal align right
+Const ICON_ALIGNTOP As Long := &H00000008	// Vertical align top
+Const ICON_ALIGNVCENTER As Long := &H00000010	// Vertical align center
+Const ICON_ALIGNBOTTOM As Long := &H00000020	// Vertical align bottom
+
+Const BUTTON_COLOR As Long := &HFFC0C0C0	// 3D Button face color
+Const BUTTON_HIGHLIGHT_COLOR As Long := &HFFFFFFFF	// 3D Button highlight color
+Const BUTTON_SHADOW_COLOR As Long :=	_COLOR_GREY	// 3D Button shadow color
+
+Private GraphicClass BaseButton Inherits BaseGraphicClass 
+
+// Appearance Var Group
+Protected Var MAspectRatioMaximum As Double := 10.000 
+Protected Var MAspectRatioMinimum As Double := 1.000 
+Protected Var MBevelWidth As Long := 4 
+Protected Var MConstrainProportion As Boolean := False 
+Protected Var MOpacity As Byte := 255
+Protected Var MSmartScaling As Boolean := False 
+//*** Edit Added property ***
+Protected Var MSquareScaling As Boolean := False //WithAttributes {PropertyGroup := "Appearance"}
+//*** End Edit ***
+
+// Behavior Var Group
+Protected Var MEnabled As Boolean := True 
+Protected Var MIgnoreTransparentArea As Boolean := False 
+
+// Up Var Group
+Protected Var MUpColor As Long := BUTTON_COLOR 
+Protected Var MUpFont As AddressOf _Font := fntDefault16
+Protected Var MUpFontColor As Long := _COLOR_BLACK 
+Protected Var MUpHighlightColor As Long := BUTTON_HIGHLIGHT_COLOR 
+Protected Var MUpIcon As AddressOf _Picture := Nothing 
+Protected Var MUpIconAlign As Long := ICON_ALIGNHCENTER BitOr ICON_ALIGNVCENTER 
+Protected Var MUpIconOffsetX As Long := 0 
+Protected Var MUpIconOffsetY As Long := 0
+Protected Var MUpLineSpacing As Double := 1.2
+Protected Var MUpPicture As AddressOf _Picture := Nothing
+Protected Var MUpShadowColor As Long := BUTTON_SHADOW_COLOR 
+Protected Var MUpText As AddressOf Text := txtCaption 
+Protected Var MUpTextAlign As Long := _TEXT_ALIGNHCENTER BitOr _TEXT_ALIGNVCENTER 
+Protected Var MUpTextOffsetX As Long := 0 
+Protected Var MUpTextOffsetY As Long := 0 
+
+// Down Var Group
+Protected Var MDownColor As Long := MUpColor 
+Protected Var MDownFont As AddressOf _Font := MUpFont 
+Protected Var MDownFontColor As Long := MUpFontColor 
+Protected Var MDownHighlightColor As Long := MUpHighlightColor 
+Protected Var MDownIcon As AddressOf _Picture := MUpIcon 
+Protected Var MDownIconAlign As Long := MUpIconAlign 
+Protected Var MDownIconOffsetX As Long := MUpIconOffsetX 
+Protected Var MDownIconOffsetY As Long := MUpIconOffsetY 
+Protected Var MDownLineSpacing As Double := MUpLineSpacing 
+Protected Var MDownPicture As AddressOf _Picture := MUpPicture 
+Protected Var MDownShadowColor As Long := MUpShadowColor 
+Protected Var MDownText As AddressOf Text := MUpText 
+Protected Var MDownTextAlign As Long := MUpTextAlign 
+Protected Var MDownTextOffsetX As Long := MUpTextOffsetX 
+Protected Var MDownTextOffsetY As Long := MUpTextOffsetY 
+
+// Protected objects declaration
+Protected Var PictureLayer1 As BasePictureBox
+Protected Var PictureLayer2 As BasePictureBox
+Protected Var PictureLayer3 As BasePictureBox
+Protected Var TextLayer As BaseStaticText
+
+//// Protected constant declaration
+//Protected Const ICON_ALIGNLEFT As Long := &H00000001	// Horizontal align left
+//Protected Const ICON_ALIGNHCENTER As Long := &H00000002	// Horizontal align center
+//Protected Const ICON_ALIGNRIGHT As Long :=	&H00000004	// Horizontal align right
+//Protected Const ICON_ALIGNTOP As Long := &H00000008	// Vertical align top
+//Protected Const ICON_ALIGNVCENTER As Long := &H00000010	// Vertical align center
+//Protected Const ICON_ALIGNBOTTOM As Long := &H00000020	// Vertical align bottom
+//
+//Protected Const BUTTON_COLOR As Long := &HFFC0C0C0	// 3D Button face color
+//Protected Const BUTTON_HIGHLIGHT_COLOR As Long := &HFFFFFFFF	// 3D Button highlight color
+//Protected Const BUTTON_SHADOW_COLOR As Long :=	_COLOR_GREY	// 3D Button shadow color
+
+Protected Const PICTURE_ALIGNLEFT As Long := _TEXT_ALIGNLEFT
+Protected Const PICTURE_ALIGNRIGHT As Long := _TEXT_ALIGNRIGHT
+Protected Const PICTURE_ALIGNHCENTER As Long := _TEXT_ALIGNHCENTER
+Protected Const PICTURE_ALIGNVCENTER As Long := _TEXT_ALIGNVCENTER
+
+// Private constant declaration
+Protected Const DISABLED_OPACITY As Double := 0.3
+//Private Const FITTING_NONE As Long := 0
+Protected Const FITTING_FIT_OBJECT_TO_CONTENT As Long := 1
+Private Const FITTING_FIT_CONTENT_TO_OBJECT As Long := 2
+Private Const FITTING_FILL_OBJECT_PROPORTIONALLY As Long := 5
+
+// Common declaration
+Protected Var IsPressed As Boolean := False
+Protected Var TextBuffer As Text [256] := ""
+Protected Var TextDownBuffer As Text [256] := ""
+
+Private Var UpDrawColor As Long
+Private Var DownDrawColor As Long
+Private Var UpDrawHighlightColor As Long
+Private Var DownDrawHighlightColor As Long
+Private Var UpDrawShadowColor As Long
+Private Var DownDrawShadowColor As Long
+Protected Var BevelWidthDraw As Long
+Protected Var DownOffset As Long
+
+Protected Var UpDrawFontColor As Long
+Protected Var DownDrawFontColor As Long
+
+Protected Var DrawOpacity As Byte
+
+Protected Var UpFormatFlags As Long
+Protected Var DownFormatFlags As Long
+
+Protected Var ObjectWidth As Long
+Protected Var ObjectHeight As Long
+Protected Var PictureLayer1Width As Long
+Protected Var PictureLayer2Width As Long
+
+Private Var ObjectProportion As Double
+Private Var PictureProportion As Double
+
+Protected Var UpIconX As Long
+Protected Var UpIconY As Long
+
+Protected Var DownIconX As Long
+Protected Var DownIconY As Long
+
+
+Protected Function Init()
+
+	UpFormatFlags := MUpTextAlign BitOr _TEXT_WORDWRAP
+	DownFormatFlags := MDownTextAlign BitOr _TEXT_WORDWRAP
+	UpdateDimensions()
+	UpdateDrawColors()
+	DownOffset := BevelWidthDraw / 2
+	RedrawCompoundObject()
+
+End Function
+
+
+Protected Function UpdateDimensions()
+
+	GetSize(ObjectWidth, ObjectHeight)
+
+	BevelWidthDraw := Min(MBevelWidth, Min(ObjectWidth / 2, ObjectHeight / 2))
+
+	If MSmartScaling Then
+		If CDouble(ObjectWidth) / ObjectHeight < MAspectRatioMinimum Then
+			ObjectWidth := ObjectHeight * MAspectRatioMinimum
+		ElseIf CDouble(ObjectWidth) / ObjectHeight > MAspectRatioMaximum Then
+			ObjectWidth := ObjectHeight * MAspectRatioMaximum
+		End If
+	Else
+		If MConstrainProportion Then
+			If MUpPicture <> Nothing Then
+				ObjectProportion := CDouble(ObjectWidth) / ObjectHeight
+				PictureProportion := CDouble(MUpPicture.GetWidth()) / MUpPicture.GetHeight()
+				If ObjectProportion > PictureProportion Then
+					ObjectWidth := ObjectHeight * PictureProportion
+				ElseIf ObjectProportion < PictureProportion Then
+					ObjectHeight := ObjectWidth / PictureProportion
+				End If
+				SetSize(ObjectWidth, ObjectHeight)				
+			End If
+		ElseIf MSquareScaling Then
+			 If MUpPicture <> Nothing And MBevelWidth > 0 Then
+				PictureLayer1.SetBorderSize( MBevelWidth )
+			End If
+		End If
+	End If
+
+	PictureLayer1Width := ObjectWidth / 2
+	PictureLayer2Width := ObjectWidth - PictureLayer1Width
+
+	UpdateIconPosition()
+
+End Function
+
+
+Protected Function UpdateIconPosition()
+
+	Select MUpIconAlign BitAnd &H07
+		Case ICON_ALIGNLEFT
+			UpIconX := MUpIconOffsetX
+			
+		Case ICON_ALIGNHCENTER
+			UpIconX := (ObjectWidth - MUpIcon.GetWidth()) / 2 + MUpIconOffsetX
+		
+		Case ICON_ALIGNRIGHT
+			UpIconX := ObjectWidth - MUpIcon.GetWidth() + MUpIconOffsetX
+
+	End Select
+
+	Select MUpIconAlign BitAnd &H38
+		Case ICON_ALIGNTOP
+			UpIconY := MUpIconOffsetY
+
+		Case ICON_ALIGNVCENTER
+			UpIconY := (ObjectHeight - MUpIcon.GetHeight()) / 2 + MUpIconOffsetY
+
+		Case ICON_ALIGNBOTTOM
+			UpIconY := ObjectHeight - MUpIcon.GetHeight() + MUpIconOffsetY
+
+	End Select
+
+	Select MDownIconAlign BitAnd &H07
+		Case ICON_ALIGNLEFT
+			DownIconX := MDownIconOffsetX
+
+		Case ICON_ALIGNHCENTER
+			DownIconX := (ObjectWidth - MDownIcon.GetWidth()) / 2 + MDownIconOffsetX
+
+		Case ICON_ALIGNRIGHT
+			DownIconX := ObjectWidth - MDownIcon.GetWidth() + MDownIconOffsetX
+
+	End Select
+
+	Select MDownIconAlign BitAnd &H38
+		Case ICON_ALIGNTOP
+			DownIconY := MDownIconOffsetY
+
+		Case ICON_ALIGNVCENTER
+			DownIconY := (ObjectHeight - MDownIcon.GetHeight()) / 2 + MDownIconOffsetY
+
+		Case ICON_ALIGNBOTTOM
+			DownIconY := ObjectHeight - MDownIcon.GetHeight() + MDownIconOffsetY
+
+	End Select
+
+End Function
+
+
+Protected Function UpdateDrawColors()
+
+	If MEnabled Then
+		DrawOpacity := MOpacity
+	Else
+		DrawOpacity := MOpacity * DISABLED_OPACITY
+	End If
+
+	UpDrawColor := SetColorComponentOpacity(MUpColor, GetColorComponentOpacity(MUpColor) * DrawOpacity / 255)
+	DownDrawColor := SetColorComponentOpacity(MDownColor, GetColorComponentOpacity(MDownColor) * DrawOpacity / 255)
+	UpDrawHighlightColor := SetColorComponentOpacity(MUpHighlightColor, GetColorComponentOpacity(MUpHighlightColor) * DrawOpacity / 255)
+	DownDrawHighlightColor := SetColorComponentOpacity(MDownHighlightColor, GetColorComponentOpacity(MDownHighlightColor) * DrawOpacity / 255)
+	UpDrawShadowColor := SetColorComponentOpacity(MUpShadowColor, GetColorComponentOpacity(MUpShadowColor) * DrawOpacity / 255)
+	DownDrawShadowColor := SetColorComponentOpacity(MDownShadowColor, GetColorComponentOpacity(MDownShadowColor) * DrawOpacity / 255)
+
+	UpDrawFontColor := SetColorComponentOpacity(MUpFontColor, GetColorComponentOpacity(MUpFontColor) * DrawOpacity / 255)
+	DownDrawFontColor := SetColorComponentOpacity(MDownFontColor, GetColorComponentOpacity(MDownFontColor) * DrawOpacity / 255)
+
+End Function
+
+
+Private Function Draw3DButton(state As Boolean)
+Private Var Offset As Long
+Private Var LeftUpColor As Long
+Private Var RightDownColor As Long
+
+	If state Then
+		DrawRectangle(DownDrawColor, BevelWidthDraw, BevelWidthDraw, ObjectWidth - 2 * BevelWidthDraw, ObjectHeight - 2 * BevelWidthDraw)
+		LeftUpColor := DownDrawShadowColor
+		RightDownColor := DownDrawHighlightColor
+	Else
+		DrawRectangle(UpDrawColor, BevelWidthDraw, BevelWidthDraw, ObjectWidth - 2 * BevelWidthDraw, ObjectHeight - 2 * BevelWidthDraw)
+		LeftUpColor := UpDrawHighlightColor
+		RightDownColor := UpDrawShadowColor
+	End If
+
+	If BevelWidthDraw > 0 Then
+		For Offset := 0 To BevelWidthDraw - 1
+			DrawLine(Offset, Offset, ObjectWidth - Offset - 1, Offset, LeftUpColor)
+			DrawLine(Offset, Offset + 1, Offset, ObjectHeight - Offset - 1, LeftUpColor)
+			DrawLine(Offset + 1, ObjectHeight - Offset - 1, ObjectWidth - Offset - 1, ObjectHeight - Offset - 1, RightDownColor)
+			DrawLine(ObjectWidth - Offset - 1, Offset + 1, ObjectWidth - Offset - 1, ObjectHeight - Offset - 1, RightDownColor)
+		End For
+	End If
+
+End Function
+
+
+Protected Function RedrawCompoundObject()
+
+	LockRedraw()
+
+	If IsPressed Then
+		If MDownPicture <> Nothing Then
+			If MSmartScaling Then
+				PictureLayer1.SetPicture(MDownPicture)
+				PictureLayer1.SetOpacity(DrawOpacity)
+				PictureLayer1.SetFitting(FITTING_FILL_OBJECT_PROPORTIONALLY)
+				PictureLayer1.SetObjectPosition(0, 0)
+				PictureLayer1.SetObjectDimensions(PictureLayer1Width, ObjectHeight)
+
+				PictureLayer2.SetAlign(PICTURE_ALIGNRIGHT BitOr PICTURE_ALIGNVCENTER)
+				PictureLayer2.SetPicture(MDownPicture)
+				PictureLayer2.SetOpacity(DrawOpacity)
+				PictureLayer2.SetFitting(FITTING_FILL_OBJECT_PROPORTIONALLY)
+				PictureLayer2.SetObjectPosition(PictureLayer1Width, 0)
+				PictureLayer2.SetObjectDimensions(PictureLayer2Width, ObjectHeight)
+
+			Else
+				PictureLayer1.SetPicture(MDownPicture)
+				PictureLayer1.SetOpacity(DrawOpacity)
+				PictureLayer1.SetFitting(FITTING_FIT_CONTENT_TO_OBJECT)
+				PictureLayer1.SetObjectPosition(0, 0)
+				PictureLayer1.SetObjectDimensions(ObjectWidth, ObjectHeight)
+			End If
+
+		Else
+			PictureLayer1.SetPicture(Nothing)
+			PictureLayer2.SetPicture(Nothing)
+			Redraw()
+		End If
+
+		PictureLayer3.SetPicture(MDownIcon)
+		PictureLayer3.SetOpacity(DrawOpacity)
+		PictureLayer3.SetFitting(FITTING_FIT_OBJECT_TO_CONTENT)
+		PictureLayer3.SetObjectPosition(DownIconX + DownOffset, DownIconY + DownOffset)
+
+		TextLayer.SetFont(MDownFont)
+		TextLayer.SetText(MDownText)
+		TextLayer.SetColor(DownDrawFontColor)
+		TextLayer.SetAlign(DownFormatFlags)
+		TextLayer.SetTextOffsetX(MDownTextOffsetX)
+		TextLayer.SetTextOffsetY(MDownTextOffsetY)
+		TextLayer.SetLineSpacing(MDownLineSpacing)
+		TextLayer.SetObjectPosition(0, 0)
+		TextLayer.SetObjectDimensions(ObjectWidth, ObjectHeight)
+	Else
+		If MUpPicture <> Nothing Then
+			If MSmartScaling Then
+				PictureLayer1.SetPicture(MUpPicture)
+				PictureLayer1.SetOpacity(DrawOpacity)
+				PictureLayer1.SetFitting(FITTING_FILL_OBJECT_PROPORTIONALLY)
+				PictureLayer1.SetObjectPosition(0, 0)
+				PictureLayer1.SetObjectDimensions(PictureLayer1Width, ObjectHeight)
+			
+				PictureLayer2.SetAlign(PICTURE_ALIGNRIGHT BitOr PICTURE_ALIGNVCENTER)
+				PictureLayer2.SetPicture(MUpPicture)
+				PictureLayer2.SetOpacity(DrawOpacity)
+				PictureLayer2.SetFitting(FITTING_FILL_OBJECT_PROPORTIONALLY)
+				PictureLayer2.SetObjectPosition(PictureLayer1Width, 0)
+				PictureLayer2.SetObjectDimensions(PictureLayer2Width, ObjectHeight)
+
+			Else
+				PictureLayer1.SetPicture(MUpPicture)
+				PictureLayer1.SetOpacity(DrawOpacity)
+				PictureLayer1.SetFitting(FITTING_FIT_CONTENT_TO_OBJECT)
+				PictureLayer1.SetObjectPosition(0, 0)
+				PictureLayer1.SetObjectDimensions(ObjectWidth, ObjectHeight)
+			End If
+		Else
+			PictureLayer1.SetPicture(Nothing)
+			PictureLayer2.SetPicture(Nothing)
+			Redraw()
+		End If
+
+		PictureLayer3.SetPicture(MUpIcon)
+		PictureLayer3.SetOpacity(DrawOpacity)
+		PictureLayer3.SetFitting(FITTING_FIT_OBJECT_TO_CONTENT)
+		PictureLayer3.SetObjectPosition(UpIconX, UpIconY)
+
+		TextLayer.SetFont(MUpFont)
+		TextLayer.SetText(MUpText)
+		TextLayer.SetColor(UpDrawFontColor)
+		TextLayer.SetAlign(UpFormatFlags)
+		TextLayer.SetTextOffsetX(MUpTextOffsetX)
+		TextLayer.SetTextOffsetY(MUpTextOffsetY)
+		TextLayer.SetLineSpacing(MUpLineSpacing)
+		TextLayer.SetObjectPosition(0, 0)
+		TextLayer.SetObjectDimensions(ObjectWidth, ObjectHeight)
+	End If
+
+	UnlockRedraw()
+
+End Function
+
+
+Protected Function OnDraw()
+
+	If IsPressed Then
+		If MDownPicture = Nothing Then
+			Draw3DButton(True)
+		End If
+	Else
+		If MUpPicture = Nothing Then
+			Draw3DButton(False)
+		End If
+	End If
+
+End Function
+
+
+Public Function ShowObject()
+
+	Show()
+
+End Function
+
+
+Public Function HideObject()
+
+	Hide()
+
+End Function
+
+
+Public Function IsObjectVisible() As Boolean
+
+	Return Value GetVisible()
+
+End Function
+
+
+Global Function BringToFrontZOrder()
+
+	BringToFront()
+
+End Function
+
+
+Global Function RestoreZOrder()
+
+	SendToDefault()
+
+End Function
+
+Public Function SetEnabled(newenabled As Boolean) As Boolean
+
+	MEnabled := newenabled
+	UpdateDrawColors()
+	RedrawCompoundObject()
+	Return Value True
+
+End Function
+
+
+Public Function GetEnabled() As Boolean
+
+	Return Value MEnabled
+
+End Function
+
+
+End GraphicClass
+
+// Button
+// End of object -------------------------------------------------------------------------
+
+
+
+// Start of object -----------------------------------------------------------------------
+// PushButton
+
+Global GraphicClass BasePushButton Inherits BaseButton WithAttributes {hiddeninide}	
+
+Public Event OnPush As Process()
+
+
+Protected Function OnDown(x As Long, y As Long, eventtime As Time) As Boolean
+Private Var ButtonPictureWidth As Long
+Private Var ButtonPictureZoomX As Double
+Private Var ButtonPictureZoomY As Double
+Private Var PixelColor As Long
+Private Var PixelX As Long
+Private Var PixelY As Long
+
+	If MIgnoreTransparentArea Then
+		ButtonPictureWidth := MUpPicture.GetWidth()
+		ButtonPictureZoomX := ObjectWidth / CDouble(ButtonPictureWidth)
+		ButtonPictureZoomY := ObjectHeight / CDouble(MUpPicture.GetHeight())
+
+		If MSmartScaling Then
+			If x <= PictureLayer1Width Then
+				PixelX := x / ButtonPictureZoomY 
+			Else
+				PixelX := ButtonPictureWidth - (ObjectWidth - x) / ButtonPictureZoomY 
+			End If
+		Else
+			PixelX := x / ButtonPictureZoomX 
+		End If 
+
+		PixelY := y / ButtonPictureZoomY
+
+		MUpPicture.GetPixel(PixelX, PixelY, PixelColor)
+
+		If (PixelColor BitAnd &HFF000000) = 0 Then
+			Return Value False
+		End If
+	End If
+
+	If MEnabled Then
+		IsPressed := True
+		RedrawCompoundObject()
+		RaiseEvent OnPush()
+	End If
+
+	Return Value True
+
+End Function
+
+
+Protected Function OnUp(x As Long, y As Long, eventtime As Time, isinside As Boolean)
+
+	If MEnabled Then
+		IsPressed := False
+		RedrawCompoundObject()
+	End If
+
+End Function
+
+
+Public Function WaitWhilePressed(Optional timeout As Time := _TIME_INFINITE) As Boolean
+Private Var WaitTime As Time := :0
+
+	If MEnabled Then
+		Do While IsPressed
+			Wait(:.1)
+			WaitTime += :.1
+			If WaitTime > timeout Then Return Value False End If
+		End Do
+		Return Value True
+	Else
+		Return Value False
+	End If
+
+End Function
+
+
+Public Function IsButtonPressed() As Boolean
+
+	Return Value IsPressed And MEnabled
+	
+End Function
+
+
+Public Function SetEnabled(newenabled As Boolean) As Boolean
+
+	If Not newenabled Then
+		IsPressed := False
+	End If
+
+	MEnabled := newenabled
+	UpdateDrawColors()
+	RedrawCompoundObject()
+	Return Value True
+
+End Function
+
+
+End GraphicClass
+
+// PushButton
+// End of object -------------------------------------------------------------------------
+
+
+
+// Start of object -----------------------------------------------------------------------
+// LongPressButton
+
+Global GraphicClass BaseLongPressButton Inherits BaseButton WithAttributes {hiddeninide}	
+
+// Behavior Var Group
+Protected Var MLongPressTime As Time := :.4 
+
+Public Event OnPress As Process(longpress As Boolean)
+
+Private Var LongPress As Boolean := False
+
+
+Protected Function OnDown(x As Long, y As Long, eventtime As Time) As Boolean
+Private Var ButtonPictureWidth As Long
+Private Var ButtonPictureZoomX As Double
+Private Var ButtonPictureZoomY As Double
+Private Var PixelColor As Long
+Private Var PixelX As Long
+Private Var PixelY As Long
+
+	If MIgnoreTransparentArea Then
+		ButtonPictureWidth := MUpPicture.GetWidth()
+		ButtonPictureZoomX := ObjectWidth / CDouble(ButtonPictureWidth)
+		ButtonPictureZoomY := ObjectHeight / CDouble(MUpPicture.GetHeight())
+
+		If MSmartScaling Then
+			If x <= PictureLayer1Width Then
+				PixelX := x / ButtonPictureZoomY 
+			Else
+				PixelX := ButtonPictureWidth - (ObjectWidth - x) / ButtonPictureZoomY 
+			End If
+		Else
+			PixelX := x / ButtonPictureZoomX 
+		End If 
+
+		PixelY := y / ButtonPictureZoomY
+
+		MUpPicture.GetPixel(PixelX, PixelY, PixelColor)
+
+		If (PixelColor BitAnd &HFF000000) = 0 Then
+			Return Value False
+		End If
+	End If
+
+	If MEnabled Then
+		IsPressed := True
+		RedrawCompoundObject()
+		LongPress := False
+		StartTimer(1, MLongPressTime)
+	End If
+
+	Return Value True
+
+End Function
+
+
+Protected Function OnUp(x As Long, y As Long, eventtime As Time, isinside As Boolean)
+
+	If MEnabled Then
+		IsPressed := False
+		RedrawCompoundObject()
+		StopTimer(1)
+		If Not LongPress Then
+			RaiseEvent OnPress(False)
+		End If
+	End If
+
+End Function
+
+
+Protected Function OnTimer(timerid As Long)
+
+	LongPress := True
+	RaiseEvent OnPress(True)
+
+End Function
+
+
+Public Function WaitWhilePressed(Optional timeout As Time := _TIME_INFINITE) As Boolean
+Private Var WaitTime As Time := :0
+
+	If MEnabled Then
+		Do While IsPressed
+			Wait(:.1)
+			WaitTime += :.1
+			If WaitTime > timeout Then Return Value False End If
+		End Do
+		Return Value True
+	Else
+		Return Value False
+	End If
+
+End Function
+
+
+Public Function IsButtonPressed() As Boolean
+
+	Return Value IsPressed And MEnabled
+	
+End Function
+
+
+Public Function SetLongPressTime(newlongpresstime As Time) As Boolean
+
+	If newlongpresstime >= :0 Then
+		MLongPressTime := newlongpresstime
+		Return Value True
+	Else
+		Return Value False
+	End If
+
+End Function
+
+
+Public Function GetLongPressTime() As Time
+
+	Return Value MLongPressTime
+
+End Function
+
+Public Function SetEnabled(newenabled As Boolean) As Boolean
+
+	If Not newenabled Then
+		IsPressed := False
+	End If
+
+	MEnabled := newenabled
+	UpdateDrawColors()
+	RedrawCompoundObject()
+	Return Value True
+
+End Function
+
+End GraphicClass
+
+// LongPressButton
+// End of object -------------------------------------------------------------------------
+
+
+
+// Start of object -----------------------------------------------------------------------
+// ToggleButton
+
+Global GraphicClass BaseToggleButton Inherits BaseButton WithAttributes {hiddeninide}	
+
+// Public constants
+Public Const EVENT_TYPE_ON_DOWN As Long := 0
+Public Const EVENT_TYPE_ON_UP As Long := 1
+
+// Behavior Var Group
+Protected Var MDefaultState As Boolean := False 
+Protected Var MEventType As Long := EVENT_TYPE_ON_DOWN
+
+Public Event OnToggle As Process(pressed As Boolean)
+
+
+Private Function Init()
+
+	IsPressed := MDefaultState
+	RedrawCompoundObject()
+	
+End Function
+
+
+Protected Function OnDown(x As Long, y As Long, eventtime As Time) As Boolean
+Private Var ButtonPicture As AddressOf _Picture
+Private Var ButtonPictureWidth As Long
+Private Var ButtonPictureZoomX As Double
+Private Var ButtonPictureZoomY As Double
+Private Var PixelColor As Long
+Private Var PixelX As Long
+Private Var PixelY As Long
+
+	If MIgnoreTransparentArea Then
+		If IsPressed Then
+			ButtonPicture := MDownPicture
+		Else
+			ButtonPicture := MUpPicture
+		End If
+
+		ButtonPictureWidth := ButtonPicture.GetWidth()
+		ButtonPictureZoomX := ObjectWidth / CDouble(ButtonPictureWidth)
+		ButtonPictureZoomY := ObjectHeight / CDouble(ButtonPicture.GetHeight())
+
+		If MSmartScaling Then
+			If x <= PictureLayer1Width Then
+				PixelX := x / ButtonPictureZoomY 
+			Else
+				PixelX := ButtonPictureWidth - (ObjectWidth - x) / ButtonPictureZoomY 
+			End If
+		Else
+			PixelX := x / ButtonPictureZoomX 
+		End If 
+
+		PixelY := y / ButtonPictureZoomY
+
+		ButtonPicture.GetPixel(PixelX, PixelY, PixelColor)
+
+		If (PixelColor BitAnd &HFF000000) = 0 Then
+			Return Value False
+		End If
+	End If
+
+	If MEnabled Then
+		IsPressed := Not IsPressed
+		RedrawCompoundObject()
+		If MEventType = EVENT_TYPE_ON_DOWN Then
+			RaiseEvent OnToggle(IsPressed)
+		End If
+	End If
+
+	Return Value True
+
+End Function
+
+
+Protected Function OnUp(x As Long, y As Long, eventtime As Time, isinside As Boolean)
+
+	If MEnabled Then
+		If MEventType = EVENT_TYPE_ON_UP Then
+			RaiseEvent OnToggle(IsPressed)
+		End If
+	End If
+
+End Function
+
+
+Public Function SetEventType(neweventtype As Long) As Boolean
+
+	MEventType := neweventtype
+	Return Value True
+	
+End Function
+
+
+Public Function GetEventType() As Long
+
+	Return Value MEventType
+	
+End Function
+
+
+Public Function IsStateDown() As Boolean
+
+	Return Value IsPressed
+	
+End Function
+
+
+Public Function SetStateDown() As Boolean
+
+	IsPressed := True
+	RedrawCompoundObject()
+	Return Value True
+
+End Function
+
+
+Public Function SetStateUp() As Boolean
+
+	IsPressed := False
+	RedrawCompoundObject()
+	Return Value True
+	
+End Function
+
+
+End GraphicClass
+
+// ToggleButton
+// End of object -------------------------------------------------------------------------
+
+
+
+// Start of object -----------------------------------------------------------------------
+// RepeatButton
+
+Global GraphicClass BaseRepeatButton Inherits BaseButton WithAttributes {hiddeninide}	
+
+// Behavior Var Group
+Protected Var MRepeatInterval As Time := :.4 
+
+Public Event OnRepeat As Process()
+
+
+Protected Function OnDown(x As Long, y As Long, eventtime As Time) As Boolean
+Private Var ButtonPictureWidth As Long
+Private Var ButtonPictureZoomX As Double
+Private Var ButtonPictureZoomY As Double
+Private Var PixelColor As Long
+Private Var PixelX As Long
+Private Var PixelY As Long
+
+	If MIgnoreTransparentArea Then
+		ButtonPictureWidth := MUpPicture.GetWidth()
+		ButtonPictureZoomX := ObjectWidth / CDouble(ButtonPictureWidth)
+		ButtonPictureZoomY := ObjectHeight / CDouble(MUpPicture.GetHeight())
+
+		If MSmartScaling Then
+			If x <= PictureLayer1Width Then
+				PixelX := x / ButtonPictureZoomY 
+			Else
+				PixelX := ButtonPictureWidth - (ObjectWidth - x) / ButtonPictureZoomY 
+			End If
+		Else
+			PixelX := x / ButtonPictureZoomX 
+		End If 
+
+		PixelY := y / ButtonPictureZoomY
+
+		MUpPicture.GetPixel(PixelX, PixelY, PixelColor)
+
+		If (PixelColor BitAnd &HFF000000) = 0 Then
+			Return Value False
+		End If
+	End If
+
+	If MEnabled Then
+		IsPressed := True
+		RedrawCompoundObject()
+		RaiseEvent OnRepeat()
+		If MRepeatInterval <> :0 Then
+			StartTimer(1, MRepeatInterval)
+		End If
+	End If
+
+	Return Value True
+
+End Function
+
+
+Protected Function OnUp(x As Long, y As Long, eventtime As Time, isinside As Boolean)
+
+	If MEnabled Then
+		IsPressed := False
+		RedrawCompoundObject()
+		StopTimer(1)
+	End If
+
+End Function
+
+
+Protected Function OnTimer(timerid As Long)
+
+	If IsPressed Then
+		StartTimer(1, MRepeatInterval)
+		RaiseEvent OnRepeat()
+	End If
+
+End Function
+
+
+Public Function SetRepeatInterval(newrepeatinterval As Time) As Boolean
+
+	If newrepeatinterval > :0 Then
+		MRepeatInterval := newrepeatinterval
+		Return Value True
+	Else
+		Return Value False
+	End If
+
+End Function
+
+
+Public Function GetRepeatInterval() As Time
+
+	Return Value MRepeatInterval
+
+End Function
+
+Public Function SetEnabled(newenabled As Boolean) As Boolean
+
+	If Not newenabled Then
+		IsPressed := False
+	End If
+
+	MEnabled := newenabled
+	UpdateDrawColors()
+	RedrawCompoundObject()
+	Return Value True
+
+End Function
+
+End GraphicClass
+
+// RepeatButton
+// End of object -------------------------------------------------------------------------
+
+
+
+// Start of object -----------------------------------------------------------------------
+// RadioButton
+
+Global GraphicClass BaseRadioButton Inherits BaseButton WithAttributes {hiddeninide}	
+
+// Behavior Var Group
+Protected Var MDefaultState As Boolean := False 
+Protected Var MNavigationBarButtonID As Long := 0 
+
+Public Event OnPush As Process()
+
+
+Private Function Init()
+
+	IsPressed := MDefaultState
+	RedrawCompoundObject()
+	
+End Function
+
+Protected Function OnShow()
+
+	If IsPressed Then
+		SendJoinMessage(False, 1, MNavigationBarButtonID)
+	End If
+
+End Function
+
+Protected Function OnHide()
+
+	If IsPressed Then
+		SendJoinMessage(False, 1, -1)
+	End If
+	
+End Function
+
+Protected Function OnDown(x As Long, y As Long, eventtime As Time) As Boolean
+Private Var ButtonPictureWidth As Long
+Private Var ButtonPictureZoomX As Double
+Private Var ButtonPictureZoomY As Double
+Private Var PixelColor As Long
+Private Var PixelX As Long
+Private Var PixelY As Long
+
+	If MIgnoreTransparentArea Then
+		ButtonPictureWidth := MUpPicture.GetWidth()
+		ButtonPictureZoomX := ObjectWidth / CDouble(ButtonPictureWidth)
+		ButtonPictureZoomY := ObjectHeight / CDouble(MUpPicture.GetHeight())
+
+		If MSmartScaling Then
+			If x <= PictureLayer1Width Then
+				PixelX := x / ButtonPictureZoomY 
+			Else
+				PixelX := ButtonPictureWidth - (ObjectWidth - x) / ButtonPictureZoomY 
+			End If
+		Else
+			PixelX := x / ButtonPictureZoomX 
+		End If 
+
+		PixelY := y / ButtonPictureZoomY
+
+		MUpPicture.GetPixel(PixelX, PixelY, PixelColor)
+
+		If (PixelColor BitAnd &HFF000000) = 0 Then
+			Return Value False
+		End If
+	End If
+
+	If MEnabled Then
+		IsPressed := True
+		RedrawCompoundObject()
+		SendJoinMessage(False, 2)
+		SendJoinMessage(False, 1, MNavigationBarButtonID)
+		RaiseEvent OnPush()
+	End If
+
+	Return Value True
+
+End Function
+
+
+Private Function OnJoinMessage(msgobject As BaseGraphicClass, messageid As Long, ParamArray)
+
+	If messageid = 2 Then
+		If AddressOf msgobject = AddressOf Me Then
+			IsPressed := True
+		Else
+			IsPressed := False
+		End If
+		RedrawCompoundObject()
+	End If
+
+End Function
+
+
+Public Function IsButtonPressed() As Boolean
+
+	Return Value IsPressed And MEnabled
+	
+End Function
+
+
+Public Function SetStateDown() As Boolean
+
+	IsPressed := True
+	RedrawCompoundObject()
+	SendJoinMessage(False, 2)
+	If GetVisible() Then
+		SendJoinMessage(False, 1, MNavigationBarButtonID)
+	End If
+	Return Value True
+
+End Function
+
+
+End GraphicClass
+
+// RadioButton
+// End of object -------------------------------------------------------------------------
+
+
+
+// Start of object -----------------------------------------------------------------------
+// TwoStatePushButton
+
+Global GraphicClass BaseTwoStatePushButton Inherits BaseButton WithAttributes {hiddeninide}	
+
+// Behavior Var Group
+Protected Var MDefaultState As Boolean := False 
+
+// Common declaration
+Protected Var IsDown As Boolean := MDefaultState
+
+Public Event OnPush As Process()
+
+
+Private Function Init()
+
+	IsPressed := MDefaultState
+	RedrawCompoundObject()
+	
+End Function
+
+
+Protected Function OnDown(x As Long, y As Long, eventtime As Time) As Boolean
+Private Var ButtonPicture As AddressOf _Picture
+Private Var ButtonPictureWidth As Long
+Private Var ButtonPictureZoomX As Double
+Private Var ButtonPictureZoomY As Double
+Private Var PixelColor As Long
+Private Var PixelX As Long
+Private Var PixelY As Long
+
+	If MIgnoreTransparentArea Then
+		If IsPressed Then
+			ButtonPicture := MDownPicture
+		Else
+			ButtonPicture := MUpPicture
+		End If
+
+		ButtonPictureWidth := ButtonPicture.GetWidth()
+		ButtonPictureZoomX := ObjectWidth / CDouble(ButtonPictureWidth)
+		ButtonPictureZoomY := ObjectHeight / CDouble(ButtonPicture.GetHeight())
+
+		If MSmartScaling Then
+			If x <= PictureLayer1Width Then
+				PixelX := x / ButtonPictureZoomY 
+			Else
+				PixelX := ButtonPictureWidth - (ObjectWidth - x) / ButtonPictureZoomY 
+			End If
+		Else
+			PixelX := x / ButtonPictureZoomX 
+		End If 
+
+		PixelY := y / ButtonPictureZoomY
+
+		ButtonPicture.GetPixel(PixelX, PixelY, PixelColor)
+
+		If (PixelColor BitAnd &HFF000000) = 0 Then
+			Return Value False
+		End If
+	End If
+
+	If MEnabled Then
+		IsPressed := True
+		RedrawCompoundObject()
+		RaiseEvent OnPush()
+	End If
+
+	Return Value True
+
+End Function
+
+
+Protected Function OnUp(x As Long, y As Long, eventtime As Time, isinside As Boolean)
+
+	If MEnabled And Not IsDown Then
+		IsPressed := False
+		RedrawCompoundObject()
+	End If
+
+End Function
+
+
+Public Function WaitWhilePressed(Optional timeout As Time := _TIME_INFINITE) As Boolean
+Private Var WaitTime As Time := :0
+
+	If MEnabled Then
+		Do While IsPressed
+			Wait(:.1)
+			WaitTime += :.1
+			If WaitTime > timeout Then Return Value False End If
+		End Do
+		Return Value True
+	Else
+		Return Value False
+	End If
+
+End Function
+
+
+Public Function IsButtonPressed() As Boolean
+
+	Return Value IsPressed And MEnabled
+	
+End Function
+
+
+Public Function IsStateDown() As Boolean
+
+	Return Value IsDown
+	
+End Function
+
+
+Public Function SetStateDown() As Boolean
+
+	IsDown := True
+	IsPressed := True
+	RedrawCompoundObject()
+	Return Value True
+
+End Function
+
+
+Public Function SetStateUp() As Boolean
+
+	IsDown := False
+	IsPressed := False
+	RedrawCompoundObject()
+	Return Value True
+	
+End Function
+
+
+Public Function SetEnabled(newenabled As Boolean) As Boolean
+
+	If Not newenabled Then
+		IsPressed := IsDown
+	End If
+
+	MEnabled := newenabled
+	UpdateDrawColors()
+	RedrawCompoundObject()
+	Return Value True
+
+End Function
+
+
+End GraphicClass
+
+// TwoStatePushButton
+// End of object -------------------------------------------------------------------------
+
+// Buttons
+// End of group ******************************************************************* 
+
+
+
+// Start of group ***************************************************************** 
+// PictureBox
+// Revised: 8.2.2013
+// Author: Miroslav Pechlát
+
+
+// Start of object -----------------------------------------------------------------------
+// PictureBox
+
+Global GraphicClass BasePictureBox Inherits BaseGraphicClass WithAttributes {hiddeninide}	
+
+// Private constant declaration
+Private Const PICTURE_ALIGNLEFT As Long := _TEXT_ALIGNLEFT
+Private Const PICTURE_ALIGNHCENTER As Long := _TEXT_ALIGNHCENTER
+Private Const PICTURE_ALIGNRIGHT As Long := _TEXT_ALIGNRIGHT
+Private Const PICTURE_ALIGNTOP As Long := _TEXT_ALIGNTOP
+Private Const PICTURE_ALIGNVCENTER As Long := _TEXT_ALIGNVCENTER
+Private Const PICTURE_ALIGNBOTTOM As Long := _TEXT_ALIGNBOTTOM
+
+// Behavior Var Group
+Protected Var MEvents As Boolean := False 
+
+// Appearance Var Group
+Protected Var MAlign As Long := _TEXT_ALIGNLEFT BitOr _TEXT_ALIGNTOP 
+Protected Var MFitting As Long := 0 
+Protected Var MOpacity As Byte := 255 
+Protected Var MPicture As AddressOf _Picture := Nothing 
+Protected Var MPictureOffsetX As Long := 0 
+Protected Var MPictureOffsetY As Long := 0 
+
+// Public constant declaration
+Public Const FITTING_NONE As Long := 0
+Public Const FITTING_FIT_OBJECT_TO_CONTENT As Long := 1
+Public Const FITTING_FIT_CONTENT_TO_OBJECT As Long := 2
+Public Const FITTING_CENTER_CONTENT As Long := 3
+Public Const FITTING_FIT_CONTENT_PROPORTIONALLY As Long := 4
+Public Const FITTING_FILL_OBJECT_PROPORTIONALLY As Long := 5
+
+// Common declaration
+Private Var DestinationX As Long
+Private Var DestinationY As Long
+Private Var DestinationWidth As Long
+Private Var DestinationHeight As Long
+Private Var ObjectWidth As Long
+Private Var ObjectHeight As Long
+Private Var ObjectProportion As Double
+Private Var PictureWidth As Long
+Private Var PictureHeight As Long
+Private Var PictureProportion As Double
+
+Public Event OnTouch As Process()
+
+
+Private Function Init()
+
+	SetDrawParameters()
+
+End Function
+
+
+Protected Function SetDrawParameters()
+
+	GetSize(ObjectWidth, ObjectHeight)
+	ObjectProportion := CDouble(ObjectWidth) / ObjectHeight
+	PictureWidth := MPicture.GetWidth()
+	PictureHeight := MPicture.GetHeight()
+	PictureProportion := CDouble(PictureWidth) / PictureHeight
+
+	Select MFitting
+		Case FITTING_NONE
+			DestinationWidth := PictureWidth
+			DestinationHeight := PictureHeight
+
+		Case FITTING_FIT_OBJECT_TO_CONTENT
+			DestinationWidth := PictureWidth
+			DestinationHeight := PictureHeight
+			SetSize(DestinationWidth, DestinationHeight)
+			GetSize(ObjectWidth, ObjectHeight)
+
+		Case FITTING_FIT_CONTENT_TO_OBJECT
+			DestinationWidth := ObjectWidth
+			DestinationHeight := ObjectHeight
+
+		Case FITTING_CENTER_CONTENT
+			DestinationWidth := PictureWidth
+			DestinationHeight := PictureHeight
+
+		Case FITTING_FIT_CONTENT_PROPORTIONALLY
+			If ObjectProportion > PictureProportion Then
+				DestinationWidth := ObjectHeight * PictureProportion
+				DestinationHeight := ObjectHeight
+			ElseIf ObjectProportion < PictureProportion Then
+				DestinationWidth := ObjectWidth
+				DestinationHeight := ObjectWidth / PictureProportion
+			Else
+				DestinationWidth := ObjectWidth
+				DestinationHeight := ObjectHeight
+			End If
+
+		Case FITTING_FILL_OBJECT_PROPORTIONALLY
+			If ObjectProportion > PictureProportion Then
+				DestinationWidth := ObjectWidth
+				DestinationHeight := ObjectWidth / PictureProportion
+			ElseIf ObjectProportion < PictureProportion Then
+				DestinationWidth := ObjectHeight * PictureProportion
+				DestinationHeight := ObjectHeight
+			Else
+				DestinationWidth := ObjectWidth
+				DestinationHeight := ObjectHeight
+			End If
+
+	End Select
+
+	CalculatePicturePosition()
+
+End Function
+
+
+Private Function CalculatePicturePosition()
+Private Var MPictureAlign As Long
+
+	If MFitting = FITTING_CENTER_CONTENT Then
+		MPictureAlign := PICTURE_ALIGNHCENTER BitOr PICTURE_ALIGNVCENTER
+	Else
+		MPictureAlign := MAlign
+	End If
+
+	Select MPictureAlign BitAnd (PICTURE_ALIGNLEFT BitOr PICTURE_ALIGNHCENTER BitOr PICTURE_ALIGNRIGHT)
+		Case PICTURE_ALIGNLEFT
+			DestinationX := MPictureOffsetX
+
+		Case PICTURE_ALIGNHCENTER
+			DestinationX := MPictureOffsetX + (ObjectWidth - DestinationWidth) / 2
+
+		Case PICTURE_ALIGNRIGHT
+			DestinationX := MPictureOffsetX + ObjectWidth - DestinationWidth
+
+	End Select
+
+	Select MPictureAlign BitAnd (PICTURE_ALIGNTOP BitOr PICTURE_ALIGNVCENTER BitOr PICTURE_ALIGNBOTTOM)
+		Case PICTURE_ALIGNTOP
+			DestinationY := MPictureOffsetY
+
+		Case PICTURE_ALIGNVCENTER
+			DestinationY := MPictureOffsetY + (ObjectHeight - DestinationHeight) / 2
+
+		Case PICTURE_ALIGNBOTTOM
+			DestinationY := MPictureOffsetY + ObjectHeight - DestinationHeight
+
+	End Select
+
+End Function
+
+//*** EDIT ***
+Protected Var MBorderSize As Long
+
+Protected Function OnDraw()
+
+	If MPicture <> Nothing Then
+		If MBorderSize = 0 Then
+			DrawStretchedPicture(MPicture, DestinationX, DestinationY, DestinationWidth, DestinationHeight, 0, 0, -1, -1, MOpacity)
+		Else	
+			// Draw Top left
+			DrawPicture( MPicture, DestinationX, DestinationY, MBorderSize, MBorderSize, 0, 0, MOpacity )
+			// Draw Top right
+			DrawPicture( MPicture, DestinationX + DestinationWidth - MBorderSize, DestinationY, MBorderSize, MBorderSize, PictureWidth - MBorderSize, 0, MOpacity )
+			// Draw Bottom left
+			DrawPicture( MPicture, DestinationX, DestinationY + DestinationHeight - MBorderSize, MBorderSize, MBorderSize, 0, PictureHeight - MBorderSize, MOpacity )
+			// Draw Bottom right
+			DrawPicture( MPicture, DestinationX + DestinationWidth - MBorderSize, DestinationY + DestinationHeight - MBorderSize, MBorderSize, MBorderSize, PictureWidth - MBorderSize, PictureHeight - MBorderSize, MOpacity )
+			// Draw TopLine
+			DrawStretchedPicture( MPicture, DestinationX + MBorderSize, DestinationY, DestinationWidth - 2 * MBorderSize, MBorderSize, MBorderSize, 0, PictureWidth - 2 * MBorderSize, MBorderSize, MOpacity )
+			// Draw BottomLine
+			DrawStretchedPicture( MPicture, DestinationX + MBorderSize,  DestinationY + DestinationHeight - MBorderSize, DestinationWidth - 2 * MBorderSize, MBorderSize, MBorderSize, PictureHeight - MBorderSize, PictureWidth - 2* MBorderSize, MBorderSize, MOpacity )	
+			// Draw Left line
+			DrawStretchedPicture( MPicture, DestinationX, DestinationY + MBorderSize, MBorderSize, DestinationHeight - 2 * MBorderSize,0, MBorderSize, MBorderSize, PictureHeight - 2 * MBorderSize, MOpacity )
+			// Draw Right line
+			DrawStretchedPicture( MPicture, DestinationX + DestinationWidth - MBorderSize, DestinationY + MBorderSize, MBorderSize, DestinationHeight - 2 * MBorderSize, PictureWidth - MBorderSize, MBorderSize, MBorderSize, PictureHeight - 2 * MBorderSize, MOpacity )
+			// Draw center
+			DrawStretchedPicture( MPicture, DestinationX + MBorderSize, DestinationY + MBorderSize, DestinationWidth - 2 * MBorderSize, DestinationHeight - 2 * MBorderSize, MBorderSize, MBorderSize, PictureWidth - 2* MBorderSize, PictureHeight - 2 * MBorderSize, MOpacity )
+		End If
+	End If 
+	
+End Function
+
+
+Public Function SetBorderSize( newsize As Long ) As Boolean
+	
+	MBorderSize := newsize
+	Return Value True
+	
+End Function
+
+//*** END EDIT ****
+
+
+
+Protected Function OnDown(x As Long, y As Long, eventtime As Time) As Boolean
+
+	If MEvents Then
+		RaiseEvent OnTouch()
+	End If
+
+	Return Value MEvents
+
+End Function
+
+
+Public Function SetEvents(newevents As Boolean) As Boolean
+
+	MEvents := newevents
+	Return Value True
+
+End Function
+
+
+Public Function GetEvents() As Boolean
+
+	Return Value MEvents
+
+End Function
+
+
+Public Function SetAlign(newalign As Long) As Boolean
+
+	Select newalign
+		Case PICTURE_ALIGNLEFT BitOr PICTURE_ALIGNTOP, PICTURE_ALIGNLEFT BitOr PICTURE_ALIGNVCENTER, PICTURE_ALIGNLEFT BitOr PICTURE_ALIGNBOTTOM, PICTURE_ALIGNHCENTER BitOr PICTURE_ALIGNTOP, PICTURE_ALIGNHCENTER BitOr PICTURE_ALIGNVCENTER, PICTURE_ALIGNHCENTER BitOr PICTURE_ALIGNBOTTOM, PICTURE_ALIGNRIGHT BitOr PICTURE_ALIGNTOP, PICTURE_ALIGNRIGHT BitOr PICTURE_ALIGNVCENTER, PICTURE_ALIGNRIGHT BitOr PICTURE_ALIGNBOTTOM
+			MAlign := newalign
+			SetDrawParameters()
+			Return Value True
+
+		Case Else
+			Return Value False
+	End Select
+
+End Function
+
+
+Public Function GetAlign() As Long
+
+	Return Value MAlign
+
+End Function
+
+
+Public Function SetFitting(newfitting As Long) As Boolean
+
+	If newfitting >= 0 And newfitting <= 5 Then
+		MFitting := newfitting
+		SetDrawParameters()
+		Redraw()
+		Return Value True
+	Else
+		Return Value False
+	End If
+	
+End Function
+
+
+Public Function GetFitting() As Long
+
+	Return Value MFitting
+	
+End Function
+
+
+Public Function SetOpacity(newopacity As Byte) As Boolean
+
+	MOpacity := newopacity
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetOpacity() As Byte
+
+	Return Value MOpacity
+	
+End Function
+
+
+Public Function SetPicture(newpicture As AddressOf _Picture) As Boolean
+
+	MPicture := newpicture
+	SetDrawParameters()
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetPicture() As AddressOf _Picture
+
+	Return Value MPicture
+	
+End Function
+
+
+Public Function SetPictureOffsetX(newpictureoffsetx As Long) As Boolean
+	
+	MPictureOffsetX := newpictureoffsetx 
+	SetDrawParameters()
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetPictureOffsetX() As Long
+
+	Return Value MPictureOffsetX
+	
+End Function
+
+
+Public Function SetPictureOffsetY(newpictureoffsety As Long) As Boolean
+	
+	MPictureOffsetY := newpictureoffsety 
+	SetDrawParameters()
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetPictureOffsetY() As Long
+
+	Return Value MPictureOffsetY
+	
+End Function
+
+
+Public Function GetPictureWidth() As Long
+
+	Return Value DestinationWidth
+
+End Function
+
+
+Public Function GetPictureHeight() As Long
+
+	Return Value DestinationHeight
+
+End Function
+
+
+Public Function SetObjectDimensions(newwidth As Long, newheight As Long) As Boolean
+Private Var Response As Boolean
+
+	If MFitting = FITTING_FIT_OBJECT_TO_CONTENT Then
+		Return Value False
+	Else
+		Response := SetSize(newwidth, newheight)
+        SetDrawParameters()
+        Redraw()
+		Return Value Response
+	End If
+
+End Function
+
+
+Public Function GetObjectDimensions(ByRef currentwidth As Long, ByRef currentheight As Long)
+
+	GetSize(currentwidth, currentheight)
+
+End Function
+
+
+Public Function SetObjectPosition(newx As Long, newy As Long) As Boolean
+Private Var Response As Boolean
+
+	Response := SetPosition(newx, newy)
+	Redraw()
+	Return Value Response
+
+End Function
+
+
+Public Function GetObjectPosition(ByRef currentx As Long, ByRef currenty As Long)
+
+	GetPosition(currentx, currenty)
+
+End Function
+
+
+Public Function ShowObject()
+
+	Show()
+
+End Function
+
+
+Public Function HideObject()
+
+	Hide()
+
+End Function
+
+
+Public Function IsObjectVisible() As Boolean
+
+	Return Value GetVisible()
+
+End Function
+
+
+Global Function BringToFrontZOrder()
+
+	BringToFront()
+
+End Function
+
+
+Global Function RestoreZOrder()
+
+	SendToDefault()
+
+End Function
+
+
+End GraphicClass
+
+// PictureBox
+// End of object -------------------------------------------------------------------------
+
+// PictureBox
+// End of group ******************************************************************* 
+
+
+
+// Start of group ***************************************************************** 
+// AnimationBox
+// Revised: 8.2.2013
+// Author: Miroslav Pechlát
+
+
+// Start of object -----------------------------------------------------------------------
+// AnimationBox
+
+Global GraphicClass BaseAnimationBox Inherits BaseGraphicClass WithAttributes {hiddeninide}	
+
+// Appearance Var Group
+Protected Var MAnimation As AddressOf _Animation := Nothing 
+Protected Var MFitting As Long := 0 
+Protected Var MOpacity As Byte := 255 
+
+// Behavior Var Group
+Protected Var MEvents As Boolean := False 
+Protected Var MFrameNumber As Long := 1 
+Protected Var MFrameRate As Double := -1 
+Protected Var MPlay As Boolean := True 
+Protected Var MRepeat As Boolean := True 
+
+Public Event OnTouch As Process()
+
+// Public constant declaration
+Public Const FITTING_NONE As Long := 0
+Public Const FITTING_FIT_OBJECT_TO_CONTENT As Long := 1
+Public Const FITTING_FIT_CONTENT_TO_OBJECT As Long := 2
+Public Const FITTING_CENTER_CONTENT As Long := 3
+Public Const FITTING_FIT_CONTENT_PROPORTIONALLY As Long := 4
+Public Const FITTING_FILL_OBJECT_PROPORTIONALLY As Long := 5
+
+// Common declaration
+Private Var DestinationX As Long
+Private Var DestinationY As Long
+Private Var DestinationWidth As Long
+Private Var DestinationHeight As Long
+Private Var ObjectWidth As Long
+Private Var ObjectHeight As Long
+Private Var ObjectProportion As Double
+Private Var AnimationWidth As Long
+Private Var AnimationHeight As Long
+Private Var AnimationProportion As Double
+Private Var FrameCount As Long
+Private Var FramePeriod As Time
+
+
+Private Function Init()
+
+	SetDrawParameters()
+	
+End Function
+
+
+Protected Function SetDrawParameters()
+
+	If MAnimation <> Nothing Then
+		GetSize(ObjectWidth, ObjectHeight)
+		ObjectProportion := CDouble(ObjectWidth) / ObjectHeight
+		AnimationWidth := MAnimation.GetWidth()
+		AnimationHeight := MAnimation.GetHeight()
+		AnimationProportion := CDouble(AnimationWidth) / AnimationHeight
+	
+		Select MFitting
+			Case FITTING_NONE
+				DestinationX := 0
+				DestinationY := 0
+				DestinationWidth := AnimationWidth
+				DestinationHeight := AnimationHeight
+	
+			Case FITTING_FIT_OBJECT_TO_CONTENT
+				DestinationX := 0
+				DestinationY := 0
+				DestinationWidth := AnimationWidth
+				DestinationHeight := AnimationHeight
+				SetSize(DestinationWidth, DestinationHeight)
+	
+			Case FITTING_FIT_CONTENT_TO_OBJECT
+				DestinationX := 0
+				DestinationY := 0
+				DestinationWidth := ObjectWidth
+				DestinationHeight := ObjectHeight
+	
+			Case FITTING_CENTER_CONTENT
+				DestinationX :=(ObjectWidth - AnimationWidth) / 2
+				DestinationY :=(ObjectHeight - AnimationHeight) / 2
+				DestinationWidth := AnimationWidth
+				DestinationHeight := AnimationHeight
+	
+			Case FITTING_FIT_CONTENT_PROPORTIONALLY
+				DestinationX := 0
+				DestinationY := 0
+				If ObjectProportion > AnimationProportion Then
+					DestinationWidth := ObjectHeight * AnimationProportion
+					DestinationHeight := ObjectHeight
+				ElseIf ObjectProportion < AnimationProportion Then
+					DestinationWidth := ObjectWidth
+					DestinationHeight := ObjectWidth / AnimationProportion
+				Else
+					DestinationWidth := ObjectWidth
+					DestinationHeight := ObjectHeight
+				End If
+	
+			Case FITTING_FILL_OBJECT_PROPORTIONALLY
+				DestinationX := 0
+				DestinationY := 0
+				If ObjectProportion > AnimationProportion Then
+					DestinationWidth := ObjectWidth
+					DestinationHeight := ObjectWidth / AnimationProportion
+				ElseIf ObjectProportion < AnimationProportion Then
+					DestinationWidth := ObjectHeight * AnimationProportion
+					DestinationHeight := ObjectHeight
+				Else
+					DestinationWidth := ObjectWidth
+					DestinationHeight := ObjectHeight
+				End If
+	
+		End Select
+	
+		FrameCount := MAnimation.GetFrameCount()
+	
+		If MFrameRate > 0 Then
+			FramePeriod := :1 / MFrameRate
+		ElseIf MFrameRate = 0 Then
+			FramePeriod := 999999:59:59.999999
+		ElseIf MFrameRate < 0 Then
+			FramePeriod := MAnimation.GetPeriodTime()
+			MFrameRate := MAnimation.GetFrameRate()
+		End If
+	End If
+
+End Function
+
+
+Protected Function OnDraw()
+
+	DrawStretchedAnimationFrame(MAnimation, MFrameNumber, DestinationX, DestinationY, DestinationWidth, DestinationHeight, 0, 0, -1, -1, MOpacity) 
+
+End Function
+
+
+Protected Function OnDown(x As Long, y As Long, eventtime As Time) As Boolean
+
+	If MEvents Then
+		RaiseEvent OnTouch()
+	End If
+
+	Return Value MEvents
+
+End Function
+
+
+Protected Function OnShow()
+
+	If MPlay And MAnimation <> Nothing Then
+		StartTimer(1, FramePeriod)
+	End If
+
+End Function
+
+
+Protected Function OnHide()
+
+	StopTimer(1)
+
+End Function
+
+
+Protected Function OnTimer(timerid As Long)
+
+	If MFrameNumber <= FrameCount Then
+		MFrameNumber += 1
+		If MFrameNumber > FrameCount Then
+			MFrameNumber := 1
+			If Not MRepeat Then
+				Return
+			End If
+		End If
+	End If
+
+	If MPlay And MAnimation <> Nothing Then
+		StartTimer(1, FramePeriod)
+	End If
+
+	Redraw()
+
+End Function
+
+
+Public Function SetEvents(newevents As Boolean) As Boolean
+
+	MEvents := newevents
+	Return Value True
+
+End Function
+
+
+Public Function GetEvents() As Boolean
+
+	Return Value MEvents
+
+End Function
+
+
+Public Function SetFrameNumber(newframenumber As Long) As Boolean
+
+	If newframenumber >= 1 And newframenumber <= FrameCount Then
+		MFrameNumber := newframenumber
+		Redraw()
+		Return Value True
+	Else
+		Return Value False
+	End If
+	
+End Function
+
+
+Public Function GetFrameNumber() As Long
+
+	Return Value MFrameNumber
+	
+End Function
+
+
+Public Function SetFrameRate(newframerate As Double) As Boolean
+
+	MFrameRate := newframerate
+	StopTimer(1)
+	SetDrawParameters()
+
+	If MPlay And MAnimation <> Nothing Then
+		StartTimer(1, FramePeriod)
+	End If
+
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetFrameRate() As Double
+
+	Return Value MFrameRate
+	
+End Function
+
+
+Public Function GetDefaultFrameRate() As Double
+
+	Return Value MAnimation.GetFrameRate()
+	
+End Function
+
+
+Public Function SetAnimation(newanimation As AddressOf _Animation) As Boolean
+
+	MAnimation := newanimation
+	MFrameNumber := 1
+	SetDrawParameters()
+	Redraw()
+	Return Value True
+
+End Function
+
+
+Public Function GetAnimation() As AddressOf _Animation
+
+	Return Value MAnimation
+
+End Function
+
+
+Public Function SetFitting(newfitting As Long) As Boolean
+
+	If newfitting >= 0 And newfitting <= 5 Then
+		MFitting := newfitting
+		SetDrawParameters()
+		Redraw()
+		Return Value True
+	Else
+		Return Value False
+	End If
+	
+End Function
+
+
+Public Function GetFitting() As Long
+
+	Return Value MFitting
+	
+End Function
+
+
+Public Function SetPlay(newplay As Boolean) As Boolean
+
+	MPlay := newplay
+
+	If MPlay And MAnimation <> Nothing Then
+		StartTimer(1, FramePeriod)
+	Else
+		StopTimer(1)
+	End If
+	
+	Return Value True
+
+End Function
+
+
+Public Function GetPlay() As Boolean
+	
+	Return Value MPlay
+	
+End Function
+
+
+Public Function SetRepeat(newrepeat As Boolean) As Boolean
+	
+	MRepeat := newrepeat
+	Return Value True
+	
+End Function
+
+
+Public Function GetRepeat() As Boolean
+	
+	Return Value MRepeat
+	
+End Function
+
+
+Public Function SetOpacity(newopacity As Byte) As Boolean
+
+	MOpacity := newopacity
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetOpacity() As Byte
+
+	Return Value MOpacity
+	
+End Function
+
+
+Public Function SetObjectDimensions(newwidth As Long, newheight As Long) As Boolean
+Private Var Response As Boolean
+
+	If MFitting = FITTING_FIT_OBJECT_TO_CONTENT Then
+		Return Value False
+	Else
+		Response := SetSize(newwidth, newheight)
+		SetDrawParameters()
+		Redraw()
+		Return Value Response
+	End If
+
+End Function
+
+
+Public Function GetObjectDimensions(ByRef currentwidth As Long, ByRef currentheight As Long)
+
+	GetSize(currentwidth, currentheight)
+
+End Function
+
+
+Public Function SetObjectPosition(newx As Long, newy As Long) As Boolean
+Private Var Response As Boolean
+
+	Response := SetPosition(newx, newy)
+	Redraw()
+	Return Value Response
+
+End Function
+
+
+Public Function GetObjectPosition(ByRef currentx As Long, ByRef currenty As Long)
+
+	GetPosition(currentx, currenty)
+
+End Function
+
+
+Public Function ShowObject()
+
+	Show()
+
+End Function
+
+
+Public Function HideObject()
+
+	Hide()
+
+End Function
+
+
+Public Function IsObjectVisible() As Boolean
+
+	Return Value GetVisible()
+
+End Function
+
+
+Global Function BringToFrontZOrder()
+
+	BringToFront()
+
+End Function
+
+
+Global Function RestoreZOrder()
+
+	SendToDefault()
+
+End Function
+
+
+End GraphicClass
+
+// AnimationBox
+// End of object -------------------------------------------------------------------------
+
+// AnimationBox
+// End of group ******************************************************************* 
+
+
+
+// Start of group ***************************************************************** 
+// AlphanumericDate
+// Revised: 24.1.2014
+// Author: Miroslav Pechlát
+
+
+// Start of object -----------------------------------------------------------------------
+// AlphanumericDate
+
+Public GraphicClass BaseAlphanumericDate Inherits BaseGraphicClass WithAttributes {hiddeninide}	
+
+// Behavior Property Group
+Protected Var MEvents As Boolean := False 
+
+// Appearance Property Group
+Protected Var MAlign As Long := _TEXT_ALIGNHCENTER 
+Protected Var MFont As AddressOf _Font := fntDefault16 
+Protected Var MFont3DEffect As Boolean := False 
+Protected Var MFontColor As Long := _COLOR_BLACK 
+Protected Var MFormat As Long := 1 
+Protected Var MOpacity As Byte := 255 
+
+// Private constant declaration
+Private Const FONT_COLOR_3D_EFFECT As Long := &H80FFFFFF
+
+// Common declaration
+Protected Var FontColorDraw As Long
+Private Var FontColor3DEffectDraw As Long
+
+Protected Var DayMonthYearText As Text[30]
+Protected Var DayOfTheWeekText As AddressOf Text
+
+Protected Var Month[12] As AddressOf Text
+Protected Var DayOfTheWeek[7] As AddressOf Text
+
+Private Var Now As _TimeStructure
+Private Var Prev As _TimeStructure
+
+Public Event OnTouch As Process()
+
+
+Protected Function Init()
+
+	Month[1] := txtJanuary
+	Month[2] := txtFebruary
+	Month[3] := txtMarch
+	Month[4] := txtApril
+	Month[5] := txtMay
+	Month[6] := txtJune
+	Month[7] := txtJuly
+	Month[8] := txtAugust
+	Month[9] := txtSeptember
+	Month[10] := txtOctober
+	Month[11] := txtNovember
+	Month[12] := txtDecember
+	
+	DayOfTheWeek[1] := txtMonday
+	DayOfTheWeek[2] := txtTuesday
+	DayOfTheWeek[3] := txtWednesday
+	DayOfTheWeek[4] := txtThursday
+	DayOfTheWeek[5] := txtFriday
+	DayOfTheWeek[6] := txtSaturday
+	DayOfTheWeek[7] := txtSunday
+	
+	SetDrawOpacity()
+	UpdateCalendar()
+	StartTimer(1, :1, _TIMER_PERIODIC BitOr _TIMER_PAUSEIFHIDDEN)
+
+End Function
+
+
+Protected Function OnDraw()
+
+	If MFormat = 1 Then // 'dddd<nl>d.MMMM.yyyy'
+		If MFont3DEffect Then
+			DrawText(MFont, DayOfTheWeekText, FontColor3DEffectDraw, 0, 1, -1, -1, MAlign BitOr _TEXT_ALIGNTOP)
+			DrawText(MFont, DayMonthYearText, FontColor3DEffectDraw, 0, 1, -1, -1, MAlign BitOr _TEXT_ALIGNBOTTOM)
+		End If
+		DrawText(MFont, DayOfTheWeekText, FontColorDraw, 0, 0, -1, -1, MAlign BitOr _TEXT_ALIGNTOP)
+		DrawText(MFont, DayMonthYearText, FontColorDraw, 0, 0, -1, -1, MAlign BitOr _TEXT_ALIGNBOTTOM)
+
+	Else
+		If MFont3DEffect Then
+			DrawText(MFont, DayMonthYearText, FontColor3DEffectDraw, 0, 1, -1, -1, MAlign BitOr _TEXT_ALIGNVCENTER)
+		End If
+		DrawText(MFont, DayMonthYearText, FontColorDraw, 0, 0, -1, -1, MAlign BitOr _TEXT_ALIGNVCENTER)
+	End If
+
+End Function
+
+
+Protected Function OnDown(x As Long, y As Long, eventtime As Time) As Boolean
+
+	If MEvents Then
+		RaiseEvent OnTouch()
+	End If
+
+	Return Value MEvents
+
+End Function
+
+
+Protected Function UpdateCalendar()
+	Var Tmp As AddressOf Text
+
+		GetLocalTimeStructure(Now)
+		Select MFormat
+			Case 1 // 'dddd<nl>d.MMMM.yyyy'
+				DayOfTheWeekText := DayOfTheWeek[Now.DayOfWeek]
+				FormatText(DayMonthYearText, "{t}{n}{t} {t} {n}", txtBeforeDayNumberChars, Now.Day, txtAfterDayNumberChars, Month[Now.Month], Now.Year)
+			Case 2 // 'd.M.yyyy'
+				FormatText(DayMonthYearText, "{n}.{n}.{n}", Now.Day, Now.Month, Now.Year)
+			Case 3 // 'd-M-yy'
+				FormatText(DayMonthYearText, "{n}-{n}-{n02}", Now.Day, Now.Month, Now.Year - 2000)
+			Case 4 // 'yyyy-MM-dd'
+				FormatText(DayMonthYearText, "{n}-{n02}-{n02}", Now.Year, Now.Month, Now.Day)
+			Case 5 // 'yyyy-M-d'
+				FormatText(DayMonthYearText, "{n}-{n}-{n}", Now.Year, Now.Month, Now.Day)
+			Case 6 // 'yy-M-d'
+				FormatText(DayMonthYearText, "{n02}-{n}-{n}", Now.Year - 2000, Now.Month, Now.Day)
+			Case 7 //'MMMM d yyyy'
+				FormatText(DayMonthYearText, "{t} {n} {n}", Month[Now.Month], Now.Day, Now.Year )
+			Case 8 //'d MMMM yyyy'
+				FormatText (DayMonthYearText, "{n}{t} {t} {n}",Now.Day,txtAfterDayNumberChars, Month[Now.Month], Now.Year)
+			Case 9
+				//'MMMM, dth yyyy'
+				Select Now.Day
+				Case 1, 21, 31
+					Tmp := txt1st
+				Case 2, 22
+					Tmp := txt2nd
+				Case 3, 23
+					Tmp := txt3rd
+				Case Else
+					Tmp := txt4th
+				End Select
+				FormatText(DayMonthYearText, "{t}, {n}{t} {n}", Month[Now.Month], Now.Day, Tmp, Now.Year )
+
+		End Select
+		Redraw()
+End Function
+
+
+Protected Function OnTimer(timerid As Long)
+Private Var Now As _TimeStructure
+
+	GetLocalTimeStructure(Now)
+	If Now.Day <> Prev.Day Or Now.Month <> Prev.Month Or Now.Year <> Prev.Year Then
+		UpdateCalendar()
+		Prev := Now
+	End If
+
+End Function
+
+
+Protected Function SetDrawOpacity()
+
+	FontColorDraw := SetColorComponentOpacity(MFontColor, GetColorComponentOpacity(MFontColor) * MOpacity / 255)
+	FontColor3DEffectDraw := SetColorComponentOpacity(FONT_COLOR_3D_EFFECT, GetColorComponentOpacity(FONT_COLOR_3D_EFFECT) * MOpacity / 255)
+
+End Function
+
+
+Protected Function OnSetLanguage(languageid As Long)
+
+	UpdateCalendar()
+
+End Function
+
+
+Public Function SetEvents(newevents As Boolean) As Boolean
+
+	MEvents := newevents
+	Return Value True
+
+End Function
+
+
+Public Function GetEvents() As Boolean
+
+	Return Value MEvents
+
+End Function
+
+
+Public Function SetAlign(newalign As Long) As Boolean
+
+	Select newalign
+		Case _TEXT_ALIGNLEFT, _TEXT_ALIGNHCENTER, _TEXT_ALIGNRIGHT
+			MAlign := newalign
+			Return Value True
+
+		Case Else
+			Return Value False
+	End Select
+
+End Function
+
+
+Public Function GetAlign() As Long
+
+	Return Value MAlign
+
+End Function
+
+
+Public Function SetFont(newfont As AddressOf _Font) As Boolean
+
+	MFont := newfont
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetFont() As AddressOf _Font
+
+	Return Value MFont
+	
+End Function
+
+
+Public Function SetFont3DEffect(newfont3deffect As Boolean) As Boolean
+
+	MFont3DEffect := newfont3deffect
+	Redraw()
+	Return Value True
+
+End Function
+
+
+Public Function GetFont3DEffect() As Boolean
+
+	Return Value MFont3DEffect
+
+End Function
+
+
+Public Function SetFontColor(newfontcolor As Long) As Boolean
+
+	MFontColor := newfontcolor
+	SetDrawOpacity()
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetFontColor() As Long
+
+	Return Value MFontColor
+	
+End Function
+
+
+Public Function SetFormat(newformat As Long) As Boolean
+//zmena
+//	If newformat >= 1 And newformat <= 6 Then
+	If newformat >= 1 And newformat <= 9 Then
+		MFormat := newformat
+		UpdateCalendar()
+		Redraw()
+		Return Value True
+	Else
+		Return Value False
+	End If
+	
+End Function
+
+
+Public Function GetFormat() As Long
+
+	Return Value MFormat
+	
+End Function
+
+
+Public Function SetOpacity(newopacity As Byte) As Boolean
+
+	MOpacity := newopacity
+	SetDrawOpacity()
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetOpacity() As Byte
+
+	Return Value MOpacity
+	
+End Function
+
+
+Public Function SetObjectDimensions(newwidth As Long, newheight As Long) As Boolean
+
+	SetSize(newwidth, newheight)
+	Redraw()
+	Return Value True
+
+End Function
+
+
+Public Function GetObjectDimensions(ByRef currentwidth As Long, ByRef currentheight As Long)
+
+	GetSize(currentwidth, currentheight)
+
+End Function
+
+
+Public Function SetObjectPosition(newx As Long, newy As Long) As Boolean
+Private Var Response As Boolean
+
+	Response := SetPosition(newx, newy)
+	Redraw()
+	Return Value Response
+
+End Function
+
+
+Public Function GetObjectPosition(ByRef currentx As Long, ByRef currenty As Long)
+
+	GetPosition(currentx, currenty)
+
+End Function
+
+
+Public Function ShowObject()
+
+	Show()
+
+End Function
+
+
+Public Function HideObject()
+
+	Hide()
+
+End Function
+
+
+Public Function IsObjectVisible() As Boolean
+
+	Return Value GetVisible()
+
+End Function
+
+
+Global Function BringToFrontZOrder()
+
+	BringToFront()
+
+End Function
+
+
+Global Function RestoreZOrder()
+
+	SendToDefault()
+
+End Function
+
+
+End GraphicClass
+
+// AlphanumericDate
+// End of object -------------------------------------------------------------------------
+
+// AlphanumericDate
+// End of group ******************************************************************* 
+
+
+
+// Start of group ***************************************************************** 
+// DigitalTime
+// Revised: 15.6.2016
+// Author: Radka Malcová
+
+
+// Start of object -----------------------------------------------------------------------
+// DigitalTime
+
+Public GraphicClass BaseDigitalTime Inherits BaseGraphicClass WithAttributes {hiddeninide}	
+
+// Behavior Var Group
+Protected Var MEvents As Boolean := False 
+
+// Appearance Var Group
+Protected Var MAlign As Long := _TEXT_ALIGNHCENTER BitOr _TEXT_ALIGNVCENTER 
+Protected Var MFont As AddressOf _Font := fntDefault16 
+Protected Var MFont3DEffect As Boolean := False 
+Protected Var MFontColor As Long := _COLOR_BLACK
+Protected Var MFormat As Long := 1 
+Protected Var MOpacity As Byte := 255 
+
+// Private constant declaration
+Private Const FONT_COLOR_3D_EFFECT As Long := &H80FFFFFF
+
+// Common declaration
+Protected Var FontColorDraw As Long
+Private Var FontColor3DEffectDraw As Long
+
+Private Var Now As _TimeStructure
+Private Var Prev As _TimeStructure
+
+Protected Var TimeText As Text[16]
+Private Var AMPMText As Text[7]
+
+Public Event OnTouch As Process()
+
+
+Protected Function Init()
+
+	SetDrawOpacity()
+	UpdateDigitalTime()
+	StartTimer(1, :1, _TIMER_PERIODIC BitOr _TIMER_PAUSEIFHIDDEN)
+
+End Function
+
+
+Protected Function OnDraw()
+
+	If MFont3DEffect Then
+		DrawText(MFont, TimeText, FontColor3DEffectDraw, 0, 1, -1, -1, MAlign)
+	End If
+	DrawText(MFont, TimeText, FontColorDraw, 0, 0, -1, -1, MAlign)
+
+End Function
+
+
+Protected Function OnDown(x As Long, y As Long, eventtime As Time) As Boolean
+
+	If MEvents Then
+		RaiseEvent OnTouch()
+	End If
+
+	Return Value MEvents
+
+End Function
+
+
+Protected Function UpdateDigitalTime()
+
+		GetLocalTimeStructure(Now)
+		Select MFormat
+			Case 1 // 'H:mm'
+				FormatText(TimeText, "{n}:{n02}", Now.Hour, Now.Minute)
+
+			Case 2 // 'HH:mm'
+				FormatText(TimeText, "{n02}:{n02}", Now.Hour, Now.Minute)
+
+			Case 3 // 'h:mm tt'
+				If Now.Hour < 12 Then
+					If Now.Hour = 0 Then
+						FormatText(TimeText, "{n}:{n02} {t}", 12, Now.Minute, txtAMSymbol)
+					Else
+						FormatText(TimeText, "{n}:{n02} {t}", Now.Hour, Now.Minute, txtAMSymbol)
+					End If
+				Else
+					If Now.Hour > 12 Then
+						FormatText(TimeText, "{n}:{n02} {t}", Now.Hour - 12, Now.Minute, txtPMSymbol)
+					Else
+						FormatText(TimeText, "{n}:{n02} {t}", Now.Hour, Now.Minute, txtPMSymbol)
+					End If
+				End If
+
+			Case 4 // 'H.mm'
+				FormatText(TimeText, "{n}.{n02}", Now.Hour, Now.Minute)
+
+			Case 5 // 'H:mm:ss'
+				FormatText(TimeText, "{n}:{n02}:{n02}", Now.Hour, Now.Minute, Now.Second)
+
+			Case 6 // 'HH:mm:ss'
+				FormatText(TimeText, "{n02}:{n02}:{n02}", Now.Hour, Now.Minute, Now.Second)
+
+			Case 7 // 'h:mm:ss tt'
+				If Now.Hour < 12 Then
+					If Now.Hour = 0 Then
+						FormatText(TimeText, "{n}:{n02}:{n02} {t}", 12, Now.Minute, Now.Second, txtAMSymbol)
+					Else
+						FormatText(TimeText, "{n}:{n02}:{n02} {t}", Now.Hour, Now.Minute, Now.Second, txtAMSymbol)
+					End If
+				Else
+					If Now.Hour > 12 Then
+						FormatText(TimeText, "{n}.{n02}:{n02} {t}", Now.Hour - 12, Now.Minute, Now.Second, txtPMSymbol)
+					Else
+						FormatText(TimeText, "{n}:{n02}:{n02} {t}", Now.Hour, Now.Minute, Now.Second, txtPMSymbol)
+					End If
+				End If
+
+			Case 8 // 'H.mm.ss'
+				FormatText(TimeText, "{n}:{n02}:{n02}", Now.Hour, Now.Minute, Now.Second)
+
+		End Select
+		Redraw()
+	
+End Function
+
+
+Protected Function OnTimer(timerid As Long)
+Private Var Now As _TimeStructure
+
+	GetLocalTimeStructure(Now)
+	UpdateDigitalTime()
+
+End Function
+
+
+Protected Function SetDrawOpacity()
+
+	FontColorDraw := SetColorComponentOpacity(MFontColor, GetColorComponentOpacity(MFontColor) * MOpacity / 255)
+	FontColor3DEffectDraw := SetColorComponentOpacity(FONT_COLOR_3D_EFFECT, GetColorComponentOpacity(FONT_COLOR_3D_EFFECT) * MOpacity / 255)
+
+End Function
+
+
+Protected Function OnSetLanguage(languageid As Long)
+
+	UpdateDigitalTime()
+
+End Function
+
+
+Public Function SetEvents(newevents As Boolean) As Boolean
+
+	MEvents := newevents
+	Return Value True
+
+End Function
+
+
+Public Function GetEvents() As Boolean
+
+	Return Value MEvents
+
+End Function
+
+
+Public Function SetAlign(newalign As Long) As Boolean
+
+	Select newalign
+		Case _TEXT_ALIGNLEFT BitOr _TEXT_ALIGNTOP, _TEXT_ALIGNLEFT BitOr _TEXT_ALIGNVCENTER, _TEXT_ALIGNLEFT BitOr _TEXT_ALIGNBOTTOM, _TEXT_ALIGNHCENTER BitOr _TEXT_ALIGNTOP, _TEXT_ALIGNHCENTER BitOr _TEXT_ALIGNVCENTER, _TEXT_ALIGNHCENTER BitOr _TEXT_ALIGNBOTTOM, _TEXT_ALIGNRIGHT BitOr _TEXT_ALIGNTOP, _TEXT_ALIGNRIGHT BitOr _TEXT_ALIGNVCENTER, _TEXT_ALIGNRIGHT BitOr _TEXT_ALIGNBOTTOM
+			MAlign := newalign
+			Return Value True
+
+		Case Else
+			Return Value False
+	End Select
+
+End Function
+
+
+Public Function GetAlign() As Long
+
+	Return Value MAlign
+
+End Function
+
+
+Public Function SetFont(newfont As AddressOf _Font) As Boolean
+
+	MFont := newfont
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetFont() As AddressOf _Font
+
+	Return Value MFont
+	
+End Function
+
+
+Public Function SetFont3DEffect(newfont3deffect As Boolean) As Boolean
+
+	MFont3DEffect := newfont3deffect
+	Redraw()
+	Return Value True
+
+End Function
+
+
+Public Function GetFont3DEffect() As Boolean
+
+	Return Value MFont3DEffect
+
+End Function
+
+
+Public Function SetFontColor(newfontcolor As Long) As Boolean
+
+	MFontColor := newfontcolor
+	SetDrawOpacity()
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetFontColor() As Long
+
+	Return Value MFontColor
+	
+End Function
+
+
+Public Function SetFormat(newformat As Long) As Boolean
+
+	If newformat >= 1 And newformat <= 8 Then
+		MFormat := newformat
+		UpdateDigitalTime()
+		Redraw()
+		Return Value True
+	Else
+		Return Value False
+	End If
+	
+End Function
+
+
+Public Function GetFormat() As Long
+
+	Return Value MFormat
+	
+End Function
+
+
+Public Function SetOpacity(newopacity As Byte) As Boolean
+
+	MOpacity := newopacity
+	SetDrawOpacity()
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetOpacity() As Byte
+
+	Return Value MOpacity
+	
+End Function
+
+
+Public Function SetObjectDimensions(newwidth As Long, newheight As Long) As Boolean
+
+	SetSize(newwidth, newheight)
+	Redraw()
+	Return Value True
+
+End Function
+
+
+Public Function GetObjectDimensions(ByRef currentwidth As Long, ByRef currentheight As Long)
+
+	GetSize(currentwidth, currentheight)
+
+End Function
+
+
+Public Function SetObjectPosition(newx As Long, newy As Long) As Boolean
+Private Var Response As Boolean
+
+	Response := SetPosition(newx, newy)
+	Redraw()
+	Return Value Response
+
+End Function
+
+
+Public Function GetObjectPosition(ByRef currentx As Long, ByRef currenty As Long)
+
+	GetPosition(currentx, currenty)
+
+End Function
+
+
+Public Function ShowObject()
+
+	Show()
+
+End Function
+
+
+Public Function HideObject()
+
+	Hide()
+
+End Function
+
+
+Public Function IsObjectVisible() As Boolean
+
+	Return Value GetVisible()
+
+End Function
+
+
+Global Function BringToFrontZOrder()
+
+	BringToFront()
+
+End Function
+
+
+Global Function RestoreZOrder()
+
+	SendToDefault()
+
+End Function
+
+
+End GraphicClass
+
+// DigitalTime
+// End of object -------------------------------------------------------------------------
+
+// DigitalTime
+// End of group ******************************************************************* 
+
+
+
+// Start of group ***************************************************************** 
+// Rectangle
+// Revised: 8.2.2013
+// Author: Miroslav Pechlát
+
+
+// Start of object -----------------------------------------------------------------------
+// Rectangle
+
+Global GraphicClass BaseRectangle Inherits BaseGraphicClass WithAttributes {hiddeninide}	
+
+// Behavior Var Group
+Protected Var MEvents As Boolean := False 
+
+// Appearance Var Group
+Protected Var MFillColor As Long := _COLOR_GREY BitAnd &H00FFFFFF 
+Protected Var MLineWeight As Long := 1 
+Protected Var MOpacity As Byte := 255 
+Protected Var MOutlineColor As Long := _COLOR_BLACK 
+
+// Common declaration
+Protected Var ObjectWidth As Long
+Protected Var ObjectHeight As Long
+Private Var LineWeightDraw As Long
+Private Var FillColorDraw As Long
+Private Var OutlineColorDraw As Long
+
+Public Event OnTouch As Process()
+
+
+Protected Function Init()
+
+	GetSize(ObjectWidth, ObjectHeight)
+	SetDrawOpacity()
+	SetDrawParameters()
+
+End Function
+
+
+Protected Function OnDraw()
+
+	If MLineWeight = 1 Then
+		DrawLine(0, 0, ObjectWidth, 0, OutlineColorDraw)
+		DrawLine(0, ObjectHeight - 1, ObjectWidth, ObjectHeight - 1, OutlineColorDraw)
+		//**oprava 16.6.2015
+		DrawLine(0, 1, 0, ObjectHeight - 2, OutlineColorDraw)		
+		DrawLine(ObjectWidth - 1, 1, ObjectWidth - 1, ObjectHeight - 2, OutlineColorDraw)
+	ElseIf MLineWeight > 1 Then
+		DrawRectangle(OutlineColorDraw, 0, 0, ObjectWidth, LineWeightDraw)
+		DrawRectangle(OutlineColorDraw, 0, ObjectHeight - LineWeightDraw, ObjectWidth, LineWeightDraw)
+		DrawRectangle(OutlineColorDraw, 0, LineWeightDraw, LineWeightDraw, ObjectHeight - 2 * LineWeightDraw)
+		DrawRectangle(OutlineColorDraw, ObjectWidth - LineWeightDraw, LineWeightDraw, LineWeightDraw, ObjectHeight - 2 * LineWeightDraw)
+	End If
+
+	DrawRectangle(FillColorDraw, LineWeightDraw, LineWeightDraw, ObjectWidth - 2 * LineWeightDraw, ObjectHeight - 2 * LineWeightDraw)
+
+End Function
+
+
+Protected Function OnDown(x As Long, y As Long, eventtime As Time) As Boolean
+
+	If MEvents Then
+		RaiseEvent OnTouch()
+	End If
+
+	Return Value MEvents
+
+End Function
+
+
+Protected Function SetDrawParameters()
+Private Var ObjectMinDimension As Long
+
+	If ObjectWidth > ObjectHeight Then
+		ObjectMinDimension := ObjectHeight
+	Else
+		ObjectMinDimension := ObjectWidth
+	End If
+
+	If MLineWeight <= ObjectMinDimension / 2 Then
+		LineWeightDraw := MLineWeight
+	Else	
+		LineWeightDraw := ObjectMinDimension / 2
+	End If
+
+End Function
+
+
+Protected Function SetDrawOpacity()
+
+	FillColorDraw := SetColorComponentOpacity(MFillColor, GetColorComponentOpacity(MFillColor) * MOpacity / 255)
+	OutlineColorDraw := SetColorComponentOpacity(MOutlineColor, GetColorComponentOpacity(MOutlineColor) * MOpacity / 255)
+
+End Function
+
+
+Public Function SetEvents(newevents As Boolean) As Boolean
+
+	MEvents := newevents
+	Return Value True
+
+End Function
+
+
+Public Function GetEvents() As Boolean
+
+	Return Value MEvents
+
+End Function
+
+
+Public Function SetFillColor(newfillcolor As Long) As Boolean
+
+	MFillColor := newfillcolor
+	SetDrawOpacity()
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetFillColor() As Long
+
+	Return Value MFillColor
+	
+End Function
+
+
+Public Function SetLineWeight(newlineweight As Long) As Boolean
+
+	If newlineweight >= 0 Then
+		MLineWeight := newlineweight
+		SetDrawParameters()
+		Redraw()
+		Return Value True
+	Else
+		Return Value False
+	End If
+	
+End Function
+
+
+Public Function GetLineWeight() As Long
+
+	Return Value MLineWeight
+	
+End Function
+
+
+Public Function SetOpacity(newopacity As Byte) As Boolean
+
+	MOpacity := newopacity
+	SetDrawOpacity()
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetOpacity() As Byte
+
+	Return Value MOpacity
+	
+End Function
+
+
+Public Function SetOutlineColor(newoutlinecolor As Long) As Boolean
+
+	MOutlineColor := newoutlinecolor
+	SetDrawOpacity()
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetOutlineColor() As Long
+
+	Return Value MOutlineColor
+	
+End Function
+
+
+Public Function SetObjectDimensions(newwidth As Long, newheight As Long) As Boolean
+
+	SetSize(newwidth, newheight)
+	GetSize(ObjectWidth, ObjectHeight)
+	SetDrawParameters()
+	Redraw()
+	Return Value True
+
+End Function
+
+
+Public Function GetObjectDimensions(ByRef currentwidth As Long, ByRef currentheight As Long)
+
+	GetSize(currentwidth, currentheight)
+
+End Function
+
+
+Public Function SetObjectPosition(newx As Long, newy As Long) As Boolean
+Private Var Response As Boolean
+
+	Response := SetPosition(newx, newy)
+	Redraw()
+	Return Value Response
+
+End Function
+
+
+Public Function GetObjectPosition(ByRef currentx As Long, ByRef currenty As Long)
+
+	GetPosition(currentx, currenty)
+
+End Function
+
+
+Public Function ShowObject()
+
+	Show()
+
+End Function
+
+
+Public Function HideObject()
+
+	Hide()
+
+End Function
+
+
+Public Function IsObjectVisible() As Boolean
+
+	Return Value GetVisible()
+
+End Function
+
+
+Global Function BringToFrontZOrder()
+
+	BringToFront()
+
+End Function
+
+
+Global Function RestoreZOrder()
+
+	SendToDefault()
+
+End Function
+
+
+End GraphicClass
+
+// Rectangle
+// End of object -------------------------------------------------------------------------
+
+// Rectangle
+// End of group ******************************************************************* 
+
+
+
+// Start of group ***************************************************************** 
+// StaticTexts
+// Revised: 8.2.2013
+// Author: Miroslav Pechát
+
+// Start of object -----------------------------------------------------------------------
+// StaticText
+
+Global GraphicClass BaseStaticText Inherits BaseGraphicClass WithAttributes {hiddeninide}	
+
+// Behavior Var Group
+Protected Var MEvents As Boolean := False 
+
+// Appearance Var Group
+Protected Var MOpacity As Byte := 255 
+
+// Content Var Group
+Protected Var MAlign As Long := _TEXT_ALIGNHCENTER BitOr _TEXT_ALIGNVCENTER 
+Protected Var MColor As Long := _COLOR_BLACK 
+Protected Var MFont As AddressOf _Font := fntDefault16 
+Protected Var MLineSpacing As Double := 1.2 
+Protected Var MstxText As AddressOf Text := txtText 
+Protected Var MTextOffsetX As Long := 0 
+Protected Var MTextOffsetY As Long := 0 
+
+// Common declaration
+Private Var TextBuffer As Text [1024] := ""
+Protected Var FormatFlags As Long
+Protected Var ColorDraw As Long
+
+Public Event OnTouch As Process()
+
+
+Protected Function Init()
+
+	FormatFlags := MAlign BitOr _TEXT_WORDWRAP
+	ColorDraw := SetColorComponentOpacity(MColor, GetColorComponentOpacity(MColor) * MOpacity / 255)
+
+End Function
+
+
+Protected Function OnDraw()
+
+	DrawText(MFont, MstxText, ColorDraw, MTextOffsetX, MTextOffsetY, -1, -1, FormatFlags, MLineSpacing)
+
+End Function
+
+
+Protected Function OnDown(x As Long, y As Long, eventtime As Time) As Boolean
+
+	If MEvents Then
+		RaiseEvent OnTouch()
+	End If
+
+	Return Value MEvents
+
+End Function
+
+
+Public Function SetAlign(newalign As Long) As Boolean
+
+	Select newalign BitAnd Not _TEXT_WORDWRAP
+		Case _TEXT_ALIGNLEFT BitOr _TEXT_ALIGNTOP, _TEXT_ALIGNLEFT BitOr _TEXT_ALIGNVCENTER, _TEXT_ALIGNLEFT BitOr _TEXT_ALIGNBOTTOM, _TEXT_ALIGNHCENTER BitOr _TEXT_ALIGNTOP, _TEXT_ALIGNHCENTER BitOr _TEXT_ALIGNVCENTER, _TEXT_ALIGNHCENTER BitOr _TEXT_ALIGNBOTTOM, _TEXT_ALIGNRIGHT BitOr _TEXT_ALIGNTOP, _TEXT_ALIGNRIGHT BitOr _TEXT_ALIGNVCENTER, _TEXT_ALIGNRIGHT BitOr _TEXT_ALIGNBOTTOM
+			MAlign := newalign
+			FormatFlags := MAlign BitOr _TEXT_WORDWRAP
+			Redraw()
+			Return Value True
+
+		Case Else
+			Return Value False
+	End Select
+
+End Function
+
+
+Public Function GetAlign() As Long
+
+	Return Value MAlign
+
+End Function
+
+
+Public Function SetColor(newcolor As Long) As Boolean
+
+	MColor := newcolor
+	ColorDraw := SetColorComponentOpacity(MColor, GetColorComponentOpacity(MColor) * MOpacity / 255)
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetColor() As Long
+
+	Return Value MColor
+	
+End Function
+
+
+Public Function SetEvents(newevents As Boolean) As Boolean
+
+	MEvents := newevents
+	Return Value True
+
+End Function
+
+
+Public Function GetEvents() As Boolean
+
+	Return Value MEvents
+
+End Function
+
+
+Public Function SetFont(newfont As AddressOf _Font) As Boolean
+
+	MFont := newfont
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetFont() As AddressOf _Font
+
+	Return Value MFont
+	
+End Function
+
+
+Public Function SetLineSpacing(newlinespacing As Double) As Boolean
+	
+	If newlinespacing >= 0 Then
+		MLineSpacing := newlinespacing
+		Redraw()
+		Return Value True
+	Else
+		Return Value False
+	End If
+
+End Function
+
+
+Public Function GetLineSpacing() As Double
+
+	Return Value MLineSpacing
+	
+End Function
+
+
+Public Function SetText(newtext As Text) As Boolean
+
+	If GetMemorySegment(newtext) = _MSEG_RESOURCEDATA Then
+		MstxText := newtext
+	Else
+		TextBuffer := newtext
+		MstxText := TextBuffer
+	End If
+
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetText() As AddressOf Text
+
+	Return Value MstxText
+	
+End Function
+
+
+Public Function SetTextOffsetX(newtextoffsetx As Long) As Boolean
+	
+	MTextOffsetX := newtextoffsetx 
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetTextOffsetX() As Long
+
+	Return Value MTextOffsetX
+	
+End Function
+
+
+Public Function SetTextOffsetY(newtextoffsety As Long) As Boolean
+	
+	MTextOffsetY := newtextoffsety 
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetTextOffsetY() As Long
+
+	Return Value MTextOffsetY
+	
+End Function
+
+
+Public Function SetOpacity(newopacity As Byte) As Boolean
+
+	MOpacity := newopacity
+	ColorDraw := SetColorComponentOpacity(MColor, GetColorComponentOpacity(MColor) * MOpacity / 255)
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetOpacity() As Byte
+
+	Return Value MOpacity
+	
+End Function
+
+
+Public Function SetObjectDimensions(newwidth As Long, newheight As Long) As Boolean
+
+	SetSize(newwidth, newheight)
+	Redraw()
+	Return Value True
+
+End Function
+
+
+Public Function GetObjectDimensions(ByRef currentwidth As Long, ByRef currentheight As Long)
+
+	GetSize(currentwidth, currentheight)
+
+End Function
+
+
+Public Function SetObjectPosition(newx As Long, newy As Long) As Boolean
+Private Var Response As Boolean
+
+	Response := SetPosition(newx, newy)
+	Redraw()
+	Return Value Response
+
+End Function
+
+
+Public Function GetObjectPosition(ByRef currentx As Long, ByRef currenty As Long)
+
+	GetPosition(currentx, currenty)
+
+End Function
+
+
+Public Function ShowObject()
+
+	Show()
+
+End Function
+
+
+Public Function HideObject()
+
+	Hide()
+
+End Function
+
+
+Public Function IsObjectVisible() As Boolean
+
+	Return Value GetVisible()
+
+End Function
+
+
+Global Function BringToFrontZOrder()
+
+	BringToFront()
+
+End Function
+
+
+Global Function RestoreZOrder()
+
+	SendToDefault()
+
+End Function
+
+End GraphicClass
+
+// StaticText
+// End of object -------------------------------------------------------------------------
+
+// StaticTexts
+// End of group ******************************************************************* 
+
+
+// Start of group ***************************************************************** 
+// DragSource and DropDestination
+// Revised: 26.3.2014 by Miroslav Pechlát
+// Author: Jaroslav Dibitanzl, Miroslav Pechlát
+// Credits: Dimitri Kroon for thorough testing
+
+// Start of object -----------------------------------------------------------------------
+// DragSource
+
+Private Const MSG_SOURCE_MOVE As Long := 1
+Private Const MSG_SOURCE_REQUEST As Long := 2
+Private Const MSG_SOURCE_DATA As Long := 3
+Private Const RETURN_PERIOD As Time := :0.05
+Private Const DEFAULT_BACKGROUND_COLOR As Long := &H00000000
+
+//---------------------------------------------------------------------------------------------
+
+Public GraphicClass BaseDragSource Inherits BaseGraphicClass WithAttributes {hiddeninide}	
+
+Public Const DISABLE_MODE_NONE 				As Long := 0
+Public Const DISABLE_MODE_DRAG 				As Long := 1
+Public Const DISABLE_MODE_DRAG_AND_TOUCH	As Long := 2
+
+// Behavior Var Group
+Protected Var MObjectID As Long := 0 
+
+// Appearance Var Group
+Protected Var MBackgroundColor As Long := DEFAULT_BACKGROUND_COLOR 
+Protected Var MOpacity As Byte := 255 
+
+// MPicture Var Group
+Protected Var MFitting As Long := 0 
+Protected Var MPictureOffsetX As Long := 0 
+Protected Var MPictureOffsetY As Long := 0 
+Protected Var MPicture As AddressOf _Picture := Nothing 
+
+// Text Var Group
+Protected Var MAlign As Long := _TEXT_ALIGNHCENTER BitOr _TEXT_ALIGNVCENTER 
+Protected Var MColor As Long := _COLOR_BLACK 
+Protected Var MFont As AddressOf _Font := fntDefault16 
+Protected Var MLineSpacing As Double := 1.2 
+Protected Var MTextOffsetX As Long := 0 
+Protected Var MTextOffsetY As Long := 0 
+Protected Var MstxText As AddressOf Text := txtCaption 
+
+//Protected Var MDisableDrag As Boolean
+Protected Var MDisableMode As Long := 0
+
+// MEvents
+Public Event OnTouch As Process()
+Public Event OnRelease As Process()
+
+// Objects
+Protected Var MyPictureBox As BasePictureBox
+Protected Var MyStaticText As BaseStaticText
+
+// Private Variables
+Protected Var OriginalX As Long
+Protected Var OriginalY As Long
+Protected Var CurrentX As Long
+Protected Var CurrentY As Long
+Protected Var ObjectWidth As Long
+Protected Var ObjectHeight As Long
+Private Var TouchX As Long
+Private Var TouchY As Long
+Private Var ReturnDX As Long
+Private Var ReturnDY As Long
+Protected Var BackgroundColorDraw As Long
+
+Protected Var IsPressed As Boolean := False
+
+Protected Function OnJoinMessage(msgobject As BaseGraphicClass, messageid As Long, ParamArray)
+Private Var SenderID As Long
+Private Var RecipientID As Long
+Private Var DestinationX As Long
+Private Var DestinationY As Long
+Private Var DestinationWidth As Long
+Private Var DestinationHeight As Long
+
+	If messageid = MSG_SOURCE_REQUEST Then	
+		RecipientID			:= ParamArray[1]
+		DestinationX 		:= ParamArray[2]
+		DestinationY 		:= ParamArray[3]
+		DestinationWidth	:= ParamArray[4]
+		DestinationHeight	:= ParamArray[5]		
+
+		If RecipientID = MObjectID Then
+			SendJoinMessage(
+				False, MSG_SOURCE_DATA, 
+				MObjectID, 
+				DestinationX, 
+				DestinationY, 
+				MyPictureBox.GetPictureWidth(), 
+				MyPictureBox.GetPictureHeight(), 
+				MyPictureBox.GetPicture(), 
+				MyStaticText.GetText(),
+				False)
+		
+		End If
+		
+	End If
+
+End Function
+
+Public Function SetObjectID(newobjectid As Long) As Boolean
+	If newobjectid > 0 Then
+		MObjectID := newobjectid
+		Return Value True
+	End If	
+	return value false
+End Function
+
+Public Function GetObjectID()As Long
+	Return Value MObjectID
+End Function
+
+
+Private Function Init()
+	
+	GetPosition(OriginalX, OriginalY)
+	CurrentX := OriginalX
+	CurrentY := OriginalY
+	
+	GetSize(ObjectWidth, ObjectHeight)
+	
+	MyPictureBox.SetSize(ObjectWidth, ObjectHeight)
+	MyPictureBox.SetPosition(MPictureOffsetX, MPictureOffsetY)
+	MyPictureBox.SetFitting(MFitting)
+	MyPictureBox.SetOpacity(MOpacity)
+	MyPictureBox.SetPicture(MPicture)
+	
+	MyStaticText.SetSize(ObjectWidth, ObjectHeight)
+	MyStaticText.SetPosition(MTextOffsetX, MTextOffsetY)
+	MyStaticText.SetAlign(MAlign) 
+	MyStaticText.SetColor(MColor) 
+	MyStaticText.SetFont(MFont) 
+ 	MyStaticText.SetLineSpacing(MLineSpacing) 
+	MyStaticText.SetText(MstxText)
+
+	BackgroundColorDraw := SetColorComponentOpacity(MBackgroundColor, GetColorComponentOpacity( MBackgroundColor) * MOpacity / 255)
+
+End Function
+
+Protected Function OnDraw()
+
+	DrawRectangle(BackgroundColorDraw)
+
+End Function
+
+
+Protected Function OnDown(x As Long,y As Long,eventtime As Time) As Boolean
+	Select MDisableMode 
+	Case DISABLE_MODE_NONE, DISABLE_MODE_DRAG
+		BringToFront()
+		TouchX := x
+		TouchY := y
+		IsPressed := True
+
+		RaiseEvent OnTouch()	
+		Return Value True
+	Case DISABLE_MODE_DRAG_AND_TOUCH
+		IsPressed := False
+		Return Value False	
+	End Select
+	Return Value False
+End Function
+
+
+Protected Function OnMove(x As Long,y As Long,eventtime As Time,isinside As Boolean)
+	Select MDisableMode
+	Case DISABLE_MODE_NONE
+		CurrentX += x - TouchX
+		CurrentY += y - TouchY
+		SetPosition(CurrentX, CurrentY)
+	End Select
+End Function
+
+
+Protected Function OnUp(x As Long, y As Long, eventtime As Time, isinside As Boolean)
+	
+	RaiseEvent OnRelease()
+
+	Select MDisableMode 
+	Case DISABLE_MODE_NONE
+	SendJoinMessage(
+		False, MSG_SOURCE_DATA, 
+		MObjectID, 
+		CurrentX + x,//CurrentX, 
+		CurrentY + y,//CurrentY, 
+		MyPictureBox.GetPictureWidth(), 
+		MyPictureBox.GetPictureHeight(), 
+		MyPictureBox.GetPicture(), 
+		MyStaticText.GetText(),
+		True)
+	End Select
+	
+	IsPressed := False
+	
+	ReturnDX := (CurrentX - OriginalX) / 2
+	ReturnDY := (CurrentY - OriginalY) / 2
+
+	StartTimer(1, RETURN_PERIOD)
+
+End Function
+
+Public Function WaitWhilePressed(Optional timeout As Time := _TIME_INFINITE) As Boolean
+	Var WaitTime As Time := :0
+	
+	Select MDisableMode 
+	Case DISABLE_MODE_NONE, DISABLE_MODE_DRAG
+		Do While IsPressed
+			Wait(:.1)
+			WaitTime += :.1
+			If WaitTime > timeout Then Return Value False End If
+		End Do
+		Return Value True
+	Case Else
+		Return Value False
+	End Select
+
+End Function
+
+Public Function IsDragPressed()As Boolean
+	Select MDisableMode 
+	Case DISABLE_MODE_NONE, DISABLE_MODE_DRAG
+		Return Value IsPressed	
+	End Select
+	Return Value False	
+End Function
+
+
+Protected Function OnTimer(timerId As Long)
+	
+    ReturnDX := ReturnDX / 2
+    ReturnDY := ReturnDY / 2
+
+    CurrentX := OriginalX + ReturnDX
+    CurrentY := OriginalY + ReturnDY
+    
+    If ReturnDX <> 0 Or ReturnDY <> 0 Then
+        StartTimer(1, RETURN_PERIOD)
+    Else
+    	SendToDefault()
+    End If
+    
+    SetPosition(CurrentX, CurrentY)
+		
+End Function
+
+Public Function SetDisableMode(disablemode As Long)As Boolean
+	If disablemode = DISABLE_MODE_DRAG Or disablemode = DISABLE_MODE_DRAG_AND_TOUCH Or disablemode = DISABLE_MODE_NONE Then
+		MDisableMode := disablemode
+		Return Value True
+	End If
+	Return Value False	
+End Function
+
+Public Function GetDisableMode() As Long
+	Return Value MDisableMode
+End Function
+
+
+Public Function SetBackgroundColor(newbackgroundcolor As Long) As Boolean
+
+	MBackgroundColor := newbackgroundcolor
+	BackgroundColorDraw := SetColorComponentOpacity(MBackgroundColor, GetColorComponentOpacity( MBackgroundColor) * MOpacity / 255)
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetBackgroundColor() As Long
+
+	Return Value MBackgroundColor
+	
+End Function
+
+
+Public Function SetFitting(newfitting As Long) As Boolean
+
+	If newfitting >= 0 And newfitting <= 5 Then
+		MFitting := newfitting
+		MyPictureBox.SetFitting(MFitting)
+		Return Value True
+	Else
+		Return Value False
+	End If
+	
+End Function
+
+
+Public Function GetFitting() As Long
+
+	Return Value MFitting
+	
+End Function
+
+
+Public Function SetOpacity(newopacity As Byte) As Boolean
+
+	MOpacity := newopacity
+	BackgroundColorDraw := SetColorComponentOpacity(MBackgroundColor, GetColorComponentOpacity( MBackgroundColor) * MOpacity / 255)
+	MyPictureBox.SetOpacity(MOpacity)
+	MyStaticText.SetOpacity(MOpacity)
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetOpacity() As Byte
+
+	Return Value MOpacity
+	
+End Function
+
+
+Public Function SetPicture(newpicture As AddressOf _Picture) As Boolean
+
+	MPicture := newpicture
+	MyPictureBox.SetPicture(MPicture)
+	Return Value True
+	
+End Function
+
+
+Public Function GetPicture() As AddressOf _Picture
+
+	Return Value MPicture
+	
+End Function
+
+
+Public Function SetPictureOffsetX(newpictureoffsetx As Long) As Boolean
+	
+	MPictureOffsetX := newpictureoffsetx 
+	MyPictureBox.SetPictureOffsetX(newpictureoffsetx)
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetPictureOffsetX() As Long
+
+	Return Value MPictureOffsetX
+	
+End Function
+
+
+Public Function SetPictureOffsetY(newpictureoffsety As Long) As Boolean
+	
+	MPictureOffsetY := newpictureoffsety 
+	MyPictureBox.SetPictureOffsetY(newpictureoffsety)
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetPictureOffsetY() As Long
+
+	Return Value MPictureOffsetY
+	
+End Function
+
+
+Public Function SetAlign(newalign As Long) As Boolean
+
+	Select newalign
+		Case _TEXT_ALIGNLEFT BitOr _TEXT_ALIGNTOP, _TEXT_ALIGNLEFT BitOr _TEXT_ALIGNVCENTER, _TEXT_ALIGNLEFT BitOr _TEXT_ALIGNBOTTOM, _TEXT_ALIGNHCENTER BitOr _TEXT_ALIGNTOP, _TEXT_ALIGNHCENTER BitOr _TEXT_ALIGNVCENTER, _TEXT_ALIGNHCENTER BitOr _TEXT_ALIGNBOTTOM, _TEXT_ALIGNRIGHT BitOr _TEXT_ALIGNTOP, _TEXT_ALIGNRIGHT BitOr _TEXT_ALIGNVCENTER, _TEXT_ALIGNRIGHT BitOr _TEXT_ALIGNBOTTOM
+			MAlign := newalign
+			MyStaticText.SetAlign(newalign) 
+			Return Value True
+
+		Case Else
+			Return Value False
+	End Select
+
+End Function
+
+
+Public Function GetAlign() As Long
+
+	Return Value MAlign
+
+End Function
+
+
+Public Function SetColor(newcolor As Long) As Boolean
+
+	MColor := newcolor
+	MyStaticText.SetColor(newcolor)
+	Return Value True
+	
+End Function
+
+
+Public Function GetColor() As Long
+
+	Return Value MColor
+	
+End Function
+
+
+Public Function SetFont(newfont As AddressOf _Font) As Boolean
+
+	MFont := newfont
+	MyStaticText.SetFont(newfont) 
+	Return Value True
+	
+End Function
+
+
+Public Function GetFont() As AddressOf _Font
+
+	Return Value MFont
+	
+End Function
+
+
+Public Function SetLineSpacing(newlinespacing As Double) As Boolean
+	
+	If newlinespacing >= 0 Then
+		MLineSpacing := newlinespacing
+	 	MyStaticText.SetLineSpacing(newlinespacing) 
+		Return Value True
+	Else
+		Return Value False
+	End If
+
+End Function
+
+
+Public Function GetLineSpacing() As Double
+
+	Return Value MLineSpacing
+	
+End Function
+
+
+Public Function SetTextOffsetX(newtextoffsetx As Long) As Boolean
+
+	MTextOffsetX := newtextoffsetx 
+	MyStaticText.SetPosition(newtextoffsetx, MTextOffsetY)
+	Return Value True
+	
+End Function
+
+
+Public Function GetTextOffsetX() As Long
+
+	Return Value MTextOffsetX
+	
+End Function
+
+
+Public Function SetTextOffsetY(newtextoffsety As Long) As Boolean
+
+	MTextOffsetY := newtextoffsety 
+	MyStaticText.SetPosition(MTextOffsetX, newtextoffsety)
+	Return Value True
+	
+End Function
+
+
+Public Function GetTextOffsetY() As Long
+
+	Return Value MTextOffsetY
+	
+End Function
+
+
+Public Function SetText(newtext As Text) As Boolean
+
+	MstxText := newtext
+	MyStaticText.SetText(newtext) 
+	Return Value True
+	
+End Function
+
+
+Public Function GetText() As AddressOf Text
+
+	Return Value MyStaticText.GetText()
+	
+End Function
+
+
+Public Function SetObjectDimensions(newwidth As Long, newheight As Long) As Boolean
+
+	ObjectWidth := newwidth
+	ObjectHeight := newheight
+	SetSize(newwidth, newheight)
+	MyPictureBox.SetSize(newwidth, newheight)
+	MyStaticText.SetSize(newwidth, newheight)
+	Return Value True
+
+End Function
+
+
+Public Function GetObjectDimensions(ByRef currentwidth As Long, ByRef currentheight As Long)
+
+	GetSize(currentwidth, currentheight)
+
+End Function
+
+
+Public Function SetObjectPosition(newx As Long, newy As Long) As Boolean
+Private Var Response As Boolean
+	
+	OriginalX := newx
+	OriginalY := newy
+	CurrentX := newx
+	CurrentY := newy
+	Response := SetPosition(newx, newy)
+	Redraw()
+	Return Value Response
+
+End Function
+
+
+Public Function GetObjectPosition(ByRef currentx As Long, ByRef currenty As Long)
+
+	GetPosition(currentx, currenty)
+
+End Function
+
+
+Public Function ShowObject()
+
+	Show()
+
+End Function
+
+
+Public Function HideObject()
+
+	Hide()
+
+End Function
+
+
+Public Function IsObjectVisible() As Boolean
+
+	Return Value GetVisible()
+
+End Function
+
+
+Global Function BringToFrontZOrder()
+
+	BringToFront()
+
+End Function
+
+
+Global Function RestoreZOrder()
+
+	SendToDefault()
+
+End Function
+
+
+End GraphicClass
+
+// DragSource
+// End of object -------------------------------------------------------------------------
+
+
+
+// Start of object -----------------------------------------------------------------------
+// DropDestination
+
+Public GraphicClass BaseDropDestination Inherits BaseGraphicClass WithAttributes {hiddeninide}	
+
+// Appearance Var Group
+Protected Var MBackgroundColor As Long := DEFAULT_BACKGROUND_COLOR 
+Protected Var MFitting As Long := 0 
+Protected Var MOpacity As Byte := 255 
+Protected Var MPicture As AddressOf _Picture := Nothing 
+Protected Var MDisableDrop As Boolean 
+
+// Source MPicture Var Group
+Protected Var MSourcePictureAlign As Long := _TEXT_ALIGNHCENTER BitOr _TEXT_ALIGNVCENTER 
+Protected Var MSourcePictureOffsetX As Long := 0 
+Protected Var MSourcePictureOffsetY As Long := 0 
+Protected Var MSourcePictureOpacity As Byte := 255 
+Protected Var MSourcePictureZoom As Double := 1.0 
+
+// Source Text Var Group
+Protected Var MSourceTextAlign As Long := _TEXT_ALIGNHCENTER BitOr _TEXT_ALIGNVCENTER 
+Protected Var MSourceTextColor As Long := _COLOR_BLACK 
+Protected Var MSourceTextFont As AddressOf _Font := fntDefault16 
+Protected Var MSourceTextLineSpacing As Double := 1.2 
+Protected Var MSourceTextOffsetX As Long := 0 
+Protected Var MSourceTextOffsetY As Long := 0
+Protected Var MSourceTextShow As Boolean := True 
+
+// MEvents
+Public Event OnDropSource As Process(sourceid As Long) 
+Public Event OnTouch As Process()
+
+// Objects
+Private Var MyPictureBox As BasePictureBox
+Private Var SourcePictureBox As BasePictureBox
+Protected Var SourceStaticText As BaseStaticText
+Private Var SourceID As Long
+
+// Variables
+Protected Var CurrentX As Long
+Protected Var CurrentY As Long
+Protected Var ObjectWidth As Long
+Protected Var ObjectHeight As Long
+Private Var SourcePictureWidth As Long
+Private Var SourcePictureHeight As Long
+Protected Var BackgroundColorDraw As Long
+
+
+Private Function Init()
+
+	GetSize(ObjectWidth, ObjectHeight)
+	GetPosition(CurrentX, CurrentY)
+
+	BackgroundColorDraw := SetColorComponentOpacity(MBackgroundColor, GetColorComponentOpacity( MBackgroundColor) * MOpacity / 255)
+
+	SetGraphics()	
+	SourceStaticText.SetText("")
+
+End Function
+
+
+Protected Function OnDraw()
+
+	DrawRectangle(BackgroundColorDraw)
+
+End Function
+
+
+Protected Function SetGraphics()
+
+	MyPictureBox.SetSize(ObjectWidth, ObjectHeight)
+	MyPictureBox.SetPosition(0, 0)
+	MyPictureBox.SetFitting(MFitting)
+	MyPictureBox.SetOpacity(MOpacity)
+	MyPictureBox.SetPicture(MPicture)
+	
+	SourcePictureBox.SetSize(SourcePictureWidth * MSourcePictureZoom, SourcePictureHeight * MSourcePictureZoom)
+	SourcePictureBox.SetFitting(SourcePictureBox.FITTING_FIT_CONTENT_PROPORTIONALLY)
+	SourcePictureBox.SetOpacity(MSourcePictureOpacity)
+
+	Select MSourcePictureAlign
+		Case _TEXT_ALIGNLEFT BitOr _TEXT_ALIGNTOP 			
+			SourcePictureBox.SetPosition(MSourcePictureOffsetX, MSourcePictureOffsetY)
+		
+		Case _TEXT_ALIGNLEFT BitOr _TEXT_ALIGNVCENTER 			
+			SourcePictureBox.SetPosition(MSourcePictureOffsetX, MSourcePictureOffsetY + (ObjectHeight - SourcePictureHeight * MSourcePictureZoom) / 2)
+		
+		Case _TEXT_ALIGNLEFT BitOr _TEXT_ALIGNBOTTOM 			
+			SourcePictureBox.SetPosition(MSourcePictureOffsetX, MSourcePictureOffsetY + (ObjectHeight - SourcePictureHeight * MSourcePictureZoom))
+		
+		Case _TEXT_ALIGNHCENTER BitOr _TEXT_ALIGNTOP 			
+			SourcePictureBox.SetPosition(MSourcePictureOffsetX + (ObjectWidth - SourcePictureWidth * MSourcePictureZoom) / 2, MSourcePictureOffsetY)
+											
+		Case _TEXT_ALIGNHCENTER BitOr _TEXT_ALIGNVCENTER		
+			SourcePictureBox.SetPosition(MSourcePictureOffsetX + (ObjectWidth - SourcePictureWidth * MSourcePictureZoom) / 2, MSourcePictureOffsetY + (ObjectHeight - SourcePictureHeight * MSourcePictureZoom) / 2)
+											
+		Case _TEXT_ALIGNHCENTER BitOr _TEXT_ALIGNBOTTOM	 	
+			SourcePictureBox.SetPosition(MSourcePictureOffsetX + (ObjectWidth - SourcePictureWidth * MSourcePictureZoom) / 2, MSourcePictureOffsetY + (ObjectHeight - SourcePictureHeight * MSourcePictureZoom))
+											
+		Case _TEXT_ALIGNRIGHT BitOr _TEXT_ALIGNTOP			
+			SourcePictureBox.SetPosition(MSourcePictureOffsetX + (ObjectWidth - SourcePictureWidth * MSourcePictureZoom), MSourcePictureOffsetY)
+											
+		Case _TEXT_ALIGNRIGHT BitOr _TEXT_ALIGNVCENTER			
+			SourcePictureBox.SetPosition(MSourcePictureOffsetX + (ObjectWidth - SourcePictureWidth * MSourcePictureZoom), MSourcePictureOffsetY + (ObjectHeight - SourcePictureHeight * MSourcePictureZoom) / 2)
+											
+		Case _TEXT_ALIGNRIGHT BitOr _TEXT_ALIGNBOTTOM			
+			SourcePictureBox.SetPosition(MSourcePictureOffsetX + (ObjectWidth - SourcePictureWidth * MSourcePictureZoom), MSourcePictureOffsetY + (ObjectHeight - SourcePictureHeight * MSourcePictureZoom))
+	
+	End Select
+
+	SourceStaticText.SetSize(ObjectWidth, ObjectHeight)
+	SourceStaticText.SetPosition(MSourceTextOffsetX, MSourceTextOffsetY)
+	SourceStaticText.SetAlign(MSourceTextAlign) 
+	SourceStaticText.SetColor(MSourceTextColor) 
+	SourceStaticText.SetFont(MSourceTextFont) 
+ 	SourceStaticText.SetLineSpacing(MSourceTextLineSpacing)
+
+ 	If MSourceTextShow Then
+ 		SourceStaticText.ShowObject()
+ 	Else
+ 		SourceStaticText.HideObject()
+ 	End If
+ 
+End Function
+
+
+Protected Function OnJoinMessage(msgobject As BaseGraphicClass, messageid As Long, ParamArray)
+	Var SourceX As Long
+	Var SourceY As Long
+	Var MstxText As AddressOf Text
+	Var EventEnable As Boolean
+
+	If IsObjectVisible() And Not MDisableDrop Then
+		If messageid = MSG_SOURCE_DATA Then
+			
+			SourceX				:= ParamArray[2]			
+			SourceY				:= ParamArray[3]
+	
+			EventEnable			:= ParamArray[8]
+	
+			If SourceX >= CurrentX And SourceX <= CurrentX + ObjectWidth And SourceY >= CurrentY And SourceY <= CurrentY + ObjectHeight Then
+		
+				SourceID			:= ParamArray[1]	
+				SourcePictureWidth	:= ParamArray[4]
+				SourcePictureHeight	:= ParamArray[5]
+						
+				SourcePictureBox.SetPicture(ParamArray[6])
+				SourceStaticText.SetText(ParamArray[7]) 
+				SetGraphics()
+				
+				If EventEnable Then 
+					RaiseEvent OnDropSource(SourceID)
+				End If
+			
+			End If
+			
+		End If
+	End If
+End Function
+
+
+Public Function SetSource(newsourceid As Long)
+	If newsourceid <> 0 Then
+		SendJoinMessage(False, MSG_SOURCE_REQUEST, newsourceid, CurrentX, CurrentY, ObjectWidth, ObjectHeight)
+	Else 
+		SourceID := newsourceid
+		SourcePictureBox.SetPicture(Nothing)
+		SourceStaticText.SetText("")
+		Redraw()
+	End If
+	
+End Function
+
+
+Public Function GetSource() As Long
+
+	Return Value SourceID 
+
+End Function
+
+Public Function SetDragSourceText(newtext As Text) As Boolean
+	Return Value SourceStaticText.SetText(newtext)
+End Function
+
+Public Function GetDragSourceText() As AddressOf Text
+	Return Value SourceStaticText.GetText()
+End Function
+
+
+Protected Function OnDown(x As Long, y As Long, eventtime As Time) As Boolean
+
+	RaiseEvent OnTouch()
+	Return Value True
+
+End Function
+
+
+Public Function SetBackgroundColor(newbackgroundcolor As Long) As Boolean
+
+	MBackgroundColor := newbackgroundcolor
+	BackgroundColorDraw := SetColorComponentOpacity(MBackgroundColor, GetColorComponentOpacity( MBackgroundColor) * MOpacity / 255)
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetBackgroundColor() As Long
+
+	Return Value MBackgroundColor
+	
+End Function
+
+Public Function SetDisableDrop(disabled As Boolean)As Boolean
+	MDisableDrop := disabled
+	Return Value True
+End Function
+
+Public Function GetDisableDrop() As Boolean
+	Return Value MDisableDrop
+End Function
+
+
+Public Function SetFitting(newfitting As Long) As Boolean
+
+	If newfitting >= 0 And newfitting <= 5 Then
+		MFitting := newfitting
+		SetGraphics()
+		Return Value True
+	Else
+		Return Value False
+	End If
+	
+End Function
+
+
+Public Function GetFitting() As Long
+
+	Return Value MFitting
+	
+End Function
+
+
+Public Function SetOpacity(newopacity As Byte) As Boolean
+
+	MOpacity := newopacity
+BackgroundColorDraw := SetColorComponentOpacity(MBackgroundColor, GetColorComponentOpacity( MBackgroundColor) * MOpacity / 255)
+	MyPictureBox.SetOpacity(MOpacity)
+	SourcePictureBox.SetOpacity(MOpacity)
+	SourceStaticText.SetOpacity(MOpacity)
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetOpacity() As Byte
+
+	Return Value MOpacity
+	
+End Function
+
+
+Public Function SetPicture(newpicture As AddressOf _Picture) As Boolean
+
+	MPicture := newpicture
+	MyPictureBox.SetPicture(MPicture)
+	Return Value True
+	
+End Function
+
+
+Public Function GetPicture() As AddressOf _Picture
+
+	Return Value MPicture
+	
+End Function
+
+
+Public Function SetSourcePictureAlign(newsourcepicturealign As Long) As Boolean
+
+	Select newsourcepicturealign
+		Case _TEXT_ALIGNLEFT BitOr _TEXT_ALIGNTOP, _TEXT_ALIGNLEFT BitOr _TEXT_ALIGNVCENTER, _TEXT_ALIGNLEFT BitOr _TEXT_ALIGNBOTTOM, _TEXT_ALIGNHCENTER BitOr _TEXT_ALIGNTOP, _TEXT_ALIGNHCENTER BitOr _TEXT_ALIGNVCENTER, _TEXT_ALIGNHCENTER BitOr _TEXT_ALIGNBOTTOM, _TEXT_ALIGNRIGHT BitOr _TEXT_ALIGNTOP, _TEXT_ALIGNRIGHT BitOr _TEXT_ALIGNVCENTER, _TEXT_ALIGNRIGHT BitOr _TEXT_ALIGNBOTTOM
+			MSourcePictureAlign := newsourcepicturealign
+			SetGraphics() 
+			Return Value True
+
+		Case Else
+			Return Value False
+	End Select
+
+End Function
+
+
+Public Function GetSourcePictureAlign() As Long
+
+	Return Value MSourcePictureAlign
+
+End Function
+
+
+Public Function SetSourcePictureOffsetX(newsourcepictureoffsetx As Long) As Boolean
+
+	MSourcePictureOffsetX := newsourcepictureoffsetx 
+	SetGraphics()
+	Return Value True
+	
+End Function
+
+
+Public Function GetSourcePictureOffsetX() As Long
+
+	Return Value MSourcePictureOffsetX
+	
+End Function
+
+
+Public Function SetSourcePictureOffsetY(newsourcepictureoffsety As Long) As Boolean
+
+	MSourcePictureOffsetY := newsourcepictureoffsety 
+	SetGraphics()
+	Return Value True
+	
+End Function
+
+
+Public Function GetSourcePictureOffsetY() As Long
+
+	Return Value MSourcePictureOffsetY
+	
+End Function
+
+
+Public Function SetSourcePictureOpacity(newsourcepictureopacity As Byte) As Boolean
+
+	MSourcePictureOpacity := newsourcepictureopacity
+BackgroundColorDraw := SetColorComponentOpacity(MBackgroundColor, GetColorComponentOpacity( MBackgroundColor) * MOpacity / 255)
+	SourcePictureBox.SetOpacity(MSourcePictureOpacity)
+	SourceStaticText.SetOpacity(MSourcePictureOpacity)
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetSourcePictureOpacity() As Byte
+
+	Return Value MSourcePictureOpacity
+	
+End Function
+
+
+Public Function SetSourcePictureZoom(newsourcepicturezoom As Double) As Boolean
+	
+	If newsourcepicturezoom >= 0 Then
+		MSourcePictureZoom := newsourcepicturezoom
+		SetGraphics() 
+		Return Value True
+	Else
+		Return Value False
+	End If
+
+End Function
+
+
+Public Function GetSourcePictureZoom() As Double
+
+	Return Value MSourcePictureZoom
+	
+End Function
+
+
+Public Function SetSourceTextAlign(newsourcetextalign As Long) As Boolean
+
+	Select newsourcetextalign
+		Case _TEXT_ALIGNLEFT BitOr _TEXT_ALIGNTOP, _TEXT_ALIGNLEFT BitOr _TEXT_ALIGNVCENTER, _TEXT_ALIGNLEFT BitOr _TEXT_ALIGNBOTTOM, _TEXT_ALIGNHCENTER BitOr _TEXT_ALIGNTOP, _TEXT_ALIGNHCENTER BitOr _TEXT_ALIGNVCENTER, _TEXT_ALIGNHCENTER BitOr _TEXT_ALIGNBOTTOM, _TEXT_ALIGNRIGHT BitOr _TEXT_ALIGNTOP, _TEXT_ALIGNRIGHT BitOr _TEXT_ALIGNVCENTER, _TEXT_ALIGNRIGHT BitOr _TEXT_ALIGNBOTTOM
+			MSourceTextAlign := newsourcetextalign
+			SetGraphics() 
+			Return Value True
+
+		Case Else
+			Return Value False
+	End Select
+
+End Function
+
+
+Public Function GetSourceTextAlign() As Long
+
+	Return Value MSourceTextAlign
+
+End Function
+
+
+Public Function SetSourceTextColor(newsourcetextcolor As Long) As Boolean
+
+	MSourceTextColor := newsourcetextcolor
+	SourceStaticText.SetColor(newsourcetextcolor) 
+	Return Value True
+	
+End Function
+
+
+Public Function GetSourceTextColor() As Long
+
+	Return Value MSourceTextColor
+	
+End Function
+
+
+Public Function SetSourceTextFont(newsourcetextfont As AddressOf _Font) As Boolean
+
+	MSourceTextFont := newsourcetextfont
+	SourceStaticText.SetFont(newsourcetextfont) 
+	Return Value True
+	
+End Function
+
+
+Public Function GetSourceTextFont() As AddressOf _Font
+
+	Return Value MSourceTextFont
+	
+End Function
+
+
+Public Function SetSourceTextLineSpacing(newsourcetextlinespacing As Double) As Boolean
+	
+	If newsourcetextlinespacing >= 0 Then
+		MSourceTextLineSpacing := newsourcetextlinespacing
+	 	SourceStaticText.SetLineSpacing(newsourcetextlinespacing) 
+		Return Value True
+	Else
+		Return Value False
+	End If
+
+End Function
+
+
+Public Function GetSourceTextLineSpacing() As Double
+
+	Return Value MSourceTextLineSpacing
+	
+End Function
+
+
+Public Function SetSourceTextOffsetX(newsourcetextoffsetx As Long) As Boolean
+
+	MSourceTextOffsetX := newsourcetextoffsetx 
+	SetGraphics()
+	Return Value True
+	
+End Function
+
+
+Public Function GetSourceTextOffsetX() As Long
+
+	Return Value MSourceTextOffsetX
+	
+End Function
+
+
+Public Function SetSourceTextOffsetY(newsourcetextoffsety As Long) As Boolean
+
+	MSourceTextOffsetY := newsourcetextoffsety 
+	SetGraphics()
+	Return Value True
+	
+End Function
+
+
+Public Function GetSourceTextOffsetY() As Long
+
+	Return Value MSourceTextOffsetY
+	
+End Function
+
+
+Public Function SetSourceTextShow(newsourcetextshow As Boolean) As Boolean
+
+	MSourceTextShow := newsourcetextshow
+ 	If MSourceTextShow Then
+ 		SourceStaticText.ShowObject()
+ 	Else
+ 		SourceStaticText.HideObject()
+ 	End If
+	Return Value True
+
+End Function
+
+
+Public Function GetSourceTextShow() As Boolean
+
+	Return Value MSourceTextShow
+
+End Function
+
+
+Public Function SetObjectDimensions(newwidth As Long, newheight As Long) As Boolean
+Private Var Response As Boolean
+
+	ObjectWidth := newwidth
+	ObjectHeight := newheight
+	Response := SetSize(newwidth, newheight)
+	Redraw()
+	Return Value Response
+
+End Function
+
+
+Public Function GetObjectDimensions(ByRef currentwidth As Long, ByRef currentheight As Long)
+
+	GetSize(currentwidth, currentheight)
+
+End Function
+
+
+Public Function SetObjectPosition(newx As Long, newy As Long) As Boolean
+Private Var Response As Boolean
+
+	CurrentX := newx
+	CurrentY := newy
+	Response := SetPosition(newx, newy)
+	Redraw()
+	Return Value Response
+
+End Function
+
+
+Public Function GetObjectPosition(ByRef currentx As Long, ByRef currenty As Long)
+
+	GetPosition(currentx, currenty)
+
+End Function
+
+
+Public Function ShowObject()
+
+	Show()
+
+End Function
+
+
+Public Function HideObject()
+
+	Hide()
+
+End Function
+
+
+Public Function IsObjectVisible() As Boolean
+
+	Return Value GetVisible()
+
+End Function
+
+
+Global Function BringToFrontZOrder()
+
+	BringToFront()
+
+End Function
+
+
+Global Function RestoreZOrder()
+
+	SendToDefault()
+
+End Function
+
+
+End GraphicClass
+
+// DropDestination
+// End of object -------------------------------------------------------------------------
+
+// DragSource And DropDestination
+// End of group ******************************************************************* 
+
+
+
+// Start of group ***************************************************************** 
+// Sliders
+// Revised: 14.7.2015
+// Author: Radka Malcová
+
+
+// Start of object -----------------------------------------------------------------------
+// Slider
+// Global constant declaration
+
+Const SLIDER_BACKGROUND_COLOR As Long := &HFFC0C0C0	// 3D Slider face color
+Const SLIDER_FLOOD_COLOR As Long := &HFFFF0000	// 3D Slider flood color
+Const SLIDER_HIGHLIGHT_COLOR As Long := &HFFFFFFFF	// 3D Slider highlight color
+Const SLIDER_SHADOW_COLOR As Long := _COLOR_GREY	// 3D Slider shadow color
+
+Private GraphicClass BaseSlider Inherits BaseGraphicClass
+
+// Private constant declaration
+Protected Const PICTURE_ALIGNLEFT As Long := _TEXT_ALIGNLEFT
+Protected Const PICTURE_ALIGNHCENTER As Long := _TEXT_ALIGNHCENTER
+Protected Const PICTURE_ALIGNRIGHT As Long := _TEXT_ALIGNRIGHT
+Protected Const PICTURE_ALIGNTOP As Long := _TEXT_ALIGNTOP
+Protected Const PICTURE_ALIGNVCENTER As Long := _TEXT_ALIGNVCENTER
+Protected Const PICTURE_ALIGNBOTTOM As Long := _TEXT_ALIGNBOTTOM
+Protected Const FITTING_FILL_OBJECT_PROPORTIONALLY As Long := 5
+
+Public Const FLOOD_LEFTTORIGHT As Long := 1
+Public Const FLOOD_RIGHTTOLEFT As Long := 2
+Public Const FLOOD_BOTTOMTOTOP As Long := 3
+Public Const FLOOD_TOPTOBOTTOM As Long := 4
+
+Global Const SLIDER_SCALE_TYPE_LINEAR As Long := 1
+Global Const SLIDER_SCALE_TYPE_LOG10 As Long := 2
+
+Protected Const REPEAT_EVENT_TIME As Time := :.05
+Protected Const REPEAT_EVENT_TRYOUT As Long := 100
+
+// Appearance Property Group
+Protected Var MBackgroundColor As Long := SLIDER_BACKGROUND_COLOR 
+Protected Var MBackgroundPicture As AddressOf _Picture := Nothing 
+Protected Var MBevelWidth As Long := 4 
+Protected Var MFloodColor As Long := SLIDER_FLOOD_COLOR 
+Protected Var MFloodPicture As AddressOf _Picture := Nothing 
+Protected Var MFloodStyle As Long := 0 
+Protected Var MHighlightColor As Long := SLIDER_HIGHLIGHT_COLOR 
+Protected Var MKnobPicture As AddressOf _Picture := Nothing 
+Protected Var MOpacity As Byte := 255 
+Protected Var MShadowColor As Long := SLIDER_SHADOW_COLOR 
+//** EDIT: added to replace MVerticalFloodType and MHorizontalFloodType in derived classes
+Protected Var MFloodType As Long := FLOOD_BOTTOMTOTOP
+
+// Scale Property Group
+Protected Var MMaximum As Double := 100 
+Protected Var MMinimum As Double := 0 
+Protected Var MStepValue As Double := 0 
+Protected Var MLogBase10 As Long := 1 
+
+// Behavior Property Group
+Protected Var MActiveTouchZoneSize As Long := 10 
+Protected Var MAutoSetValue As Boolean := False 
+Protected Var MDefaultValue As Double := (MMinimum + MMaximum) / 2 
+Protected Var MEvents As Boolean := True 
+Protected Var MSnapBackTime As Time := :1.0 
+Protected Var MSnapToFinger As Boolean := True 
+
+//// Global constant declaration
+//Global Const SLIDER_BACKGROUND_COLOR As Long := &HFFC0C0C0	// 3D Slider face color
+//Global Const SLIDER_FLOOD_COLOR As Long := &HFFFF0000	// 3D Slider flood color
+//Global Const SLIDER_HIGHLIGHT_COLOR As Long := &HFFFFFFFF	// 3D Slider highlight color
+//Global Const SLIDER_SHADOW_COLOR As Long := _COLOR_GREY	// 3D Slider shadow color
+
+Public Const FLOOD_STYLE_CUT_OFF	As Long := 0
+Public Const FLOOD_STYLE_ROUND_OFF	As Long := 1
+
+Protected Var TravelDistance		As Long				// distance, in pixels, the slider can travel from min to max.
+Protected Var TravelStart 			As Long				// distance, in pixels, from the side of the object to the start point of travel
+Protected Var SliderPos				As Long				// number of pixels from the start of travel to the slider postition (center of knob, if there is a knob, end of flood if there isn't)
+Protected Var PixToValCoef			As Double			// Coëfficient to calculate CurrentValue from the slider position
+Protected Var AllowedTouchOffset	As Long				// The number of pixels above or below the slider position where touch is considered valid for move operations, e.i. touch is considered to be on the knob. 
+														// Is knob picture layer size when a knob is present, if not it depends on the Property ActiveTouchZoneSize.
+														// When Property SnapToFinger is set to True the whole object is the active touch zone.
+Private Var LastTouchPos			As Long				// Position of the touch in the object, e.i relative to object side. Used to check whether touch is in Active touch zone and in OnMove(..) knob movement is calculated relative to this position.
+
+
+// Private constant declaration
+Private Const DISABLED_OPACITY As Double := 0.3
+
+// Public Events
+Public Event OnValueChange As Process (newvalue As Double) WithRaiseRemember
+Public Event OnTouch As Process()
+Public Event OnRelease As Process(newvalue As Double)
+
+// Protected variables declaration
+Protected Var FloodType As Long := FLOOD_LEFTTORIGHT
+
+// Protected objects declaration
+Protected Var PictureLayer1 As BasePictureBox
+Protected Var PictureLayer2 As BasePictureBox
+Protected Var PictureLayer3 As BasePictureBox
+Protected Var PictureLayer4 As BasePictureBox
+Protected Var PictureLayer5 As BasePictureBox
+
+// Common declaration
+Protected Var ActualValue As Double := MDefaultValue
+Protected Var CurrentValue As Double := MDefaultValue
+Protected Var PreviousValue As Double := MDefaultValue
+Protected Var RealValue As Double := MDefaultValue
+Protected Var ObjectWidth As Long
+Protected Var ObjectHeight As Long
+Protected Var FloodWidth As Long
+Protected Var FloodHeight As Long
+Protected Var PictureLayer1Width As Long
+Protected Var PictureLayer2Width As Long
+Protected Var PictureLayer3Width As Long
+Protected Var PictureLayer4Width As Long
+Protected Var PictureLayer5Width As Long
+Protected Var PictureLayer3X As Long
+Protected Var PictureLayer4X As Long
+Protected Var PictureLayer3OffsetX As Long
+Protected Var PictureLayer4OffsetX As Long
+Protected Var PictureLayer1Height As Long
+Protected Var PictureLayer2Height As Long
+Protected Var PictureLayer3Height As Long
+Protected Var PictureLayer4Height As Long
+Protected Var PictureLayer5Height As Long
+Protected Var PictureLayer3Y As Long
+Protected Var PictureLayer4Y As Long
+Protected Var PictureLayer5X As Long
+Protected Var PictureLayer5Y As Long
+Protected Var PictureLayer3OffsetY As Long
+Protected Var PictureLayer4OffsetY As Long
+Protected Var PictureLayer5ShiftX As Long
+Protected Var PictureLayer5ShiftY As Long
+Protected Var TryoutCount As Long
+Protected Var IsPressed As Boolean := False
+
+// Private variables declaration
+Private Var BackgroundColorDraw As Long
+Protected Var BevelWidthDraw As Long
+Private Var FloodColorDraw As Long
+Private Var HighlightColorDraw As Long
+Private Var ShadowColorDraw As Long
+Private Var MoveEnabled As Boolean := False
+Private Var ActiveTouchZoneWidth As Long
+Private Var ActiveTouchZoneHeight As Long
+Private Var ActiveTouchZoneX As Long
+Private Var ActiveTouchZoneY As Long
+Private Var ActiveTouchZoneShiftX As Long
+Private Var ActiveTouchZoneShiftY As Long
+
+Private Function Init()
+
+// Properties are set by derived class and are not yet set at this moment
+//	UpdateDrawColors()
+//	SetBevelWidth(MBevelWidth)
+
+	// But get at least the object size, so calls to SetBevelWidth() do something sensible, even before SetParameters() has been called.
+	GetSize(ObjectWidth, ObjectHeight)
+
+End Function
+
+
+Protected Function RedrawCompoundObject()
+
+	SetDynamicDrawParameters()
+	LockRedraw()
+
+	If MBackgroundPicture = Nothing Then
+		Redraw()
+	End If
+
+	If MFloodPicture <> Nothing Then
+		PictureLayer3.SetPictureOffsetX(PictureLayer3OffsetX)
+		PictureLayer3.SetPictureOffsetY(PictureLayer3OffsetY)
+		PictureLayer3.SetObjectPosition(PictureLayer3X, PictureLayer3Y)
+		PictureLayer3.SetObjectDimensions(PictureLayer3Width, PictureLayer3Height)
+	
+		PictureLayer4.SetPictureOffsetX(PictureLayer4OffsetX)
+		PictureLayer4.SetPictureOffsetY(PictureLayer4OffsetY)
+		PictureLayer4.SetObjectPosition(PictureLayer4X, PictureLayer4Y)
+		PictureLayer4.SetObjectDimensions(PictureLayer4Width, PictureLayer4Height)
+	Else
+		Redraw()
+	End If
+
+	If MKnobPicture <> Nothing Then
+		PictureLayer5.SetObjectPosition(PictureLayer5X, PictureLayer5Y)
+	End If
+
+	UnlockRedraw()
+
+End Function
+
+
+Private Function SetDrawParameters()
+	// Set all parameters that do not depend on the slider value
+	// This function is to be overwritten in inherited class
+End Function
+
+
+Private Function SetDynamicDrawParameters()
+	// Set all parameters that do not depend on the slider value
+	// This function is to be overwritten in inherited class
+End Function
+
+
+Protected Function UpdateDrawColors()
+
+	BackgroundColorDraw := SetColorComponentOpacity(MBackgroundColor, GetColorComponentOpacity(MBackgroundColor) * MOpacity / 255)
+	FloodColorDraw := SetColorComponentOpacity(MFloodColor, GetColorComponentOpacity(MFloodColor) * MOpacity / 255)
+	HighlightColorDraw := SetColorComponentOpacity(MHighlightColor, GetColorComponentOpacity(MHighlightColor) * MOpacity / 255)
+	ShadowColorDraw := SetColorComponentOpacity(MShadowColor, GetColorComponentOpacity(MShadowColor) * MOpacity / 255)
+
+End Function
+
+
+Private Function Draw3DSlider()
+Private Var Offset As Long
+
+	If BevelWidthDraw > 0 Then
+		For Offset := 0 To BevelWidthDraw - 1
+			DrawLine(Offset, Offset, ObjectWidth - Offset - 1, Offset, ShadowColorDraw)
+			DrawLine(Offset, Offset + 1, Offset, ObjectHeight - Offset - 1, ShadowColorDraw)
+			DrawLine(Offset + 1, ObjectHeight - Offset - 1, ObjectWidth - Offset - 2, ObjectHeight - Offset - 1, HighlightColorDraw)
+			DrawLine(ObjectWidth - Offset - 1, Offset + 1, ObjectWidth - Offset - 1, ObjectHeight - Offset - 1, HighlightColorDraw)
+		End For
+	End If
+
+End Function
+
+
+Protected Function OnDraw()
+
+Var FloodStart As Long
+Var FloodLength As Long
+Var SlidPos As Long
+
+	If MKnobPicture = Nothing Or MAutoSetValue Then
+		SlidPos := SliderPos 
+	Else
+		SlidPos := FloodPos
+	End If
+	
+	If MBackgroundPicture = Nothing Then
+		Draw3DSlider()
+	End If
+
+	If MBackgroundPicture = Nothing Or MFloodPicture = Nothing Then
+		DrawRectangle(BackgroundColorDraw, BevelWidthDraw, BevelWidthDraw, ObjectWidth - 2 * BevelWidthDraw, ObjectHeight - 2 * BevelWidthDraw)
+	End If
+		
+	If MFloodPicture = Nothing Then	
+		If MFloodType = FLOOD_LEFTTORIGHT Or MFloodType = FLOOD_TOPTOBOTTOM Then
+			FloodStart := BevelWidthDraw
+			FloodLength := TravelStart + SlidPos - BevelWidthDraw	
+		Else
+			FloodStart := TravelStart + SlidPos
+			FloodLength := TravelDistance - SlidPos + TravelStart - BevelWidthDraw
+		End If
+		
+		If MFloodType = FLOOD_LEFTTORIGHT Or MFloodType = FLOOD_RIGHTTOLEFT Then
+			DrawRectangle(FloodColorDraw, FloodStart, BevelWidthDraw, FloodLength, ObjectHeight - 2 * BevelWidthDraw)
+		Else
+			DrawRectangle(FloodColorDraw, BevelWidthDraw, FloodStart, ObjectWidth - 2 * BevelWidthDraw, FloodLength)
+		End If
+	End If
+		
+End Function
+
+
+Protected Function OnDown(x As Long, y As Long, eventtime As Time) As Boolean
+	StopTimer(2)
+	If Not MEvents Then Return Value False End If
+	
+	IsPressed := True
+	
+	RaiseEvent OnTouch()
+	
+	If MFloodType < 3
+		Then LastTouchPos := x
+		Else LastTouchPos := y
+	End If
+	
+	If MSnapToFinger Then
+		// Set slider to touch position, but keep it within legal range
+			
+			If LastTouchPos < TravelStart Then
+				SliderPos := 0
+			ElseIf LastTouchPos > TravelStart + TravelDistance  Then
+				SliderPos := TravelDistance
+			Else
+				SliderPos := LastTouchPos - TravelStart
+			End If	
+				
+		If MAutoSetValue Or MKnobPicture= Nothing Then
+			FloodPos := SliderPos	
+		End If
+			
+		MoveEnabled := True
+
+		If MLogBase10 = SLIDER_SCALE_TYPE_LOG10 Then	
+			If MFloodType = FLOOD_TOPTOBOTTOM Or MFloodType = FLOOD_LEFTTORIGHT Then
+				CurrentValue := LogValue(SliderPos)
+			Else
+				CurrentValue := LogValue(TravelDistance-SliderPos)
+			End If
+		Else
+			If MFloodType = FLOOD_TOPTOBOTTOM Or MFloodType = FLOOD_LEFTTORIGHT
+				Then CurrentValue := MMinimum + SliderPos * PixToValCoef
+				Else CurrentValue := MMinimum + (TravelDistance - SliderPos) * PixToValCoef
+			End If		
+
+			If MStepValue <> 0 Then
+				CurrentValue := MMinimum + MStepValue * CLong((CurrentValue - MMinimum) / MStepValue)
+			End If
+		End If
+		
+		ActualValue := CurrentValue
+			
+		If CurrentValue <> PreviousValue Then
+			If Not RaiseEvent OnValueChange(ActualValue) Then
+				TryoutCount := REPEAT_EVENT_TRYOUT
+				StartTimer(1, REPEAT_EVENT_TIME)
+			End If
+			PreviousValue := CurrentValue
+		End If
+
+		RedrawCompoundObject()
+
+	Else
+		// If not snaped to finger, just test if touch position is in the area where it is considered to
+		// to be on the knob, or near enough to the flood edge.	
+		If LastTouchPos > TravelStart + SliderPos - AllowedTouchOffset And LastTouchPos < TravelStart + SliderPos + AllowedTouchOffset Then
+			MoveEnabled := True
+		End If
+	End If
+			
+	Return Value True
+
+End Function
+
+
+Protected Function OnUp(x As Long,y As Long, eventtime As Time, isinside As Boolean)
+
+//Private Var BevelWidthTemp As Long
+Var NewTouchPos As Long
+		
+	If Not MEvents Or Not MoveEnabled Then 
+		IsPressed := False
+		Return 
+	End If
+
+	MoveEnabled := False
+	
+	If MFloodType < 3
+		Then NewTouchPos := x
+		Else NewTouchPos := y
+	End If
+
+	SliderPos += NewTouchPos - LastTouchPos 
+	LastTouchPos := NewTouchPos
+	
+	If SliderPos > TravelDistance Then
+		SliderPos := TravelDistance
+	ElseIf SliderPos < 0 Then
+		SliderPos := 0
+	End If
+		
+	If MFloodType = FLOOD_TOPTOBOTTOM Or MFloodType = FLOOD_LEFTTORIGHT
+		Then CurrentValue := MMinimum + SliderPos * PixToValCoef
+		Else CurrentValue := MMinimum + (TravelDistance - SliderPos) * PixToValCoef
+	End If
+
+	If MStepValue <> 0 Then
+		CurrentValue := MMinimum + MStepValue * CLong((CurrentValue - MMinimum) / MStepValue)
+	End If
+			
+	If MLogBase10 = SLIDER_SCALE_TYPE_LOG10 Then	
+		If MFloodType = FLOOD_TOPTOBOTTOM Or MFloodType = FLOOD_LEFTTORIGHT Then
+			ActualValue := LogValue(SliderPos)
+		Else
+			ActualValue := LogValue(TravelDistance-SliderPos)
+		End If
+	Else
+		ActualValue := CurrentValue
+	End If
+	
+	RedrawCompoundObject()
+	
+	If CurrentValue <> PreviousValue Then
+		If Not RaiseEvent OnValueChange(ActualValue) Then
+			TryoutCount := REPEAT_EVENT_TRYOUT
+			StartTimer(1, REPEAT_EVENT_TIME)
+		End If
+	End If
+
+	If Not MAutoSetValue Then
+		StartTimer(2, MSnapBackTime)
+	Else
+		FloodPos := SliderPos
+		IsPressed := False	
+	End If
+
+//	IsPressed := False
+	PreviousValue := CurrentValue
+	
+	RaiseEvent OnRelease(ActualValue)
+	
+End Function
+
+Protected Var FloodPos As Long
+Protected Function OnMove(x As Long, y As Long, eventtime As Time, isinside As Boolean)
+
+//Private Var BevelWidthTemp As Long
+Var NewTouchPos As Long
+
+	If MEvents = False Or MoveEnabled = False Then Return End If
+		
+	If MFloodType < 3	// Horizontal flood types
+		Then NewTouchPos := x
+		Else NewTouchPos := y
+	End If
+	
+	SliderPos += NewTouchPos - LastTouchPos 
+	
+	If SliderPos > TravelDistance Then
+		SliderPos := TravelDistance
+	ElseIf SliderPos < 0 Then
+		SliderPos := 0
+	End If
+		
+	// This enables the touch to move out of the object and pick the slider up at the centre of the Activezone on the way back.
+	If NewTouchPos > TravelStart +TravelDistance Then
+		LastTouchPos := TravelStart + TravelDistance
+	ElseIf NewTouchPos < TravelStart Then
+		LastTouchPos := TravelStart
+	Else
+		LastTouchPos := NewTouchPos	
+	End If	
+	
+	If MFloodType = FLOOD_TOPTOBOTTOM Or MFloodType = FLOOD_LEFTTORIGHT
+		Then CurrentValue := MMinimum + SliderPos * PixToValCoef
+		Else CurrentValue := MMinimum + (TravelDistance - SliderPos) * PixToValCoef
+	End If
+
+	If MStepValue <> 0 Then
+		CurrentValue := MMinimum + MStepValue * CLong((CurrentValue - MMinimum) / MStepValue)	
+	End If
+	
+	If MLogBase10 = SLIDER_SCALE_TYPE_LOG10 Then	
+		If MFloodType = FLOOD_TOPTOBOTTOM Or MFloodType = FLOOD_LEFTTORIGHT Then
+			ActualValue := LogValue(SliderPos)
+		Else
+			ActualValue := LogValue(TravelDistance-SliderPos)
+		End If
+	Else
+		ActualValue := CurrentValue
+	End If
+		
+	If MAutoSetValue Or MKnobPicture= Nothing Then
+		FloodPos := SliderPos
+	End If
+	RedrawCompoundObject()
+
+	//*** EDIT by extension: added condition IsFading to force event when autofading is being interrupted by the user
+	If CurrentValue <> PreviousValue Then
+		If Not RaiseEvent OnValueChange(ActualValue) Then
+			TryoutCount := REPEAT_EVENT_TRYOUT
+			StartTimer(1, REPEAT_EVENT_TIME)
+		End If
+
+		PreviousValue := CurrentValue
+		
+	End If
+//	End If
+	
+End Function
+
+Private Function LogValue(position As Long)As Double
+	Var minv As Double := Log(MMinimum)
+	Var maxv As Double := Log(MMaximum)
+	Var scale As Double :=(maxv-minv) / TravelDistance
+	Return Value 10^(minv + scale * position)
+End Function
+
+Protected Function LogPos(myvalue As Double)As Long
+	Var minv As Double := Log(MMinimum)
+	Var maxv As Double := Log(MMaximum)
+	Var scale As Double :=(maxv-minv) / TravelDistance
+
+	Return Value (Log(myvalue) - minv) / scale
+End Function
+
+Protected Function OnTimer(timerid As Long)
+
+	Select timerid
+		Case 1
+			If TryoutCount > 0 And Not RaiseEvent OnValueChange(ActualValue) Then
+				TryoutCount -= 1
+				StartTimer(1, REPEAT_EVENT_TIME)
+			Else
+				TryoutCount := 0
+			End If
+		Case 2
+			IsPressed := False
+			SetValue(RealValue)	
+	End Select
+
+End Function
+
+
+Protected Function SetBevelWidth(newbevelwidth As Long) As Boolean
+
+	MBevelWidth := newbevelwidth
+
+	If newbevelwidth <= Min(ObjectWidth / 2, ObjectHeight / 2) Then
+		BevelWidthDraw := MBevelWidth
+		SetDrawParameters()
+		RedrawCompoundObject()
+		Return Value True
+	Else
+		Return Value False
+	End If
+
+End Function
+
+
+Protected Function GetBevelWidth() As Long
+
+	Return Value MBevelWidth
+
+End Function
+
+
+Public Function SetEvents(newevents As Boolean) As Boolean
+
+	MEvents := newevents
+	Return Value True
+
+End Function
+
+
+Public Function GetEvents() As Boolean
+
+	Return Value MEvents
+
+End Function
+
+
+Public Function SetMaximum(newmaximum As Double) As Boolean
+LockRedraw()
+	MMaximum := newmaximum
+//	SetDrawParameters()
+//	RedrawCompoundObject()
+	// ensures value is within legal range, but does NOT raise event if value has been changed!
+	
+	SetValue( ActualValue )
+	SetDrawParameters()
+	RedrawCompoundObject()
+	UnlockRedraw()
+//	If MMaximum > MMinimum Then
+		Return Value True
+//	Else
+//		Return Value False
+//	End If
+	
+End Function
+
+
+Public Function GetMaximum() As Double
+
+	Return Value MMaximum
+	
+End Function
+
+
+Public Function SetMinimum(newminimum As Double) As Boolean
+LockRedraw()
+	MMinimum := newminimum
+//	SetDrawParameters()
+//	RedrawCompoundObject()
+	// ensures value is within legal range, but does NOT raise event if value has been changed!
+	SetValue( ActualValue )
+	SetDrawParameters()
+	RedrawCompoundObject()
+	UnlockRedraw()
+//	If MMinimum < MMaximum Then
+		Return Value True
+//	Else
+//		Return Value False
+//	End If
+	
+End Function
+
+
+Public Function GetMinimum() As Double
+
+	Return Value MMinimum
+	
+End Function
+
+
+Public Function SetSnapBackTime(newsnapbacktime As Time) As Boolean
+
+	MSnapBackTime := newsnapbacktime
+	Return Value True
+
+End Function
+
+
+Public Function GetSnapBackTime() As Time
+
+	Return Value MSnapBackTime
+
+End Function
+
+
+Public Function SetSnapToFinger (newsnaptofinger As Boolean) As Boolean
+	
+	MSnapToFinger := newsnaptofinger
+	Return Value True
+
+End Function
+
+
+Public Function GetSnapToFinger () As Boolean
+
+	Return Value MSnapToFinger
+	
+End Function
+
+
+Public Function SetStepValue(newstepvalue As Double) As Boolean
+	
+	If newstepvalue <= Abs(MMaximum - MMinimum) Then
+		MStepValue := newstepvalue
+		SetValue( CurrentValue )
+		Return Value True
+	Else
+		Return Value False
+	End If
+	
+End Function
+
+
+Public Function GetStepValue() As Double
+
+	Return Value MStepValue
+	
+End Function
+
+Public Function SetValue(newvalue As Double) As Boolean
+Var BottomVal 		As Double := MMinimum
+Var TopVal			As Double := MMaximum
+
+	LockRedraw()
+	ActualValue := newvalue
+	
+	If MMaximum < MMinimum Then
+		BottomVal := MMaximum
+		TopVal := MMinimum
+	End If
+
+	If newvalue <= BottomVal Then 
+		newvalue := BottomVal
+	ElseIf  newvalue >= TopVal Then 
+		newvalue := TopVal 
+	End If
+
+	If MLogBase10 = SLIDER_SCALE_TYPE_LOG10 Then
+		CurrentValue :=	newvalue
+		If Not IsPressed Then
+
+			SetDrawParameters()
+			RedrawCompoundObject()
+		Else
+			If Not MAutoSetValue Or MKnobPicture <> Nothing Then 
+				FloodPos := LogPos(CurrentValue)
+				If MFloodType = FLOOD_BOTTOMTOTOP  Or  MFloodType = FLOOD_RIGHTTOLEFT Then
+					FloodPos := TravelDistance - FloodPos
+				End If	
+				Redraw()
+			End If
+		End If	 		
+		UnlockRedraw()
+		Return Value True 	
+	Else
+		If MStepValue <> 0 Then
+			newvalue := MMinimum + MStepValue * CLong( (newvalue - MMinimum) / MStepValue )
+		End If
+	
+		RealValue := newvalue
+		
+		If newvalue = CurrentValue Then
+			If Not IsPressed Then
+				SetDrawParameters()
+				RedrawCompoundObject()
+			Else
+				If Not MAutoSetValue Or MKnobPicture <> Nothing Then 
+				FloodPos := (CurrentValue - MMinimum) / PixToValCoef
+				If MFloodType = FLOOD_BOTTOMTOTOP  Or  MFloodType = FLOOD_RIGHTTOLEFT Then
+					FloodPos := TravelDistance - FloodPos
+				End If	
+	//			FloodPos := SliderPos	
+				Redraw()
+				End If
+			End If	 
+			UnlockRedraw()
+			Return Value True 
+		End If	
+		
+		If newvalue >= BottomVal And newvalue <= TopVal Then
+			If newvalue >= 0 Then
+				CurrentValue := newvalue + MStepValue / 2 - (newvalue + MStepValue / 2) Mod MStepValue
+			Else
+				CurrentValue := newvalue - MStepValue / 2 - (newvalue - MStepValue / 2) Mod MStepValue
+			End If
+			
+			If Not MAutoSetValue Then
+				RealValue := CurrentValue
+			End If
+	
+			If Not IsPressed Then
+				SetDrawParameters()
+				RedrawCompoundObject()
+			Else
+				If Not MAutoSetValue Or MKnobPicture <> Nothing Then
+				FloodPos := (CurrentValue - MMinimum) / PixToValCoef
+				If MFloodType = FLOOD_BOTTOMTOTOP  Or  MFloodType = FLOOD_RIGHTTOLEFT Then
+					FloodPos := TravelDistance - FloodPos
+				End If	
+	//			FloodPos := SliderPos	
+				Redraw()
+				End If
+			End If
+		
+			UnlockRedraw()
+			Return Value True
+		Else
+			UnlockRedraw()
+			Return Value False
+		End If
+	End If
+End Function
+
+
+Public Function GetValue() As Double
+	Return Value ActualValue
+End Function
+
+
+Public Function SetObjectDimensions(newwidth As Long, newheight As Long) As Boolean
+
+	SetSize(newwidth, newheight)
+//	GetSize(ObjectWidth, ObjectHeight)
+	SetDrawParameters()
+	RedrawCompoundObject()
+	Return Value True
+
+End Function
+
+
+Public Function GetObjectDimensions(ByRef currentwidth As Long, ByRef currentheight As Long)
+
+	GetSize(currentwidth, currentheight)
+
+End Function
+
+
+Public Function SetObjectPosition(newx As Long, newy As Long) As Boolean
+Private Var Response As Boolean
+
+	Response := SetPosition(newx, newy)
+	Redraw()
+	Return Value Response
+
+End Function
+
+
+Public Function GetObjectPosition(ByRef currentx As Long, ByRef currenty As Long)
+
+	GetPosition(currentx, currenty)
+
+End Function
+
+
+Public Function ShowObject()
+
+	Show()
+
+End Function
+
+
+Public Function HideObject()
+
+	Hide()
+
+End Function
+
+
+Public Function IsObjectVisible() As Boolean
+
+	Return Value GetVisible()
+
+End Function
+
+
+Global Function BringToFrontZOrder()
+
+	BringToFront()
+
+End Function
+
+
+Global Function RestoreZOrder()
+
+	SendToDefault()
+
+End Function
+
+
+
+End GraphicClass
+
+// Slider
+// End of object -------------------------------------------------------------------------
+
+
+// Start of object -----------------------------------------------------------------------
+// VerticalSlider
+
+Global GraphicClass BaseVerticalSlider Inherits BaseSlider WithAttributes {hiddeninide}	
+
+// Appearance Var Group
+Protected Var MAspectRatioMaximum As Double := 1.000 
+Protected Var MAspectRatioMinimum As Double := 0.100 
+//Protected Var MVerticalFloodType As Long := FLOOD_BOTTOMTOTOP 
+
+
+Private Function Init()
+//Oprava 22.6.2015
+//	SetDrawParameters()
+//	RedrawCompoundObject()
+	
+End Function
+
+//Oprava 22.6.2015
+Protected Function SetDrawParameters()
+// Set all parameters that are independant to the slider value
+
+Var Temp As Long
+
+	GetSize( ObjectWidth, ObjectHeight )
+	
+	LockRedraw()
+
+	If MBackgroundPicture <> Nothing Or MFloodPicture <> Nothing Then
+		If CDouble(ObjectWidth) / ObjectHeight < MAspectRatioMinimum Then
+			ObjectHeight := ObjectWidth / MAspectRatioMinimum
+		ElseIf CDouble(ObjectWidth) / ObjectHeight > MAspectRatioMaximum Then
+			ObjectHeight := ObjectWidth / MAspectRatioMaximum
+		End If
+		
+		SetSize(ObjectWidth, ObjectHeight )
+		PictureLayer1Height := ObjectHeight / 2
+		PictureLayer2Height := ObjectHeight - PictureLayer1Height
+	End If
+
+	If MBevelWidth <= Min(ObjectWidth / 2, ObjectHeight / 2) Then
+		BevelWidthDraw := MBevelWidth
+	End If
+
+	If MBackgroundPicture <> Nothing Then
+		PictureLayer1.SetAlign(PICTURE_ALIGNTOP BitOr PICTURE_ALIGNHCENTER)
+		PictureLayer1.SetPicture(MBackgroundPicture)
+		PictureLayer1.SetOpacity(MOpacity)
+		PictureLayer1.SetFitting(FITTING_FILL_OBJECT_PROPORTIONALLY)
+		PictureLayer1.SetObjectPosition(0, 0)
+		PictureLayer1.SetObjectDimensions(ObjectWidth, PictureLayer1Height)
+	
+		PictureLayer2.SetAlign(PICTURE_ALIGNBOTTOM BitOr PICTURE_ALIGNHCENTER)
+		PictureLayer2.SetPicture(MBackgroundPicture)
+		PictureLayer2.SetOpacity(MOpacity)
+		PictureLayer2.SetFitting(FITTING_FILL_OBJECT_PROPORTIONALLY)
+		PictureLayer2.SetObjectPosition(0, PictureLayer1Height)
+		PictureLayer2.SetObjectDimensions(ObjectWidth, PictureLayer2Height)
+	Else
+//		BevelWidthDraw := MBevelWidth
+	End If
+
+	If MFloodPicture <> Nothing Then
+		PictureLayer3.SetAlign(PICTURE_ALIGNTOP BitOr PICTURE_ALIGNHCENTER)
+		PictureLayer3.SetPicture(MFloodPicture)
+		PictureLayer3.SetOpacity(MOpacity)
+		PictureLayer3.SetFitting(FITTING_FILL_OBJECT_PROPORTIONALLY)
+		PictureLayer3Width := ObjectWidth
+	
+		PictureLayer4.SetAlign(PICTURE_ALIGNBOTTOM BitOr PICTURE_ALIGNHCENTER)
+		PictureLayer4.SetPicture(MFloodPicture)
+		PictureLayer4.SetOpacity(MOpacity)
+		PictureLayer4.SetFitting(FITTING_FILL_OBJECT_PROPORTIONALLY)
+		PictureLayer4Width := ObjectWidth
+		
+		TravelDistance := ObjectHeight
+		TravelStart := 0	
+	Else
+		TravelDistance := ObjectHeight - 2 * BevelWidthDraw
+		TravelStart := BevelWidthDraw
+	End If
+
+	If MKnobPicture <> Nothing Then
+		PictureLayer5.SetPicture(MKnobPicture)
+		PictureLayer5.SetOpacity(MOpacity)
+		PictureLayer5.SetFitting(FITTING_FILL_OBJECT_PROPORTIONALLY)
+			
+		PictureLayer5Height:= ObjectWidth * MKnobPicture.GetHeight() / MKnobPicture.GetWidth()
+		PictureLayer5.SetObjectDimensions(ObjectWidth, PictureLayer5Height)
+			
+		TravelStart := Max(BevelWidthDraw, PictureLayer5Height / 2)
+		TravelDistance := ObjectHeight - 2 * TravelStart
+		AllowedTouchOffset := Max(PictureLayer5Height / 2, TravelDistance * MActiveTouchZoneSize / 200)
+	Else	
+		AllowedTouchOffset := TravelDistance * MActiveTouchZoneSize / 200
+	End If
+
+	UnlockRedraw()
+	
+	MStepValue := Abs(MStepValue)
+	
+	PixToValCoef := (MMaximum - MMinimum) / TravelDistance
+	
+	If MLogBase10 = SLIDER_SCALE_TYPE_LOG10 Then
+		SliderPos := LogPos(CurrentValue)
+		If MFloodType = FLOOD_BOTTOMTOTOP  Or  MFloodType = FLOOD_RIGHTTOLEFT Then
+			SliderPos := TravelDistance - SliderPos
+		End If
+	Else	
+		If MStepValue <> 0 Then
+			CurrentValue := MMinimum + MStepValue * CLong((CurrentValue - MMinimum) / MStepValue)
+		End If
+	
+		SliderPos := (CurrentValue - MMinimum) / PixToValCoef
+				
+		If MFloodType = FLOOD_BOTTOMTOTOP Then
+			SliderPos := TravelDistance - SliderPos
+		End If
+	End If
+		
+	FloodPos := SliderPos
+
+	Redraw()
+End Function
+
+//oprava 22.6.2015
+Protected Function SetDynamicDrawParameters()
+
+Var FloodHeight As Long 
+
+	If MFloodPicture <> Nothing Then
+	
+		If MFloodType = FLOOD_BOTTOMTOTOP 
+			Then FloodHeight := ObjectHeight - TravelStart - SliderPos
+			Else FloodHeight := TravelStart + SliderPos
+		End If
+	
+		Select MFloodType
+			Case FLOOD_BOTTOMTOTOP
+				If MFloodStyle = FLOOD_STYLE_CUT_OFF Then
+					If FloodHeight <= PictureLayer1Height Then
+					//If FloodHeight <= PictureLayer2Height Then
+						PictureLayer4Height := FloodHeight
+						PictureLayer4Y := ObjectHeight - FloodHeight
+						PictureLayer3Height := 0
+					Else
+					//ElseIf FloodHeight > PictureLayer2Height Then
+						PictureLayer4Height := PictureLayer2Height
+						PictureLayer4Y := PictureLayer1Height
+						PictureLayer3Height := FloodHeight - PictureLayer4Height
+						PictureLayer3Y := PictureLayer1Height - PictureLayer3Height
+						PictureLayer3OffsetY := -PictureLayer3Y
+					End If
+				
+				Else
+					PictureLayer4Height := FloodHeight / 2
+					PictureLayer4Y := ObjectHeight - PictureLayer4Height
+					PictureLayer3Height := FloodHeight - PictureLayer4Height
+
+					If FloodHeight <= PictureLayer2Height Then
+						PictureLayer3Y := ObjectHeight - FloodHeight
+					ElseIf FloodHeight > PictureLayer2Height Then
+						PictureLayer3Y := PictureLayer4Y - PictureLayer3Height
+					End If
+				
+					PictureLayer3OffsetY := 0
+				End If
+
+				PictureLayer4OffsetY := 0
+	
+			Case FLOOD_TOPTOBOTTOM
+				If MFloodStyle = 0 Then
+					If FloodHeight <= PictureLayer1Height Then
+						PictureLayer3Height := FloodHeight
+						PictureLayer3Y := 0
+						PictureLayer4Height := 0
+					Else
+						PictureLayer3Height := PictureLayer1Height
+						PictureLayer3Y := 0
+						PictureLayer4Height := FloodHeight - PictureLayer3Height
+						PictureLayer4Y := PictureLayer3Height
+						PictureLayer4OffsetY := PictureLayer2Height - PictureLayer4Height
+					End If
+		
+				Else
+					PictureLayer3Height := FloodHeight / 2
+					PictureLayer3Y := 0
+					PictureLayer4Height := FloodHeight - PictureLayer3Height
+					PictureLayer4Y := PictureLayer3Height
+					PictureLayer4OffsetY := 0
+				End If
+
+				PictureLayer3OffsetY := 0
+		End Select
+	End If
+
+	If MKnobPicture <> Nothing Then
+	
+		PictureLayer5Y := TravelStart + SliderPos - PictureLayer5Height / 2
+		
+	End If
+
+End Function
+
+
+Public Function SetAspectRatioMaximum(newaspectratiomaximum As Double) As Boolean
+
+	If newaspectratiomaximum >= MAspectRatioMinimum Then
+		MAspectRatioMaximum := newaspectratiomaximum
+		SetDrawParameters()
+		RedrawCompoundObject()
+		Return Value True
+	Else
+		Return Value False
+	End If
+	
+End Function
+
+
+Public Function GetAspectRatioMaximum() As Double
+
+	Return Value MAspectRatioMaximum
+	
+End Function
+
+
+Public Function SetAspectRatioMinimum(newaspectratiominimum As Double) As Boolean
+
+	If newaspectratiominimum <= MAspectRatioMaximum Then
+		MAspectRatioMinimum := newaspectratiominimum
+		SetDrawParameters()
+		RedrawCompoundObject()
+		Return Value True
+	Else
+		Return Value False
+	End If
+	
+End Function
+
+
+Public Function GetAspectRatioMinimum() As Double
+
+	Return Value MAspectRatioMinimum
+	
+End Function
+
+
+Public Function SetFloodType(newfloodtype As Long) As Boolean
+
+	If newfloodtype >= 3 And newfloodtype <= 4 Then
+		MFloodType := newfloodtype
+//		SetDrawParameters()
+		RedrawCompoundObject()
+		Return Value True
+	Else
+		Return Value False
+	End If
+	
+End Function
+
+
+Public Function GetFloodType() As Long
+
+	Return Value MFloodType
+	
+End Function
+
+
+End GraphicClass
+
+// VerticalSlider
+// End of object -------------------------------------------------------------------------
+
+
+// Start of object -----------------------------------------------------------------------
+// HorizontalSlider
+
+Global GraphicClass BaseHorizontalSlider Inherits BaseSlider WithAttributes {hiddeninide}	
+
+// Appearance Var Group
+Protected Var MAspectRatioMaximum As Double := 10.000 
+Protected Var MAspectRatioMinimum As Double := 1.000 
+//Protected Var MHorizontalFloodType As Long := FLOOD_LEFTTORIGHT 
+
+
+Private Function Init()
+
+//	SetDrawParameters()
+//	RedrawCompoundObject()
+	
+End Function
+
+//Oprava 12.5.2015
+Protected Function SetDrawParameters()
+
+	GetSize(ObjectWidth, ObjectHeight)
+
+	LockRedraw()
+
+	If MBackgroundPicture <> Nothing Or MFloodPicture <> Nothing Then
+		If CDouble(ObjectWidth) / ObjectHeight < MAspectRatioMinimum Then
+			ObjectWidth := ObjectHeight * MAspectRatioMinimum
+		ElseIf CDouble(ObjectWidth) / ObjectHeight > MAspectRatioMaximum Then
+			ObjectWidth := ObjectHeight * MAspectRatioMaximum
+		End If
+	
+		SetSize(ObjectWidth, ObjectHeight)
+		PictureLayer1Width := ObjectWidth / 2
+		PictureLayer2Width := ObjectWidth - PictureLayer1Width
+	End If
+
+	If MBevelWidth <= Min(ObjectWidth / 2, ObjectHeight / 2) Then
+		BevelWidthDraw := MBevelWidth
+	End If
+
+	If MBackgroundPicture <> Nothing Then
+		PictureLayer1.SetAlign(PICTURE_ALIGNLEFT BitOr PICTURE_ALIGNVCENTER)
+		PictureLayer1.SetPicture(MBackgroundPicture)
+		PictureLayer1.SetOpacity(MOpacity)
+		PictureLayer1.SetFitting(FITTING_FILL_OBJECT_PROPORTIONALLY)
+		PictureLayer1.SetObjectPosition(0, 0)
+		PictureLayer1.SetObjectDimensions(PictureLayer1Width, ObjectHeight )
+	
+		PictureLayer2.SetAlign(PICTURE_ALIGNRIGHT BitOr PICTURE_ALIGNVCENTER)
+		PictureLayer2.SetPicture(MBackgroundPicture)
+		PictureLayer2.SetOpacity(MOpacity)
+		PictureLayer2.SetFitting(FITTING_FILL_OBJECT_PROPORTIONALLY)
+		PictureLayer2.SetObjectPosition( PictureLayer1Width, 0)
+		PictureLayer2.SetObjectDimensions(PictureLayer2Width, ObjectHeight)
+	End If
+
+	If MFloodPicture <> Nothing Then
+		PictureLayer3.SetAlign(PICTURE_ALIGNLEFT BitOr PICTURE_ALIGNVCENTER)
+		PictureLayer3.SetPicture(MFloodPicture)
+		PictureLayer3.SetOpacity(MOpacity)
+		PictureLayer3.SetFitting(FITTING_FILL_OBJECT_PROPORTIONALLY)
+		PictureLayer3Height := ObjectHeight
+	
+		PictureLayer4.SetAlign(PICTURE_ALIGNRIGHT BitOr PICTURE_ALIGNVCENTER)
+		PictureLayer4.SetPicture(MFloodPicture)
+		PictureLayer4.SetOpacity(MOpacity)
+		PictureLayer4.SetFitting(FITTING_FILL_OBJECT_PROPORTIONALLY)
+		PictureLayer4Height := ObjectHeight
+		
+		TravelDistance := ObjectWidth
+		TravelStart := 0	
+	Else
+		TravelDistance := ObjectWidth - 2 * BevelWidthDraw
+		TravelStart := BevelWidthDraw
+	End If
+
+	If MKnobPicture <> Nothing Then
+		PictureLayer5.SetPicture(MKnobPicture)
+		PictureLayer5.SetOpacity(MOpacity)
+		PictureLayer5.SetFitting(FITTING_FILL_OBJECT_PROPORTIONALLY)
+			
+		PictureLayer5Width:= ObjectHeight * MKnobPicture.GetWidth() / MKnobPicture.GetHeight()
+		PictureLayer5.SetObjectDimensions(PictureLayer5Width, ObjectHeight)
+			
+		TravelStart := Max( BevelWidthDraw, PictureLayer5Width / 2 )
+		TravelDistance := ObjectWidth - 2 * TravelStart
+		AllowedTouchOffset := Max( PictureLayer5Width / 2, TravelDistance * MActiveTouchZoneSize / 200 )
+	Else	
+		AllowedTouchOffset := TravelDistance * MActiveTouchZoneSize / 200
+	End If
+
+	UnlockRedraw()
+	
+	MStepValue := Abs(MStepValue)
+	
+	
+	
+	If MLogBase10  = SLIDER_SCALE_TYPE_LOG10 Then
+		SliderPos := LogPos(CurrentValue)
+		If MFloodType = FLOOD_BOTTOMTOTOP  Or  MFloodType = FLOOD_RIGHTTOLEFT Then
+			SliderPos := TravelDistance - SliderPos
+		End If
+	Else	
+		If MStepValue <> 0 Then
+			CurrentValue := MMinimum + MStepValue * CLong((CurrentValue - MMinimum) / MStepValue)
+		End If
+	
+		SliderPos := (CurrentValue - MMinimum) / PixToValCoef	
+		If MFloodType = FLOOD_RIGHTTOLEFT Then
+			SliderPos := TravelDistance - SliderPos
+		End If
+	End If
+	
+	
+	PixToValCoef := (MMaximum - MMinimum) / TravelDistance
+	
+	FloodPos := SliderPos
+	
+End Function
+
+
+
+Protected Function SetDynamicDrawParameters()
+
+Var FloodWidth As Long 
+
+	If MFloodPicture <> Nothing Then
+
+		If MFloodType = FLOOD_RIGHTTOLEFT 
+			Then FloodWidth := ObjectWidth - TravelStart - SliderPos
+			Else FloodWidth :=TravelStart + SliderPos
+		End If
+	
+		Select MFloodType
+			Case FLOOD_LEFTTORIGHT
+				If MFloodStyle = 0 Then
+					If FloodWidth <= PictureLayer1Width Then
+						PictureLayer3Width := FloodWidth
+						PictureLayer3X := 0
+						PictureLayer4Width := 0
+					Else
+						PictureLayer3Width := PictureLayer1Width
+						PictureLayer3X := 0
+						PictureLayer4Width := FloodWidth - PictureLayer3Width
+						PictureLayer4X := PictureLayer3Width
+						PictureLayer4OffsetX := PictureLayer2Width - PictureLayer4Width
+					End If
+	
+				Else
+					PictureLayer3Width := FloodWidth / 2
+					PictureLayer3X := 0
+					PictureLayer4Width := FloodWidth - PictureLayer3Width
+					PictureLayer4X := PictureLayer3Width
+					PictureLayer4OffsetX := 0
+				End If
+
+				PictureLayer3OffsetX := 0
+	
+			Case FLOOD_RIGHTTOLEFT
+				If MFloodStyle = FLOOD_STYLE_CUT_OFF Then
+					If FloodWidth <= PictureLayer2Width Then
+						PictureLayer4Width := FloodWidth
+						PictureLayer4X := ObjectWidth - FloodWidth
+						PictureLayer3Width := 0
+					Else
+						PictureLayer4Width := PictureLayer2Width
+						PictureLayer4X := PictureLayer1Width
+						PictureLayer3Width := FloodWidth - PictureLayer4Width
+						PictureLayer3X := PictureLayer1Width - PictureLayer3Width
+						PictureLayer3OffsetX := -PictureLayer3X
+					End If
+				
+				Else
+					PictureLayer4Width := FloodWidth / 2
+					PictureLayer4X := ObjectWidth - PictureLayer4Width
+					PictureLayer3Width := FloodWidth - PictureLayer4Width
+
+					If FloodWidth <= PictureLayer2Width Then
+						PictureLayer3X := ObjectWidth - FloodWidth
+					ElseIf FloodWidth > PictureLayer2Width Then
+						PictureLayer3X := PictureLayer4X - PictureLayer3Width
+					End If
+				
+					PictureLayer3OffsetX := 0
+				End If
+
+				PictureLayer4OffsetX := 0
+
+		End Select
+	End If
+
+	If MKnobPicture <> Nothing Then
+		PictureLayer5X := TravelStart + SliderPos - PictureLayer5Width / 2
+	End If
+
+End Function
+
+
+Public Function SetAspectRatioMaximum(newaspectratiomaximum As Double) As Boolean
+
+	If newaspectratiomaximum >= MAspectRatioMinimum Then
+		MAspectRatioMaximum := newaspectratiomaximum
+		SetDrawParameters()
+		RedrawCompoundObject()
+		Return Value True
+	Else
+		Return Value False
+	End If
+	
+End Function
+
+
+Public Function GetAspectRatioMaximum() As Double
+
+	Return Value MAspectRatioMaximum
+	
+End Function
+
+
+Public Function SetAspectRatioMinimum(newaspectratiominimum As Double) As Boolean
+
+	If newaspectratiominimum <= MAspectRatioMaximum Then
+		MAspectRatioMinimum := newaspectratiominimum
+		SetDrawParameters()
+		RedrawCompoundObject()
+		Return Value True
+	Else
+		Return Value False
+	End If
+	
+End Function
+
+
+Public Function GetAspectRatioMinimum() As Double
+
+	Return Value MAspectRatioMinimum
+	
+End Function
+
+
+Public Function SetFloodType(newfloodtype As Long) As Boolean
+
+	If newfloodtype >= 1 And newfloodtype <= 2 Then
+		MFloodType := newfloodtype
+//		SetDrawParameters()
+		RedrawCompoundObject()
+		Return Value True
+	Else
+		Return Value False
+	End If
+	
+End Function
+
+
+Public Function GetFloodType() As Long
+
+	Return Value MFloodType
+	
+End Function
+
+
+End GraphicClass
+
+// HorizontalSlider
+// End of object -------------------------------------------------------------------------
+
+
+// Sliders
+// End of group ******************************************************************* 
+
+
+
+// Start of group ***************************************************************** 
+// ProgressIndicators
+// Revised: 8.2.2013
+// Author: Miroslav Pechlát
+
+
+// Start of object -----------------------------------------------------------------------
+// MarqueeProgressIndicator
+
+Global GraphicClass BaseMarqueeProgressIndicator Inherits BaseGraphicClass WithAttributes {hiddeninide}	
+
+// Behavior Var Group
+Protected Var MEvents As Boolean := False 
+Protected Var MFrameRate As Double := 8 
+
+// Appearance Var Group
+Protected Var MColor As Long := _COLOR_BLACK 
+Protected Var MOpacity As Byte := 255 
+
+Public Event OnTouch As Process()
+
+// Common declaration
+Private Var ObjectWidth As Long
+Private Var ObjectHeight As Long
+Private Var SquareSize As Long
+Private Var ColorDraw[8] As Long
+Private Var Index As Long
+Private Var FramePeriod As Time
+
+
+Private Function Init()
+
+	UpdateDrawColors()
+	SetDrawParameters()
+	SetFrameRate(MFrameRate)
+
+End Function
+
+
+Protected Function UpdateDrawColors() 
+
+	ColorDraw[1] := SetColorComponentOpacity(MColor, GetColorComponentOpacity(MColor) * MOpacity * 167 / 65025)
+	ColorDraw[2] := SetColorComponentOpacity(MColor, GetColorComponentOpacity(MColor) * MOpacity * 110 / 65025)
+	ColorDraw[3] := SetColorComponentOpacity(MColor, GetColorComponentOpacity(MColor) * MOpacity * 66 / 65025)
+	ColorDraw[4] := SetColorComponentOpacity(MColor, GetColorComponentOpacity(MColor) * MOpacity * 53 / 65025)
+	ColorDraw[5] := ColorDraw[4]
+	ColorDraw[6] := ColorDraw[4]
+	ColorDraw[7] := ColorDraw[4]
+	ColorDraw[8] := ColorDraw[4]
+
+End Function
+
+
+Protected Function SetDrawParameters()
+
+	GetSize(ObjectWidth, ObjectHeight)
+	SquareSize := 2 * ( Min(ObjectWidth, ObjectHeight) / 8)
+	SetSize(4 * SquareSize, 4 * SquareSize)
+
+End Function
+
+
+Protected Function OnDraw()
+
+	DrawRectangle(ColorDraw[(Index + 1) Mod 8 + 1], 0, SquareSize * 3 / 2, SquareSize, SquareSize)
+	DrawRectangle(ColorDraw[(Index + 2) Mod 8 + 1], 0, SquareSize * 3, SquareSize, SquareSize)
+	DrawRectangle(ColorDraw[(Index + 3) Mod 8 + 1], SquareSize * 3 / 2, SquareSize * 3, SquareSize, SquareSize)
+	DrawRectangle(ColorDraw[(Index + 4) Mod 8 + 1], SquareSize * 3, SquareSize * 3, SquareSize, SquareSize)
+	DrawRectangle(ColorDraw[(Index + 5) Mod 8 + 1], SquareSize * 3, SquareSize * 3 / 2, SquareSize, SquareSize)
+	DrawRectangle(ColorDraw[(Index + 6) Mod 8 + 1], SquareSize * 3, 0, SquareSize, SquareSize)
+	DrawRectangle(ColorDraw[(Index + 7) Mod 8 + 1], SquareSize * 3 / 2, 0, SquareSize, SquareSize)
+	DrawRectangle(ColorDraw[(Index + 8) Mod 8 + 1], 0, 0, SquareSize, SquareSize)
+
+End Function
+
+
+Protected Function OnShow()
+
+	StartTimer(1, FramePeriod, _TIMER_PAUSEIFHIDDEN)
+
+End Function
+
+
+Protected Function OnDown(x As Long, y As Long, eventtime As Time) As Boolean
+
+	If MEvents Then
+		RaiseEvent OnTouch()
+	End If
+
+	Return Value True
+
+End Function
+
+
+Protected Function OnTimer(timerid As Long)
+
+	Index := (Index + 1) Mod 8
+	Redraw()
+	StartTimer(1, FramePeriod, _TIMER_PAUSEIFHIDDEN)
+
+End Function
+
+
+Public Function SetEvents(newevents As Boolean) As Boolean
+
+	MEvents := newevents
+	Return Value True
+
+End Function
+
+
+Public Function GetEvents() As Boolean
+
+	Return Value MEvents
+
+End Function
+
+
+Public Function SetFrameRate(newframerate As Double) As Boolean
+
+	If newframerate < 0 Or newframerate > 100 Then
+		Return Value False
+	End If
+
+	StopTimer(1)
+	
+	If newframerate <> 0 Then
+		MFrameRate := newframerate
+		FramePeriod := :1.0 / MFrameRate
+		If GetVisible() Then
+			StartTimer(1, FramePeriod, _TIMER_PAUSEIFHIDDEN)
+		End If
+	End If
+	
+	Return Value True
+
+End Function
+
+
+Public Function GetFrameRate() As Double
+
+	Return Value MFrameRate
+
+End Function
+
+
+Public Function SetObjectDimensions(newwidth As Long, newheight As Long) As Boolean
+
+	SetSize(newwidth, newheight)
+	GetSize(ObjectWidth, ObjectHeight)
+	SetDrawParameters()
+	Redraw()
+	Return Value True
+
+End Function
+
+
+Public Function GetObjectDimensions(ByRef currentwidth As Long, ByRef currentheight As Long)
+
+	GetSize(currentwidth, currentheight)
+
+End Function
+
+
+Public Function SetObjectPosition(newx As Long, newy As Long) As Boolean
+Private Var Response As Boolean
+
+	Response := SetPosition(newx, newy)
+	Redraw()
+	Return Value Response
+
+End Function
+
+
+Public Function GetObjectPosition(ByRef currentx As Long, ByRef currenty As Long)
+
+	GetPosition(currentx, currenty)
+
+End Function
+
+
+Public Function ShowObject()
+
+	Show()
+
+End Function
+
+
+Public Function HideObject()
+
+	Hide()
+
+End Function
+
+
+Public Function IsObjectVisible() As Boolean
+
+	Return Value GetVisible()
+
+End Function
+
+
+Global Function BringToFrontZOrder()
+
+	BringToFront()
+
+End Function
+
+
+Global Function RestoreZOrder()
+
+	SendToDefault()
+
+End Function
+
+
+End GraphicClass
+
+// MarqueeProgressIndicator
+// End of object -------------------------------------------------------------------------
+
+
+// ProgressIndicators
+// End of group ******************************************************************* 
+
+
+
+// Start of group ***************************************************************** 
+// Indicators
+// Revised: 24.1.2014
+// Author: Miroslav Pechlat
+
+
+// Start of object -----------------------------------------------------------------------
+// Indicator
+
+Public GraphicClass BaseIndicator Inherits BaseGraphicClass WithAttributes {hiddeninide}	
+
+// Appearance Var Group
+Protected Var MActiveColor As Long := _COLOR_RED 
+Protected Var MActivePicture As AddressOf _Picture := Nothing 
+Protected Var MConstrainProportion As Boolean := True 
+Protected Var MNonActiveColor As Long := _COLOR_GREY 
+Protected Var MNonActivePicture As AddressOf _Picture := Nothing 
+Protected Var MOpacity As Byte := 255 
+
+// Behavior Var Group
+Protected Var MBlinkDutyCycle As Byte := 128 
+Protected Var MBlinkPeriod As Time := :0 
+Protected Var MEvents As Boolean := False 
+Protected Var MIndicatorValue As Boolean := False 
+
+Public Event OnTouch As Process()
+
+// Common declaration
+Private Var ActiveBlinkInterval As Time
+Private Var NonActiveBlinkInterval As Time
+Private Var ActiveColorDraw As Long
+Private Var NonActiveColorDraw As Long
+Protected Var ObjectWidth As Long
+Protected Var ObjectHeight As Long
+Private Var ObjectProportion As Double
+Private Var PictureProportion As Double
+
+
+Protected Function Init()
+
+	UpdateDimensions()
+	UpdateDrawColors()
+	SetBlinkPeriod(MBlinkPeriod)
+
+End Function
+
+Protected Function UpdateDrawColors()
+
+	ActiveColorDraw := SetColorComponentOpacity(MActiveColor, GetColorComponentOpacity(MActiveColor) * MOpacity / 255)
+	NonActiveColorDraw := SetColorComponentOpacity(MNonActiveColor, GetColorComponentOpacity(MNonActiveColor) * MOpacity / 255)
+
+End Function
+
+
+Protected Function UpdateDimensions()
+
+	GetSize(ObjectWidth, ObjectHeight)
+	If MConstrainProportion Then
+
+		If MActivePicture <> Nothing Then	
+			ObjectProportion := CDouble(ObjectWidth) / ObjectHeight
+			PictureProportion := CDouble(MActivePicture.GetWidth()) / MActivePicture.GetHeight()
+			If ObjectProportion > PictureProportion Then
+				ObjectWidth := ObjectHeight * PictureProportion
+			ElseIf ObjectProportion < PictureProportion Then
+				ObjectHeight := ObjectWidth / PictureProportion
+			End If
+			SetSize(ObjectWidth, ObjectHeight)
+		End If
+	End If
+
+End Function
+
+
+Protected Function OnDraw()
+
+	If MIndicatorValue Then
+		If MActivePicture = Nothing Then
+			DrawRectangle(ActiveColorDraw)
+		Else
+			DrawStretchedPicture(MActivePicture, 0, 0, ObjectWidth, ObjectHeight, 0, 0, -1, -1, MOpacity)
+		End If
+	Else
+		If MNonActivePicture = Nothing Then
+			DrawRectangle(NonActiveColorDraw)
+		Else
+			DrawStretchedPicture(MNonActivePicture, 0, 0, ObjectWidth, ObjectHeight, 0, 0, -1, -1, MOpacity)
+		End If
+	End If
+
+End Function
+
+
+Protected Function OnTimer(timerid As Long)
+
+	If MBlinkPeriod <> :0 Then
+		If MIndicatorValue Then
+			StartTimer(1, NonActiveBlinkInterval)
+		Else
+			StartTimer(1, ActiveBlinkInterval)
+		End If
+		MIndicatorValue := Not MIndicatorValue
+		Redraw()
+	End If
+	
+End Function
+
+Protected Function OnDown(x As Long, y As Long, eventtime As Time) As Boolean
+
+ 	If MEvents Then
+		RaiseEvent OnTouch()
+		Return Value True
+	End If
+
+ Return Value False
+ 
+End Function
+
+
+Public Function SetBlinkDutyCycle(newblinkdutycycle As Double) As Boolean
+
+	If newblinkdutycycle >= 0 And newblinkdutycycle <= 100 Then
+		MBlinkDutyCycle := (255 * newblinkdutycycle) / 100
+		ActiveBlinkInterval := MBlinkPeriod * (MBlinkDutyCycle) / 255
+		NonActiveBlinkInterval := MBlinkPeriod * (255 - MBlinkDutyCycle) / 255
+		Return Value True
+	Else
+		Return Value False
+	End If
+
+End Function
+
+
+Public Function GetBlinkDutyCycle() As Double
+
+	Return Value (MBlinkDutyCycle * 100) / 255
+
+End Function
+
+
+Public Function SetBlinkPeriod(newblinkperiod As Time) As Boolean
+
+	MBlinkPeriod := newblinkperiod
+	ActiveBlinkInterval := MBlinkPeriod * CDouble(MBlinkDutyCycle) / 255
+	NonActiveBlinkInterval := MBlinkPeriod * CDouble(255 - MBlinkDutyCycle) / 255
+
+	If MBlinkPeriod <> :0 Then
+		StartTimer(1, :0)
+	End If
+
+	Return Value True
+
+End Function
+
+
+Public Function GetBlinkPeriod() As Time
+
+	Return Value MBlinkPeriod
+
+End Function
+//
+//
+//Public Function SetConstrainProportion(newconstrainproportion As Boolean) As Boolean
+//
+//	MConstrainProportion := newconstrainproportion
+//	Redraw()
+//	Return Value True
+//
+//End Function
+//
+//
+//Public Function GetConstrainProportion() As Boolean
+//
+//	Return Value MConstrainProportion
+//
+//End Function
+//
+//
+Public Function SetEvents(newevents As Boolean) As Boolean
+
+	MEvents := newevents
+	Return Value True
+
+End Function
+
+
+Public Function GetEvents() As Boolean
+
+	Return Value MEvents
+
+End Function
+
+
+Public Function SetValue(newvalue As Boolean) As Boolean
+	
+	MIndicatorValue := newvalue
+	Redraw()
+	Return Value True
+	
+End Function
+
+
+Public Function GetValue() As Boolean
+	
+	Return Value MIndicatorValue
+	
+End Function
+
+
+Public Function SetObjectDimensions(newwidth As Long, newheight As Long) As Boolean
+	
+	SetSize(newwidth, newheight)
+	UpdateDimensions()
+	Redraw()
+	Return Value True
+
+End Function
+
+
+Public Function GetObjectDimensions(ByRef currentwidth As Long, ByRef currentheight As Long)
+
+	GetSize(currentwidth, currentheight)
+
+End Function
+
+
+Public Function SetObjectPosition(newx As Long, newy As Long) As Boolean
+Private Var Response As Boolean
+
+	Response := SetPosition(newx, newy)
+	Redraw()
+	Return Value Response
+
+End Function
+
+
+Public Function GetObjectPosition(ByRef currentx As Long, ByRef currenty As Long)
+
+	GetPosition(currentx, currenty)
+
+End Function
+
+
+Public Function ShowObject()
+
+	Show()
+
+End Function
+
+
+Public Function HideObject()
+
+	Hide()
+
+End Function
+
+
+Public Function IsObjectVisible() As Boolean
+
+	Return Value GetVisible()
+
+End Function
+
+
+Global Function BringToFrontZOrder()
+
+	BringToFront()
+
+End Function
+
+
+Global Function RestoreZOrder()
+
+	SendToDefault()
+
+End Function
+
+
+End GraphicClass
+
+// Indicator
+// End of object -------------------------------------------------------------------------
+
+// Indicators
+// End of group ******************************************************************* 
+
+// GenericObjects
+// End of collection ******************************************************************* 

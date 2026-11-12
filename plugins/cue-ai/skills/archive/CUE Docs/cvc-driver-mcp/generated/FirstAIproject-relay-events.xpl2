@@ -1,0 +1,16 @@
+Private Process Home_Button1_OnPush() Link Home.Button1.OnPush
+    SmartRelay1.RelayControl.Relay1On()
+End Process
+
+Private Process Home_Button2_OnPush() Link Home.Button2.OnPush
+    SmartRelay1.RelayControl.Relay1Off()
+End Process
+
+// SmartRelay1 / RelayControl
+Public Function Relay1On()
+    RE1.Close()
+End Function
+
+Public Function Relay1Off()
+    RE1.Open()
+End Function

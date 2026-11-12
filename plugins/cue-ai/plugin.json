@@ -1,0 +1,16 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "cue-ai",
+  "version": "1.0.0",
+  "description": "CUE Visual Composer MCP, CUE documentation and bundled CVC project skills.",
+  "extensions": {
+    "com.openai": {
+      "requires_local_executor": true,
+      "interface": {
+        "displayName": "CUE AI",
+        "shortDescription": "CVC projekty a dokumentace",
+        "capabilities": []
+      }
+    }
+  }
+}

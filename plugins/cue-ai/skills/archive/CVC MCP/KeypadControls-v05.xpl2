@@ -1,0 +1,83 @@
+Private Var SelectedInput As Long := 0
+Global Event InputPressed As Process(inputid As Long)
+
+Private Process MonitorOn() Link Keypad1.Button1.OnPush
+    StartProcess TouchPanel1.AVService.PowerOn()
+End Process
+Private Process MonitorOff() Link Keypad1.Button2.OnPush
+    StartProcess TouchPanel1.AVService.PowerOff()
+End Process
+Private Process PreviousInput() Link Keypad1.Button3.OnPush
+    SelectedInput -= 1
+    If SelectedInput < 1 Then SelectedInput := 11 End If
+    RaiseEvent InputPressed(SelectedInput)
+End Process
+Private Process NextInput() Link Keypad1.Button4.OnPush
+    SelectedInput += 1
+    If SelectedInput > 11 Then SelectedInput := 1 End If
+    RaiseEvent InputPressed(SelectedInput)
+End Process
+Private Process Light1() Link Keypad1.Button5.OnPush
+    StartProcess SmartRelay1.RelayControl.ToggleRelay1()
+End Process
+Private Process Light2() Link Keypad1.Button6.OnPush
+    StartProcess SmartRelay1.RelayControl.ToggleRelay2()
+End Process
+Private Process DimDown() Link Keypad1.Button7.OnPush
+    StartProcess SmartRelay1.RelayControl.AdjustDimmer(-10)
+End Process
+Private Process DimUp() Link Keypad1.Button8.OnPush
+    StartProcess SmartRelay1.RelayControl.AdjustDimmer(10)
+End Process
+
+Private Process TouchPanel1Input(inputid As Long) Link TouchPanel1.SamsungControls.InputPressed
+    SelectedInput := inputid
+End Process
+
+Private Process TouchPanel1Snapshot(inputid As Long) Link TouchPanel1.SamsungControls.InputSnapshot
+    If SelectedInput = 0 Then SelectedInput := inputid End If
+End Process
+
+Private Process TouchPanel2Input(inputid As Long) Link TouchPanel2.SamsungControls.InputPressed
+    SelectedInput := inputid
+End Process
+
+Private Process TouchPanel2Snapshot(inputid As Long) Link TouchPanel2.SamsungControls.InputSnapshot
+    If SelectedInput = 0 Then SelectedInput := inputid End If
+End Process
+
+Private Process Relay1Feedback(isclosed As Boolean) Link SmartRelay1.RelayControl.Relay1StateChanged
+    If isclosed Then
+        Keypad1.Button5.LEDOn()
+    Else
+        Keypad1.Button5.LEDOff()
+    End If
+End Process
+
+Private Process Relay2Feedback(isclosed As Boolean) Link SmartRelay1.RelayControl.Relay2StateChanged
+    If isclosed Then
+        Keypad1.Button6.LEDOn()
+    Else
+        Keypad1.Button6.LEDOff()
+    End If
+End Process
+
+Private Process DimmerFeedback(level As Double) Link SmartRelay1.RelayControl.DimmerLevelChanged
+    If level > 0 Then
+        Keypad1.Button7.LEDOn()
+    Else
+        Keypad1.Button7.LEDOff()
+    End If
+    If level < 100 Then
+        Keypad1.Button8.LEDOn()
+    Else
+        Keypad1.Button8.LEDOff()
+    End If
+End Process
+
+Private Process MonitorFeedback(status As Long) Link SamsungMonitor1.OnPowerStatusChange
+    Keypad1.Button1.LEDOff()
+    Keypad1.Button2.LEDOff()
+    If status = 1 Then Keypad1.Button1.LEDOn() End If
+    If status = 0 Then Keypad1.Button2.LEDOn() End If
+End Process

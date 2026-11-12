@@ -1,0 +1,1046 @@
+// Unit controlCUE-basic CS0552 21.70
+
+// PRODUCTNAME:=controlCUE-basic
+// CSCODE:=CS0552
+// FIRMWAREVERSION:=21.70
+// DESCRIPTIONREV:=232
+// GROUPNAME:=Controllers
+// PRODUCTTYPE:=Controller
+// ALSERVER:=1
+// CLIENT_ALSERVER:=0
+// CLIENT_CLOUD:=1
+
+Global	Const	_LANGUAGE_DEFAULT As Long	:= 0
+Global	Const	_LANGUAGE_AFRIKAANS As Long	:= 1
+Global	Const	_LANGUAGE_ALBANIAN As Long	:= 2
+Global	Const	_LANGUAGE_ARABIC_UNITED_ARAB_EMIRATES As Long	:= 3
+Global	Const	_LANGUAGE_ARABIC_BAHRAIN As Long	:= 4
+Global	Const	_LANGUAGE_ARABIC_ALGERIA As Long	:= 5
+Global	Const	_LANGUAGE_ARABIC_EGYPT As Long	:= 6
+Global	Const	_LANGUAGE_ARABIC_IRAQ As Long	:= 7
+Global	Const	_LANGUAGE_ARABIC_JORDAN As Long	:= 8
+Global	Const	_LANGUAGE_ARABIC_KUWAIT As Long	:= 9
+Global	Const	_LANGUAGE_ARABIC_LEBANON As Long	:= 10
+Global	Const	_LANGUAGE_ARABIC_LIBYA As Long	:= 11
+Global	Const	_LANGUAGE_ARABIC_MOROCCO As Long	:= 12
+Global	Const	_LANGUAGE_ARABIC_OMAN As Long	:= 13
+Global	Const	_LANGUAGE_ARABIC_QATAR As Long	:= 14
+Global	Const	_LANGUAGE_ARABIC_SAUDI_ARABIA As Long	:= 15
+Global	Const	_LANGUAGE_ARABIC_SYRIA As Long	:= 16
+Global	Const	_LANGUAGE_ARABIC_TUNISIA As Long	:= 17
+Global	Const	_LANGUAGE_ARABIC_YEMEN As Long	:= 18
+Global	Const	_LANGUAGE_ARMENIAN As Long	:= 19
+Global	Const	_LANGUAGE_AZERI_LATIN As Long	:= 20
+Global	Const	_LANGUAGE_AZERI_CYRILLIC As Long	:= 21
+Global	Const	_LANGUAGE_BASQUE As Long	:= 22
+Global	Const	_LANGUAGE_BELARUSIAN As Long	:= 23
+Global	Const	_LANGUAGE_BULGARIAN As Long	:= 24
+Global	Const	_LANGUAGE_CATALAN As Long	:= 25
+Global	Const	_LANGUAGE_CHINESE_CHINA As Long	:= 26
+Global	Const	_LANGUAGE_CHINESE_HONG_KONG_SAR As Long	:= 27
+Global	Const	_LANGUAGE_CHINESE_MACAU_SAR As Long	:= 28
+Global	Const	_LANGUAGE_CHINESE_SINGAPORE As Long	:= 29
+Global	Const	_LANGUAGE_CHINESE_TAIWAN As Long	:= 30
+Global	Const	_LANGUAGE_CROATIAN As Long	:= 31
+Global	Const	_LANGUAGE_CZECH As Long	:= 32
+Global	Const	_LANGUAGE_DANISH As Long	:= 33
+Global	Const	_LANGUAGE_DUTCH_NETHERLANDS As Long	:= 34
+Global	Const	_LANGUAGE_DUTCH_BELGIUM As Long	:= 35
+Global	Const	_LANGUAGE_ENGLISH_AUSTRALIA As Long	:= 36
+Global	Const	_LANGUAGE_ENGLISH_BELIZE As Long	:= 37
+Global	Const	_LANGUAGE_ENGLISH_CANADA As Long	:= 38
+Global	Const	_LANGUAGE_ENGLISH_CARIBBEAN As Long	:= 39
+Global	Const	_LANGUAGE_ENGLISH_IRELAND As Long	:= 40
+Global	Const	_LANGUAGE_ENGLISH_JAMAICA As Long	:= 41
+Global	Const	_LANGUAGE_ENGLISH_NEW_ZEALAND As Long	:= 42
+Global	Const	_LANGUAGE_ENGLISH_PHILLIPPINES As Long	:= 43
+Global	Const	_LANGUAGE_ENGLISH_SOUTHERN_AFRICA As Long	:= 44
+Global	Const	_LANGUAGE_ENGLISH_TRINIDAD As Long	:= 45
+Global	Const	_LANGUAGE_ENGLISH_GREAT_BRITAIN As Long	:= 46
+Global	Const	_LANGUAGE_ENGLISH_UNITED_STATES As Long	:= 47
+Global	Const	_LANGUAGE_ESTONIAN As Long	:= 48
+Global	Const	_LANGUAGE_FARSI As Long	:= 49
+Global	Const	_LANGUAGE_FINNISH As Long	:= 50
+Global	Const	_LANGUAGE_FAROESE As Long	:= 51
+Global	Const	_LANGUAGE_FRENCH_FRANCE As Long	:= 52
+Global	Const	_LANGUAGE_FRENCH_BELGIUM As Long	:= 53
+Global	Const	_LANGUAGE_FRENCH_CANADA As Long	:= 54
+Global	Const	_LANGUAGE_FRENCH_LUXEMBOURG As Long	:= 55
+Global	Const	_LANGUAGE_FRENCH_SWITZERLAND As Long	:= 56
+Global	Const	_LANGUAGE_GAELIC_IRELAND As Long	:= 57
+Global	Const	_LANGUAGE_GAELIC_SCOTLAND As Long	:= 58
+Global	Const	_LANGUAGE_GERMAN_GERMANY As Long	:= 59
+Global	Const	_LANGUAGE_GERMAN_AUSTRIA As Long	:= 60
+Global	Const	_LANGUAGE_GERMAN_LIECHTENSTEIN As Long	:= 61
+Global	Const	_LANGUAGE_GERMAN_LUXEMBOURG As Long	:= 62
+Global	Const	_LANGUAGE_GERMAN_SWITZERLAND As Long	:= 63
+Global	Const	_LANGUAGE_GREEK As Long	:= 64
+Global	Const	_LANGUAGE_HEBREW As Long	:= 65
+Global	Const	_LANGUAGE_HINDI As Long	:= 66
+Global	Const	_LANGUAGE_HUNGARIAN As Long	:= 67
+Global	Const	_LANGUAGE_ICELANDIC As Long	:= 68
+Global	Const	_LANGUAGE_INDONESIAN As Long	:= 69
+Global	Const	_LANGUAGE_ITALIAN_ITALY As Long	:= 70
+Global	Const	_LANGUAGE_ITALIAN_SWITZERLAND As Long	:= 71
+Global	Const	_LANGUAGE_JAPANESE As Long	:= 72
+Global	Const	_LANGUAGE_KOREAN As Long	:= 73
+Global	Const	_LANGUAGE_LATVIAN As Long	:= 74
+Global	Const	_LANGUAGE_LITHUANIAN As Long	:= 75
+Global	Const	_LANGUAGE_FYRO_MACEDONIA As Long	:= 76
+Global	Const	_LANGUAGE_MALAY_MALAYSIA As Long	:= 77
+Global	Const	_LANGUAGE_MALAY_BRUNEI As Long	:= 78
+Global	Const	_LANGUAGE_MALTESE As Long	:= 79
+Global	Const	_LANGUAGE_MARATHI As Long	:= 80
+Global	Const	_LANGUAGE_NORWEGIAN_BOKML As Long	:= 81
+Global	Const	_LANGUAGE_NORWEGIAN_NYNORSK As Long	:= 82
+Global	Const	_LANGUAGE_POLISH As Long	:= 83
+Global	Const	_LANGUAGE_PORTUGUESE_PORTUGAL As Long	:= 84
+Global	Const	_LANGUAGE_PORTUGUESE_BRAZIL As Long	:= 85
+Global	Const	_LANGUAGE_RAETO_ROMANCE As Long	:= 86
+Global	Const	_LANGUAGE_ROMANIAN_ROMANIA As Long	:= 87
+Global	Const	_LANGUAGE_ROMANIAN_REPUBLIC_OF_MOLDOVA As Long	:= 88
+Global	Const	_LANGUAGE_RUSSIAN As Long	:= 89
+Global	Const	_LANGUAGE_RUSSIAN_REPUBLIC_OF_MOLDOVA As Long	:= 90
+Global	Const	_LANGUAGE_SANSKRIT As Long	:= 91
+Global	Const	_LANGUAGE_SERBIAN_CYRILLIC As Long	:= 92
+Global	Const	_LANGUAGE_SERBIAN_LATIN As Long	:= 93
+Global	Const	_LANGUAGE_SETSUANA As Long	:= 94
+Global	Const	_LANGUAGE_SLOVENIAN As Long	:= 95
+Global	Const	_LANGUAGE_SLOVAK As Long	:= 96
+Global	Const	_LANGUAGE_SORBIAN As Long	:= 97
+Global	Const	_LANGUAGE_SPANISH_SPAIN As Long	:= 98
+Global	Const	_LANGUAGE_SPANISH_ARGENTINA As Long	:= 99
+Global	Const	_LANGUAGE_SPANISH_BOLIVIA As Long	:= 100
+Global	Const	_LANGUAGE_SPANISH_CHILE As Long	:= 101
+Global	Const	_LANGUAGE_SPANISH_COLOMBIA As Long	:= 102
+Global	Const	_LANGUAGE_SPANISH_COSTA_RICA As Long	:= 103
+Global	Const	_LANGUAGE_SPANISH_DOMINICAN_REPUBLIC As Long	:= 104
+Global	Const	_LANGUAGE_SPANISH_ECUADOR As Long	:= 105
+Global	Const	_LANGUAGE_SPANISH_GUATEMALA As Long	:= 106
+Global	Const	_LANGUAGE_SPANISH_HONDURAS As Long	:= 107
+Global	Const	_LANGUAGE_SPANISH_MEXICO As Long	:= 108
+Global	Const	_LANGUAGE_SPANISH_NICARAGUA As Long	:= 109
+Global	Const	_LANGUAGE_SPANISH_PANAMA As Long	:= 110
+Global	Const	_LANGUAGE_SPANISH_PERU As Long	:= 111
+Global	Const	_LANGUAGE_SPANISH_PUERTO_RICO As Long	:= 112
+Global	Const	_LANGUAGE_SPANISH_PARAGUAY As Long	:= 113
+Global	Const	_LANGUAGE_SPANISH_EL_SALVADOR As Long	:= 114
+Global	Const	_LANGUAGE_SPANISH_URUGUAY As Long	:= 115
+Global	Const	_LANGUAGE_SPANISH_VENEZUELA As Long	:= 116
+Global	Const	_LANGUAGE_SOUTHERN_SOTHO As Long	:= 117
+Global	Const	_LANGUAGE_SWAHILI As Long	:= 118
+Global	Const	_LANGUAGE_SWEDISH_SWEDEN As Long	:= 119
+Global	Const	_LANGUAGE_SWEDISH_FINLAND As Long	:= 120
+Global	Const	_LANGUAGE_TAMIL As Long	:= 121
+Global	Const	_LANGUAGE_TATAR As Long	:= 122
+Global	Const	_LANGUAGE_THAI As Long	:= 123
+Global	Const	_LANGUAGE_TURKISH As Long	:= 124
+Global	Const	_LANGUAGE_TSONGA As Long	:= 125
+Global	Const	_LANGUAGE_UKRAINIAN As Long	:= 126
+Global	Const	_LANGUAGE_URDU As Long	:= 127
+Global	Const	_LANGUAGE_UZBEK_CYRILLIC As Long	:= 128
+Global	Const	_LANGUAGE_UZBEK_LATIN As Long	:= 129
+Global	Const	_LANGUAGE_VIETNAMESE As Long	:= 130
+Global	Const	_LANGUAGE_XHOSA As Long	:= 131
+Global	Const	_LANGUAGE_YIDDISH As Long	:= 132
+Global	Const	_LANGUAGE_ZULU As Long	:= 133
+
+Global	Const	_DAYOFWEEK_MONDAY As Long	:=1
+Global	Const	_DAYOFWEEK_TUESDAY As Long	:=2
+Global	Const	_DAYOFWEEK_WEDNESDAY As Long	:=3
+Global	Const	_DAYOFWEEK_THURSDAY As Long	:=4
+Global	Const	_DAYOFWEEK_FRIDAY As Long	:=5
+Global	Const	_DAYOFWEEK_SATURDAY As Long	:=6
+Global	Const	_DAYOFWEEK_SUNDAY As Long	:=7
+
+Global	Const	_OW_CLOSESTANDARD As Long	:= &H80000000
+Global	Const	_OW_CLOSETOPMOST As Long	:= &H40000000
+Global	Const	_OW_BOTTOM As Long	:= &H20000000
+Global	Const	_OW_TOPMOST As Long	:= &H10000000
+Global	Const	_OW_MODAL As Long	:= &H08000000
+Global	Const	_OW_ALIGNHCENTER As Long	:= &H04000000
+Global	Const	_OW_ALIGNVCENTER As Long	:= &H02000000
+Global	Const	_OW_ALIGNLEFT As Long	:= &H01000000
+Global	Const	_OW_ALIGNTOP As Long	:= &H00800000
+Global	Const	_OW_ALIGNRIGHT As Long	:= &H00400000
+Global	Const	_OW_ALIGNBOTTOM As Long	:= &H00200000
+
+Global	Const	_COLOR_BLACK As Long	:= &HFF000000
+Global	Const	_COLOR_WHITE As Long	:= &HFFFFFFFF
+Global	Const	_COLOR_RED As Long	:= &HFFFF0000
+Global	Const	_COLOR_GREEN As Long	:= &HFF00FF00
+Global	Const	_COLOR_BLUE As Long	:= &HFF0000FF
+Global	Const	_COLOR_YELLOW As Long	:= &HFFFFFF00
+Global	Const	_COLOR_MAGENTA As Long	:= &HFFFF00FF
+Global	Const	_COLOR_CYAN As Long	:= &HFF00FFFF
+Global	Const	_COLOR_BROWN As Long	:= &HFFA52A2A
+Global	Const	_COLOR_GREY As Long	:= &HFF808080
+
+Global	Const	_MSEG_NONE As Byte	:= 0
+Global	Const	_MSEG_DATA As Byte	:= 1
+Global	Const	_MSEG_NONVOLATILEDATA As Byte	:= 2
+Global	Const	_MSEG_LOCALDATA As Byte	:= 3
+Global	Const	_MSEG_CONSTDATA As Byte	:= 4
+Global	Const	_MSEG_PROGRAMCODE As Byte	:= 5
+Global	Const	_MSEG_COMMANDAPI As Byte	:= 7
+Global	Const	_MSEG_CHANNELADDRESS As Byte	:= 8
+Global	Const	_MSEG_BUILTINVARIABLE As Byte	:= 9
+Global	Const	_MSEG_USEREVENTADDRESS As Byte	:= 20
+Global	Const	_MSEG_SYSTEMEVENTADDRESS As Byte	:= 14
+Global	Const	_MSEG_GRAPHICOBJECTS As Byte	:= 16
+Global	Const	_MSEG_RESOURCEDATA As Byte	:= 17
+
+Global	Const	_TIME_INFINITE As Time	:= :9223372036854.775807
+
+Global	Const	_CONTROLKEY_CTRL As Long	:= &H00000001
+Global	Const	_CONTROLKEY_SHIFT As Long	:= &H00000002
+Global	Const	_CONTROLKEY_ALT As Long	:= &H00000004
+Global	Const	_CONTROLKEY_CAPSLOCK As Long	:= &H00000008
+Global	Const	_CONTROLKEY_HOME As Long	:= &H00000010
+Global	Const	_CONTROLKEY_END    As Long	:= &H00000020
+Global	Const	_CONTROLKEY_PAGEUP As Long	:= &H00000040
+Global	Const	_CONTROLKEY_PAGEDOWN As Long	:= &H00000080
+Global	Const	_CONTROLKEY_DELETE As Long	:= &H00000100
+Global	Const	_CONTROLKEY_LEFTARROW As Long	:= &H00000200
+Global	Const	_CONTROLKEY_RIGHTARROW As Long	:= &H00000400
+Global	Const	_CONTROLKEY_DOWNARROW As Long	:= &H00000800
+Global	Const	_CONTROLKEY_UPARROW As Long	:= &H00001000
+Global	Const	_CONTROLKEY_INSERT As Long	:= &H00002000
+Global	Const	_CONTROLKEY_F1 As Long	:= &H00100000
+Global	Const	_CONTROLKEY_F2 As Long	:= &H00200000
+Global	Const	_CONTROLKEY_F3 As Long	:= &H00400000
+Global	Const	_CONTROLKEY_F4 As Long	:= &H00800000
+Global	Const	_CONTROLKEY_F5 As Long	:= &H01000000
+Global	Const	_CONTROLKEY_F6 As Long	:= &H02000000
+Global	Const	_CONTROLKEY_F7 As Long	:= &H04000000
+Global	Const	_CONTROLKEY_F8 As Long	:= &H08000000
+Global	Const	_CONTROLKEY_F9 As Long	:= &H10000000
+Global	Const	_CONTROLKEY_F10 As Long	:= &H20000000
+Global	Const	_CONTROLKEY_F11 As Long	:= &H40000000
+Global	Const	_CONTROLKEY_F12 As Long	:= &H80000000
+
+Global	Const	_IEE754_32BITS As Long	:= 1
+Global	Const	_IEE754_64BITS As Long	:= 2
+Global	Const	_SIGNED_INT_8BITS As Long	:= 3
+Global	Const	_UNSIGNED_INT_8BITS As Long	:= 4
+Global	Const	_SIGNED_INT_16BITS As Long	:= 5
+Global	Const	_UNSIGNED_INT_16BITS As Long	:= 6
+Global	Const	_SIGNED_INT_32BITS As Long	:= 7
+Global	Const	_UNSIGNED_INT_32BITS As Long	:= 8
+Global	Const	_LENGTH_UNSPECIFIED As Long	:= -1
+
+Global	Const	_XMLCTYPE_REFERENCE As Long	:= 1
+Global	Const	_XMLCTYPE_WHITESPACE As Long	:= 2
+Global	Const	_XMLCTYPE_CHARDATA As Long	:= 3
+Global	Const	_XMLCTYPE_CDSECT  As Long	:= 4
+Global	Const	_XMLCTYPE_ELEMENT  As Long	:= 5
+
+Global	Const	_FILTER_FILES  As Long	:= &H00000001
+Global	Const	_FILTER_FOLDERS As Long	:= &H00000002
+Global	Const	_SORT_BY_NAME As Long	:= &H00000004
+Global	Const	_SORT_BY_SIZE As Long	:= &H00000008
+Global	Const	_SORT_BY_TIME_MODIFIED As Long	:= &H00000010
+Global	Const	_SORT_DESCENDING As Long	:= &H00000020
+
+
+Global Structure _TimeStructure
+	Global Var Year As Long
+	Global Var Month As Byte
+	Global Var Day As Byte
+	Global Var DayOfWeek As Byte
+	Global Var Hour As Byte
+	Global Var Minute As Byte
+	Global Var Second As Byte
+	Global Var MicroSecond As Long
+End Structure
+
+Global Structure _FileFolderInfoStructure
+	Global Var Path As Text[260]
+	Global Var Name As Text[260]
+	Global Var IsFile As Boolean
+	Global Var TimeModified As Time
+	Global Var Size As Long
+End Structure
+
+Global	Const	_OSDMODE_DEFAULT As Long	:= 0
+Global	Const	_OSDMODE_BASIC As Long	:= 1
+Global	Const	_OSDMODE_ADVANCED As Long	:= 2
+
+Global	Const	_PLAY_REPEAT As Long	:= &H80000000
+Global	Const	_PLAY_WAITFORFINISH As Long	:= &H40000000
+
+Global	Const	_TELNET_TCPPORT As Long	:= 23
+Global	Const	_HTTP_TCPPORT As Long	:= 80
+
+Global	Const	_SERIAL_MODE_RS232 As Long	:= 0
+Global	Const	_SERIAL_MODE_RS422 As Long	:= 1
+Global	Const	_SERIAL_MODE_RS485 As Long	:= 2
+Global	Const	_SERIAL_PARITY_NO As Long	:= 0
+Global	Const	_SERIAL_PARITY_ODD As Long	:= 1
+Global	Const	_SERIAL_PARITY_EVEN As Long	:= 2
+Global	Const	_SERIAL_STOPBITS_ONE As Long	:= 0
+Global	Const	_SERIAL_STOPBITS_ONEANDHALF As Long	:= 1
+Global	Const	_SERIAL_STOPBITS_TWO As Long	:= 2
+Global	Const	_SERIAL_FLOWCONTROL_NONE As Long	:= 0
+Global	Const	_SERIAL_FLOWCONTROL_RTSCTS As Long	:= 1
+Global	Const	_SERIAL_FLOWCONTROL_XONXOFF As Long	:= 2
+Global	Const	_SERIAL_FLOWCONTROL_ACK As Long	:= 3
+Global	Const	_SERIAL_FLOWCONTROL_DELAY As Long	:= 4
+
+Global	Const	_TEXT_ALIGNLEFT As Long	:= &H00000001
+Global	Const	_TEXT_ALIGNHCENTER As Long	:= &H00000002
+Global	Const	_TEXT_ALIGNRIGHT As Long	:= &H00000004
+Global	Const	_TEXT_ALIGNTOP As Long	:= &H00000008
+Global	Const	_TEXT_ALIGNVCENTER As Long	:= &H00000010
+Global	Const	_TEXT_ALIGNBOTTOM As Long	:= &H00000020
+Global	Const	_TEXT_WORDWRAP As Long	:= &H00000040
+Global	Const	_TEXT_SINGLELINE As Long	:= &H00000080
+
+Global	Const	_TIMER_PERIODIC As Long	:= &H80000000
+Global	Const	_TIMER_PAUSEIFHIDDEN As Long	:= &H40000000
+
+Global	Const	_E As Double	:= 2.7182818284590452353602874713527
+Global	Const	_Pi As Double	:= 3.1415926535897932384626433832795
+Global	Const	_COMPARE_CASESENSITIVE As Long	:= &H00000001
+Global	Const	_COMPARE_CASEINSENSITIVE As Long	:= &H00000002
+Global	Const	_COMPARE_ERROR As Long	:=0
+Global	Const	_COMPARE_LESS_THAN As Long	:= 1
+Global	Const	_COMPARE_EQUAL As Long	:= 2
+Global	Const	_COMPARE_GREATER_THAN As Long	:= 3
+Global	Const	_TEXT_TO_ASCII As Long	:= 1
+Global	Const	_TEXT_TO_UTF8 As Long	:= 2
+Global	Const	_TEXT_TO_UTF16LE As Long	:= 3
+Global	Const	_ASCII_TO_TEXT As Long	:= 10001
+Global	Const	_UTF8_TO_TEXT As Long	:= 10002
+Global	Const	_UTF16LE_TO_TEXT As Long	:= 10003
+
+Global	Const	_RED_LED As Long	:= &H00000001
+Global	Const	_GREEN_LED As Long	:= &H00000002
+Global	Const	_LED_ON As Long	:=1
+Global	Const	_LED_OFF As Long	:=2
+Global	Const	_LED_PULSE As Long	:=3
+
+Global	Const	_DIGITAL_LEVEL_HIGH As Boolean	:=True
+Global	Const	_DIGITAL_LEVEL_LOW As Boolean	:=False
+
+Global	Const	_ORIENTATION_LANDSCAPE As Long	:=0
+Global	Const	_ORIENTATION_PORTRAIT As Long	:=1
+Global	Const	_ORIENTATION_LANDSCAPE_FLIPPED As Long	:=2
+Global	Const	_ORIENTATION_PORTRAIT_FLIPPED As Long	:=3
+
+Global	Const	_FTP_ALLOW_FTP_PLAINTEXT As Long	:= &H00000001
+Global	Const	_FTP_ALLOW_FTPS_IMPLICIT As Long	:= &H00000002
+Global	Const	_FTP_ALLOW_FTPS_EXPLICIT As Long	:= &H00000004
+Global	Const	_FTP_VERIFY_SSLCERTIFICATE As Long	:= &H00000008
+Global	Const	_FTP_MODE_PASSIVE As Long	:= &H00000040
+Global	Const	_FTP_MODE_ACTIVE As Long	:= &H00000080
+
+Global Enum _VersatileOutputControl
+	NoChange := -1,
+	On  := 1,
+	Off  := 0
+End Enum
+
+Global Structure _VersatileOutputState
+	Var Pullup As _VersatileOutputControl
+	Var Pulldown As _VersatileOutputControl
+	Var Close As _VersatileOutputControl
+End Structure
+
+Global Enum _DigitalThreshold
+	V_1_5 :=  1,
+	V_6 :=2
+End Enum
+
+Global Enum _VoltageRange 
+	Auto := 0,
+	V_2_5 := 1,
+	V_10 := 2
+End Enum
+
+Global Enum _ResistanceRange
+	Auto := 0,
+	R_2K := 1,
+	R_20K := 2,
+	R_200K := 3
+End Enum
+
+Global Structure _IPSettings
+	Var IpAddress As Text[15]
+	Var Mask As Text[15]
+	Var Gateway As Text[15]
+	Var DNSServer1 As Text[15]
+	Var DNSServer2 As Text[15]
+	Var IPFromDHCP As Boolean
+	Var DNSFromDHCP As Boolean
+End Structure
+
+Global Structure _TimeZoneInfo
+	Var ZoneId As Text[4]
+	Var ZoneName As Text[100]
+End Structure
+
+
+Global Structure _UnitInfo
+	Var ProductName As Text[50]
+	Var ProductCode As Text[6]
+	Var HWRevision As Long
+	Var SerialNumber As Long
+	Var FirmwareVersion as Text[10]
+	Var IPAddress As Text[42]
+	Var MagicName As Text[128]
+	Var IsSimulated As Boolean
+End Structure
+
+Global Enum _SyslogProtocol
+	_SyslogProtocol_UDP := 1,
+	_SyslogProtocol_TCP := 2
+End Enum
+
+Global Enum _SyslogFormat
+	_SyslogFormat_BSD_RFC3164 := 1,
+	_SyslogFormat_IETF_RFC5424 := 2,
+	_SyslogFormat_IETF_RFC5424_NONTRANSPARENTFRAMING := 3
+End Enum
+
+
+Global Structure _CloudCredentials
+	Var SiteIdentification As Text[50]
+	Var UnitMagicName As Text[100]
+	Var Email As Text[150]
+	Var Password As Text[256]
+End Structure
+
+Global Structure _touchONEUnitInfo
+	Var ProductName As Text[50]
+	Var ProductCode As Text[6]
+	Var HWRevision As Long
+	Var SerialNumber As Long
+	Var FirmwareVersion as Text[10]
+	Var IPAddress As Text[42]
+	Var MagicName As Text[128]
+	Var IsSimulated As Boolean
+	Var touchONEProductType As Long
+	Var touchONEReservationSuiteType As Long
+End Structure
+
+Global Enum _UniversalOutputControl
+	NoChange := -1,
+	On  := 1,
+	Off  := 0
+End Enum
+
+Global Structure _UniversalOutputState
+	Var Pullup As _UniversalOutputControl
+	Var Pulldown As _UniversalOutputControl
+	Var Close As _UniversalOutputControl
+End Structure
+
+Global Structure _touchONEUnitInfoExt
+	Var ProductName As Text[50]
+	Var ProductCode As Text[6]
+	Var HWRevision As Long
+	Var SerialNumber As Long
+	Var FirmwareVersion as Text[10]
+	Var IPAddress As Text[42]
+	Var MagicName As Text[128]
+	Var IsSimulated As Boolean
+	Var touchONEProductType As Long
+	Var touchONEReservationSuiteType As Long
+	Var ReservationSuiteName As Text[256]
+	Var ReservationSuiteOwnerName As Text[128]
+	Var MACAddress As Text[17]
+End Structure
+
+
+Global Structure _ProcessesCount
+	Var RunningProcesses As Long
+	Var MaxOfRunnningProcesses As Long
+	Var RunningRemotelyStartedFunctions As Long
+	Var MaxOfRunnningRemotelyStartedFunctions As Long
+	Var RunningSystemProcesses As Long
+End Structure
+
+
+Global Structure _HttpQueryParameter
+	Var name As Text[50]
+	Var val As Text[200]
+End Structure
+
+
+Global Structure _WifiScan
+	Var ssid As Text[50]
+	Var signal As Long
+	Var frequency As Long
+	Var disabled As Boolean
+	Var current As Boolean
+End Structure
+
+
+Global Enum _JSONItemTypes
+	JSONNone := 0,
+	JSONNull := 1,
+	JSONObject := 2,
+	JSONArray := 3,
+	JSONString := 4,
+	JSONNumber := 5,
+	JSONBoolean := 6
+End Enum
+
+Global	Const	_ROUNDEDRECTANGLE_LEFTTOP As Long	:= &H00000001
+Global	Const	_ROUNDEDRECTANGLE_RIGHTTOP As Long	:= &H00000002
+Global	Const	_ROUNDEDRECTANGLE_LEFTBOTTOM As Long	:= &H00000004
+Global	Const	_ROUNDEDRECTANGLE_RIGHTBOTTOM As Long	:= &H00000008
+
+Global	Const	_NFC_ISO14443A As Long	:= &H00000001
+Global	Const	_NFC_ISO15693 As Long	:= &H00000002
+Global	Const	_NFC_ISO15693_ICLASS As Long	:= &H00000004
+
+Global Class _TcpClient BuiltIn(11)
+    Global Function Connect(serveraddress As Text, serverport As Long, Optional timeout As Time := :10.0) As Boolean BuiltIn(40) End Function
+    Global Function Send(datatosend As ByteString) As Boolean BuiltIn(41) End Function
+    Global Function Receive(ByRef receiveddata As ByteString, Optional timeout As Time:= :10.0, Optional  maxbytestoreceive As Long:= 0) As Boolean BuiltIn(42) End Function
+    Global Function Disconnect() BuiltIn(43) End Function
+    Global Function ClearReceiveBuffer() BuiltIn(44) End Function
+    Global Function GetMyIpAddress(ByRef ipaddress As Text, ByRef port As Long) As Boolean BuiltIn(143) End Function
+    Global Function ReceiveAnything(ByRef receiveddata As ByteString, Optional timeout As Time := :10.0) As Boolean BuiltIn(152) End Function
+    Global Function ReceiveAppend(ByRef receivebuffer As ByteString, Optional timeout As Time := :10.0) As Boolean BuiltIn(153) End Function
+    Global Function ReceiveHFPacket(ByRef receivedbody As ByteString, header As ByteString, footer As ByteString, Optional timeout As Time := :10.0) As Boolean BuiltIn(93) End Function
+    Global Function WaitForData(Optional timeout As Time :=  :10.0) As Boolean BuiltIn(161) End Function
+    Global Function ReceiveHLPacket(ByRef receivedbody As ByteString, header As ByteString, bodylength As Long, Optional timeout As Time := :10.0 ) As Boolean BuiltIn(164) End Function
+    Global Function ReceiveFPacket(ByRef receivedbody As ByteString, footer As ByteString, Optional timeout As Time := :10.0 ) As Boolean BuiltIn(167) End Function
+    Global Function ReceiveSyncFrame(syncframe As ByteString, Optional timeout As Time := :10.0 ) As Boolean BuiltIn(171) End Function
+    Global Function ConnectSSL(serveraddress As Text, serverport As Long, Optional timeout As Time := :10.0) As Boolean BuiltIn(426) End Function
+    Global Function VerifyCertificate() As Boolean BuiltIn(432) End Function
+    Public Function ConnectSSH(serveraddress As Text, username as Text, password as Text, Optional timeout As Time := :10.0) As Boolean BuiltIn(435) End Function
+    Public Function EnableKeepAlivePackets(keepalive_time As Time, Optional interval As Time := :2, Optional probes As Long := 5) As Boolean BuiltIn(628) End Function
+End Class
+
+Global Class _UdpClient BuiltIn(13)
+    Global Function Connect(serveraddress As Text, serverport As Long) As Boolean BuiltIn(45) End Function
+    Global Function Send(datatosend As ByteString) As Boolean BuiltIn(46) End Function
+    Global Function Receive(ByRef data As ByteString, Optional timeout As Time:= :10.0) As Boolean BuiltIn(47) End Function
+    Global Function Disconnect() BuiltIn(48) End Function
+    Global Function ClearReceiveBuffer() BuiltIn(49) End Function
+    Global Function GetMyIpAddress(ByRef ipaddress As Text, ByRef port As Long) As Boolean BuiltIn(145) End Function
+    Global Function ConnectMulticast(multicastaddress As Text, port As Long, Optional ttl As Byte:= 1, Optional loopenable As Boolean := True ) As Boolean BuiltIn(159) End Function
+End Class
+
+Global Class _TcpRemoteClient BuiltIn(14)
+    Global Function WaitForConnect( Optional timeout As Time := :10 ) As Boolean BuiltIn(58) End Function
+    Global Function Send(datatosend As ByteString ) As Boolean BuiltIn(59) End Function
+    Global Function Receive(ByRef receiveddata As ByteString, Optional timeout As Time:= :10.0, Optional  maxbytestoreceive As Long:= 0) As Boolean BuiltIn(60) End Function
+    Global Function Disconnect( ) BuiltIn(61) End Function
+    Global Function GetIpAddress( ByRef clientipaddress As Text, ByRef clientport As Long ) As Boolean BuiltIn(62) End Function
+    Global Function ClearReceiveBuffer( ) BuiltIn(63) End Function
+    Global Function GetMyIpAddress(ByRef ipaddress As Text, ByRef port As Long) As Boolean BuiltIn(144) End Function
+    Global Function ReceiveAnything(ByRef receiveddata As ByteString, Optional timeout As Time := :10.0) As Boolean BuiltIn(154) End Function
+    Global Function ReceiveAppend(ByRef receivebuffer As ByteString, Optional timeout As Time := :10.0) As Boolean BuiltIn(155) End Function
+    Global Function ReceiveHFPacket(ByRef receivedbody As ByteString, header As ByteString, footer As ByteString, Optional timeout As Time := :10.0) As Boolean BuiltIn(94) End Function
+    Global Function WaitForData(Optional timeout As Time :=  :10.0) As Boolean BuiltIn(162) End Function
+    Global Function ReceiveHLPacket(ByRef receivedbody As ByteString, header As ByteString, bodylength As Long, Optional timeout As Time := :10.0 ) As Boolean BuiltIn(165) End Function
+    Global Function ReceiveFPacket(ByRef receivedbody As ByteString, footer As ByteString, Optional timeout As Time := :10.0 ) As Boolean BuiltIn(168) End Function
+    Global Function ReceiveSyncFrame(syncframe As ByteString, Optional timeout As Time := :10.0 ) As Boolean BuiltIn(172) End Function
+    Public Function EnableKeepAlivePackets(keepalive_time As Time, Optional interval As Time := :2, Optional probes As Long := 5) As Boolean BuiltIn(629) End Function
+End Class
+
+Global Class _TcpServer BuiltIn(10)
+    Global Function Open(tcpport As Long, Optional maxnumberofclients As Long :=1) As Boolean BuiltIn(50) End Function
+    Global Function GetClient(clientnumber As Long) As AddressOf _TcpRemoteClient BuiltIn(51) End Function
+    Global Function Close() BuiltIn(52) End Function
+End Class
+
+Global Class _UdpServer BuiltIn(12)
+    Global Function Open( udpport As Long ) As Boolean BuiltIn(53) End Function
+    Global Function Close( ) BuiltIn(54) End Function
+    Global Function Receive(ByRef data As ByteString, ByRef clientipaddress As Text, ByRef clientport As Long, Optional timeout As Time := :10.0) As Boolean BuiltIn(55) End Function
+    Global Function Send( data As ByteString, clientipaddress As Text, clientport As Long ) As Boolean BuiltIn(56) End Function
+    Global Function ClearReceiveBuffer( ) BuiltIn(57) End Function
+    Global Function OpenMulticast(multicastipaddress As Text,  udpport As Long) As Boolean BuiltIn(158) End Function
+End Class
+
+Global Class _Relay BuiltIn(15)
+    Global Function Close( ) BuiltIn(64) End Function
+    Global Function Open() BuiltIn(65) End Function
+    Global Function ClosePulse( pulsetime As Time ) BuiltIn(66) End Function
+    Global Function IsClosed() As Boolean BuiltIn(68) End Function
+End Class
+
+Global Class _Serial BuiltIn(17)
+    Global Function SetSerialParameters(mode As Byte, bitspersecond As Long, databits As Byte, parity As Byte, stopbits As Byte, flowcontrol As Byte, ParamArray) As Boolean BuiltIn(95) End Function
+    Global Function Send(datatosend As ByteString) As Boolean BuiltIn(96) End Function
+    Global Function Receive(ByRef receiveddata As ByteString, Optional timeout As Time:= :10.0, Optional  maxbytestoreceive As Long:= 0) As Boolean BuiltIn(97) End Function
+    Global Function ClearReceiveBuffer( ) BuiltIn(98) End Function
+    Global Function ReceiveAppend(ByRef receivebuffer As ByteString, Optional timeout As Time := :10.0) As Boolean BuiltIn(156) End Function
+    Global Function ReceiveHFPacket(ByRef receivedbody As ByteString, header As ByteString, footer As ByteString, Optional timeout As Time := :10.0) As Boolean BuiltIn(157) End Function
+    Global Function WaitForData(Optional timeout As Time :=  :10.0) As Boolean BuiltIn(160) End Function
+    Global Function ReceiveHLPacket(ByRef receivedbody As ByteString, header As ByteString, bodylength As Long, Optional timeout As Time := :10.0 ) As Boolean BuiltIn(163) End Function
+    Global Function ReceiveFPacket(ByRef receivedbody As ByteString, footer As ByteString, Optional timeout As Time := :10.0 ) As Boolean BuiltIn(166) End Function
+    Global Function ReceiveSyncFrame(syncframe As ByteString, Optional timeout As Time := :10.0 ) As Boolean BuiltIn(170) End Function
+End Class
+
+Global Class _IrData BuiltIn(19,_MSEG_CONSTDATA)
+    Public Function GetData(ByRef dst As ByteString) As Boolean BuiltIn(169) End Function
+End Class
+
+Global Class _Semaphore WithSegments(_MSEG_DATA)
+    Public Function Lock() As Boolean BuiltIn(99) End Function
+    Public Function Unlock() As Boolean BuiltIn(100) End Function
+End Class
+
+Global Class _Universal BuiltIn(33)
+    Global Function PullupOn() As Boolean BuiltIn(561) End Function
+    Global Function PullupOff() As Boolean BuiltIn(562) End Function
+    Global Function Close() As Boolean BuiltIn(563) End Function
+    Global Function Open() As Boolean BuiltIn(564) End Function
+    Global Function ClosePulse(pulsetime As Time) As Boolean BuiltIn(565) End Function
+    Global Function IsPullupOn() As Boolean BuiltIn(566) End Function
+    Global Function IsClosed() As Boolean BuiltIn(567) End Function
+    Global Function SetCarrier(enable As Boolean) As Boolean BuiltIn(568) End Function
+    Global Function SetSerialParameters(mode As Byte, bitspersecond As Long, databits As Byte, parity As Byte, stopbits As Byte, flowcontrol As Byte, ParamArray) As Boolean BuiltIn(569) End Function
+    Global Function Send(data As ByteString) As Boolean BuiltIn(570) End Function
+    Global Function IrSend(irdata As _IrData, Optional repeatuntilstop As Boolean := False) As Boolean BuiltIn(571) End Function
+    Global Function StopIrSend() As Boolean BuiltIn(572) End Function
+    Global Function GetDigitalLevel() As Boolean BuiltIn(574) End Function
+    Global Function WaitWhileDigitalLevelActive(Optional timeout As Time:= _TIME_INFINITE) As Boolean BuiltIn(575) End Function
+    Global Function SetOutputState(outputstate As _UniversalOutputState, Optional stopoutputprogram As Boolean := True) As Boolean BuiltIn(576) End Function
+    Public Function IrSendFromFile(filename As Text, Optional repeatuntilstop As Boolean := False) As Boolean BuiltIn(582) End Function
+    Public Function IrSendFromByteString( irdata As ByteString, Optional repeatuntilstop As Boolean := False) As Boolean BuiltIn(583) End Function
+End Class
+
+Global Class _DigitalInput BuiltIn(36)
+    Public Event OnClose As Process() BuiltIn(605)
+    Public Event OnOpen As Process() BuiltIn(606)
+    Global Function IsClosed() As Boolean BuiltIn(607) End Function
+    Global Function WaitWhileClosed(Optional timeout As Time := _TIME_INFINITE) As Boolean BuiltIn(608) End Function
+    Global Function WaitWhileOpened(Optional timeout As Time := _TIME_INFINITE) As Boolean BuiltIn(609) End Function
+End Class
+
+Private Class _File
+    Protected Function OpenInternal(filepathname As Text,filetype As Long)  As Boolean BuiltIn(128) End Function
+    Public Function Close() BuiltIn(129) End Function
+    Public Function EraseContent() As Boolean BuiltIn(131) End Function
+    Public Function GetPathName(ByRef filepath As Text) As Boolean BuiltIn(133) End Function
+    Public Function Copy(destinationfilepathname As Text, Optional eraseexisting As Boolean := True) As Boolean BuiltIn(134) End Function
+    Protected Function OpenReadOnlyInternal(filepathname As Text,filetype As Long)  As Boolean BuiltIn(538) End Function
+    Public Function Destroy() BuiltIn(549) End Function
+End Class
+
+Public Class _VarFile Inherits _File
+    Public Function Open(filepathname As Text) As Boolean
+        Return Value OpenInternal(filepathname,1)
+    End Function
+    Private Function WriteValuesInternal(filehandle As AddressOf _VarFile,ParamArray) As Boolean BuiltIn(138) End Function
+    Private Function ReadValuesInternal(filehandle As AddressOf _VarFile,ByRef ParamArray) As Boolean BuiltIn(139) End Function
+    Public Function WriteValues(ParamArray) As Boolean
+        Return Value WriteValuesInternal(Me,ParamArray)
+    End Function
+    Public Function ReadValues(ByRef ParamArray) As Boolean
+        Return Value ReadValuesInternal(Me,ParamArray)
+    End Function
+    Public Function OpenReadOnly(filepathname As Text) As Boolean
+        Return Value OpenReadOnlyInternal(filepathname,1)
+    End Function
+End Class
+
+Public Class _TextFile Inherits _File
+    Public Function Open(filepathname As Text) As Boolean
+        Return Value OpenInternal(filepathname,2)
+    End Function
+    Public Function WriteText(texttowrite As Text) As Boolean BuiltIn(136) End Function
+    Public Function ReadText(ByRef destinationvalue As Text, Optional numofchars As Long := 0) As Boolean BuiltIn(137) End Function
+    Public Function OpenReadOnly(filepathname As Text) As Boolean
+        Return Value OpenReadOnlyInternal(filepathname,2)
+    End Function
+End Class
+
+Private Class _BaseBinaryFile Inherits _File
+    Public Function Write(sourcebytestring As ByteString) As Boolean BuiltIn(148) End Function
+    Public Function Read(ByRef  destinationbytestring As ByteString, Optional numofbytes As Long := 0) As Boolean BuiltIn(149) End Function
+End Class
+
+Public Class _ASCIIFile Inherits _BaseBinaryFile
+    Public Function Open(filepathname As Text) As Boolean
+        Return Value OpenInternal(filepathname,3)
+    End Function
+    Public Function OpenReadOnly(filepathname As Text) As Boolean
+        Return Value OpenReadOnlyInternal(filepathname,3)
+    End Function
+End Class
+
+Public Class _BinaryFile Inherits _BaseBinaryFile
+    Public Function Open(filepathname As Text) As Boolean
+        Return Value OpenInternal(filepathname,4)
+    End Function
+    Public Function OpenReadOnly(filepathname As Text) As Boolean
+        Return Value OpenReadOnlyInternal(filepathname,4)
+    End Function
+End Class
+
+Public Class _IPCServer
+    Public Function Open(protocolname As Text, instancename As Text, password As Text) As Boolean BuiltIn(480) End Function
+    Public Function Close() BuiltIn(481) End Function
+    Private Function Destroy() BuiltIn(482) End Function
+    Public Function ReceiveRequest(ByRef srcmagicname As Text, ByRef requestname As Text, ByRef requestdata As Text, Optional timeout As Time:= _TIME_INFINITE) As Boolean BuiltIn(483) End Function
+    Public Function SendAnswer(answer As Text) BuiltIn(484) End Function
+    Public Function SendErrorAnswer(answer As Text) BuiltIn(486) End Function
+End Class
+
+Public Class _XmlParser
+    Public Function Create(xmltext As AddressOf Text) As Boolean  BuiltIn(337) End Function
+    Public Function GetRootElement(ByRef xmlelement As _XmlElement) As Boolean BuiltIn(338) End Function
+    Public Function Destroy() BuiltIn(339) End Function
+End Class
+
+Private Class _XmlBase
+    Private Var MyParser As AddressOf _XmlParser  := Nothing
+    Private Var ContentId As Long  := 0
+End Class
+
+Public Class _XmlElement Inherits _XmlBase
+    Public Function GetName(ByRef name As Text) As Boolean BuiltIn(340) End Function
+    Public Function GetAttributeCount(ByRef attribcount As Long) As Boolean BuiltIn(341) End Function
+    Public Function GetAttribute(attributeindex As Long, ByRef dstattribute As _XmlAttribute) As Boolean BuiltIn(342) End Function
+    Public Function FindAttribute(attributename As Text, ByRef dstattribute As _XmlAttribute) As Boolean BuiltIn(343) End Function
+    Public Function GetContentItemCount(ByRef contentitemcount As Long) As Boolean BuiltIn(344) End Function
+    Public Function GetContentItem(itemindex As Long, ByRef contentitem As _XmlContentItem) As Boolean BuiltIn(345) End Function
+    Public Function FindSubElement(elementname As Text, ByRef xmlelement As _XmlElement, Optional elementindex As Long := 1) As Boolean BuiltIn(346) End Function
+    Public Function GetValue(ByRef dstvalue As Text) As Boolean BuiltIn(347) End Function
+End Class
+
+Public Class _XmlAttribute Inherits _XmlBase
+    Private Var AttributeId As Long  := 0
+    Public Function GetName(ByRef attributename As Text) As Boolean BuiltIn(348) End Function
+    Public Function GetValue(ByRef attributevalue As Text) As Boolean BuiltIn(349) End Function
+End Class
+
+Public Class _XmlContentItem Inherits _XmlBase
+    Public Function GetType(ByRef contenttype As Long) As Boolean BuiltIn(350) End Function
+    Public Function GetElement(ByRef xmlelement As _XmlElement) As Boolean BuiltIn(351) End Function
+    Public Function GetValue(ByRef dstvalue As Text) As Boolean BuiltIn(352) End Function
+End Class
+
+Public Class _JSONParser
+    Public Function Parse(jsoninutf8 As ByteString) As Boolean  BuiltIn(735) End Function
+    Public Function GetRootItem(ByRef item As _JSONItem) As Boolean BuiltIn(736) End Function
+    Public Function Destroy() BuiltIn(737) End Function
+End Class
+
+Public Class _JSONItem
+    Private Var MyParser As AddressOf _JSONParser  := Nothing
+    Private Var Id As Long  := 0
+    Public Function GetName(ByRef name As Text) As Boolean BuiltIn(738) End Function
+    Public Function GetType() As Long BuiltIn(739) End Function
+    Public Function GetSubItemCount() As Long BuiltIn(740) End Function
+    Public Function GetSubItemByName(ByRef item As _JSONItem, name As Text, Optional caseinsensitive As Boolean := False) As Boolean BuiltIn(741) End Function
+    Public Function GetSubItemByIndex(ByRef item As _JSONItem, index As Long) As Boolean BuiltIn(742) End Function
+    Public Function GetStringValueAsText(ByRef val As Text) As Boolean BuiltIn(743) End Function
+    Public Function GetNumberValueAsLong(ByRef val As Long) As Boolean BuiltIn(744) End Function
+    Public Function GetNumberValueAsDouble(ByRef val As Double) As Boolean BuiltIn(745) End Function
+    Public Function GetBooleanValue(ByRef val As Boolean) As Boolean BuiltIn(746) End Function
+    Public Function GetJSON(ByRef jsoninutf8 As ByteString) As Boolean BuiltIn(747) End Function
+    Public Function GetSubItemByPath(ByRef item As _JSONItem, ParamArray) As Boolean BuiltIn(748) End Function
+    Public Function GetSubItemByPathCaseInsensitive(ByRef item As _JSONItem, ParamArray) As Boolean BuiltIn(749) End Function
+    Public Function GetStringValueAsByteString(ByRef val As ByteString) As Boolean BuiltIn(750) End Function
+    Public Function GetIndex(ByRef index As Long) As Boolean BuiltIn(751) End Function
+    Public Function IsNumberDoubleType() As Boolean BuiltIn(752) End Function
+End Class
+
+Public Class _Syslog
+    Public Function SetServer(serveraddress As Text, port As Long, syslogprotocol As Long, syslogformat As Long) As Boolean BuiltIn(508) End Function
+    Public Function GetServer(ByRef serveraddress As Text,ByRef port As Long, ByRef syslogprotocol As Long, ByRef syslogformat As Long) As Boolean BuiltIn(509) End Function
+    Public Function SendCriticalMessage(formattext As Text, ParamArray) As Boolean BuiltIn(510) End Function
+    Public Function SendErrorMessage(formattext As Text, ParamArray) As Boolean BuiltIn(511) End Function
+    Public Function SendWarningMessage(formattext As Text, ParamArray) As Boolean BuiltIn(512) End Function
+    Public Function SendNoticeMessage(formattext As Text, ParamArray) As Boolean BuiltIn(513) End Function
+    Public Function SendInformationMessage(formattext As Text, ParamArray) As Boolean BuiltIn(514) End Function
+    Public Function SendDebugMessage(formattext As Text, ParamArray) As Boolean BuiltIn(515) End Function
+End Class
+
+Global Class _HttpClient BuiltIn(38)
+    Public Function SetServer(address As Text, Optional port As Long := 80, Optional usehttps As Boolean := False, Optional checkservercertificate As Boolean := False) As Boolean BuiltIn(649) End Function
+    Public Function SetTimeout(timeout As Time) As Boolean BuiltIn(651) End Function
+    Public Function HttpDelete(url As Text, ByRef responsestatuscode As Long, Optional responsebody As AddressOf ByteString := Nothing, Optional responseheader As AddressOf ByteString := Nothing) As Boolean BuiltIn(653) End Function
+    Public Function HttpGet(url As Text, ByRef responsestatuscode As Long, Optional responsebody As AddressOf ByteString := Nothing, Optional responseheader As AddressOf ByteString := Nothing) As Boolean BuiltIn(654) End Function
+    Public Function HttpHead(url As Text, ByRef responsestatuscode As Long, Optional responseheader As AddressOf ByteString := Nothing) As Boolean BuiltIn(655) End Function
+    Public Function HttpOptions(url As Text, ByRef responsestatuscode As Long, Optional responsebody As AddressOf ByteString := Nothing, Optional responseheader As AddressOf ByteString := Nothing ) As Boolean BuiltIn(656) End Function
+    Public Function HttpPatch(url As Text, contenttype As ByteString, body As ByteString, ByRef responsestatuscode As Long, Optional responsebody As AddressOf ByteString := Nothing, Optional responseheader As AddressOf ByteString := Nothing ) As Boolean BuiltIn(657) End Function
+    Public Function HttpPost(url As Text, contenttype As ByteString, body As ByteString, ByRef responsestatuscode As Long, Optional responsebody As AddressOf ByteString := Nothing, Optional responseheader As AddressOf ByteString := Nothing) As Boolean BuiltIn(658) End Function
+    Public Function HttpPostJSON(url As Text, json As Text, ByRef responsestatuscode As Long, Optional responsebody As AddressOf ByteString := Nothing, Optional responseheader As AddressOf ByteString := Nothing) As Boolean BuiltIn(659) End Function
+    Public Function HttpPostFormWWWURLEncoded(url As Text, parameters As Array[] As _HttpQueryParameter, ByRef responsestatuscode As Long, Optional responsebody As AddressOf ByteString := Nothing, Optional responseheader As AddressOf ByteString := Nothing) As Boolean BuiltIn(660) End Function
+    Public Function HttpPut(url As Text, contenttype As ByteString, body As ByteString, ByRef responsestatuscode As Long, Optional responseheader As AddressOf ByteString := Nothing) As Boolean BuiltIn(661) End Function
+    Public Function HttpCopy(url As Text, destinationurl As Text, overwrite As Boolean, ByRef responsestatuscode As Long, Optional responseheader As AddressOf ByteString := Nothing ) As Boolean BuiltIn(662) End Function
+    Public Function HttpRequest(method As Text, url As Text, addheader As ByteString, body As ByteString, ByRef responsestatuscode As Long, Optional responsebody As AddressOf ByteString := Nothing, Optional responseheader As AddressOf ByteString := Nothing) As Boolean BuiltIn(663) End Function
+    Public Function HttpGetEx(url As Text, parameters As Array[] As _HttpQueryParameter, ByRef responsestatuscode As Long, Optional responsebody As AddressOf ByteString := Nothing, Optional responseheader As AddressOf ByteString := Nothing) As Boolean BuiltIn(664) End Function
+    Public Function HttpHeadEx(url As Text, parameters As Array[] As _HttpQueryParameter, ByRef responsestatuscode As Long, Optional responseheader As AddressOf ByteString := Nothing) As Boolean BuiltIn(665) End Function
+    Public Function SetSession(enable As Boolean) As Boolean BuiltIn(668) End Function
+    Public Function HttpPostJSONInUTF8(url As Text, jsoninutf8 As ByteString, ByRef responsestatuscode As Long, Optional responsebody As AddressOf ByteString := Nothing, Optional responseheader As AddressOf ByteString := Nothing) As Boolean BuiltIn(692) End Function
+    Public Function SetAuthentication(username As Text, password As Text, Optional sendbasicauthenticationdirectly As Boolean:= False) As Boolean BuiltIn(700) End Function
+    Public Function HttpGetToFile(url As Text, ByRef responsestatuscode As Long, filename As Text, Optional responseheader As AddressOf ByteString := Nothing) As Boolean BuiltIn(763) End Function
+End Class
+
+Global Class _WebSocket BuiltIn(40)
+    Public Function Connect(server As Text, url As Text, Optional port As Long := 80, Optional usewss As Boolean := False, Optional checkcertificate As Boolean := False, Optional username As Text := "", Optional password As Text := "", Optional sendbasicauthenticationdirectly As Boolean:= False, Optional addheader As ByteString := &S"", Optional timeout As Time := :10) As Boolean BuiltIn(725) End Function
+    Public Function GetProtocol(ByRef protocol As ByteString) As Boolean BuiltIn(726) End Function
+    Public Function Disconnect() BuiltIn(727) End Function
+    Public Function ReceiveMessage(ByRef message As ByteString, ByRef istextmessage As Boolean, Optional timeout As Time := :10) As Boolean BuiltIn(728) End Function
+    Public Function SendTextMessage(message As Text) As Boolean BuiltIn(729) End Function
+    Public Function SendBinaryMessage(message As ByteString) As Boolean BuiltIn(730) End Function
+End Class
+
+Private ControllerClass BuiltIn(1)
+    Private Attribute _DefaultLanguageId As Long  := 0 BuiltIn(3)
+    Global Channel KEYPAD1 As _Serial Static BuiltIn(2)
+    Global Channel S1 As _Serial Static BuiltIn(1)
+    Global Channel U1 As _Universal Static BuiltIn(1)
+    Global Channel U2 As _Universal Static BuiltIn(2)
+    Global Channel U3 As _Universal Static BuiltIn(3)
+    Global Channel U4 As _Universal Static BuiltIn(4)
+    Global Channel Sensor1 As _DigitalInput Static BuiltIn(1)
+    Global Channel RE1 As _Relay Static BuiltIn(1)
+    Global Channel RE2 As _Relay Static BuiltIn(2)
+    Global Channel TcpClient1 As _TcpClient Static BuiltIn(1)
+    Global Channel TcpClient2 As _TcpClient Static BuiltIn(2)
+    Global Channel TcpClient3 As _TcpClient Static BuiltIn(3)
+    Global Channel TcpClient4 As _TcpClient Static BuiltIn(4)
+    Global Channel TcpClient5 As _TcpClient Static BuiltIn(5)
+    Global Channel TcpClient6 As _TcpClient Static BuiltIn(6)
+    Global Channel TcpClient7 As _TcpClient Static BuiltIn(7)
+    Global Channel TcpClient8 As _TcpClient Static BuiltIn(8)
+    Global Channel TcpClient9 As _TcpClient Static BuiltIn(9)
+    Global Channel TcpClient10 As _TcpClient Static BuiltIn(10)
+    Global Channel TcpClient11 As _TcpClient Static BuiltIn(11)
+    Global Channel TcpClient12 As _TcpClient Static BuiltIn(12)
+    Global Channel TcpClient13 As _TcpClient Static BuiltIn(13)
+    Global Channel TcpClient14 As _TcpClient Static BuiltIn(14)
+    Global Channel TcpClient15 As _TcpClient Static BuiltIn(15)
+    Global Channel TcpClient16 As _TcpClient Static BuiltIn(16)
+    Global Channel TcpClient17 As _TcpClient Static BuiltIn(17)
+    Global Channel TcpClient18 As _TcpClient Static BuiltIn(18)
+    Global Channel TcpClient19 As _TcpClient Static BuiltIn(19)
+    Global Channel TcpClient20 As _TcpClient Static BuiltIn(20)
+    Global Channel TcpClient21 As _TcpClient Static BuiltIn(21)
+    Global Channel TcpClient22 As _TcpClient Static BuiltIn(22)
+    Global Channel TcpClient23 As _TcpClient Static BuiltIn(23)
+    Global Channel TcpClient24 As _TcpClient Static BuiltIn(24)
+    Global Channel TcpClient25 As _TcpClient Static BuiltIn(25)
+    Global Channel TcpClient26 As _TcpClient Static BuiltIn(26)
+    Global Channel TcpClient27 As _TcpClient Static BuiltIn(27)
+    Global Channel TcpClient28 As _TcpClient Static BuiltIn(28)
+    Global Channel TcpClient29 As _TcpClient Static BuiltIn(29)
+    Global Channel TcpClient30 As _TcpClient Static BuiltIn(30)
+    Global Channel TcpClient31 As _TcpClient Static BuiltIn(31)
+    Global Channel TcpClient32 As _TcpClient Static BuiltIn(32)
+    Global Channel TcpServer1 As _TcpServer Static BuiltIn(1)
+    Global Channel TcpServer2 As _TcpServer Static BuiltIn(2)
+    Global Channel UdpClient1 As _UdpClient Static BuiltIn(1)
+    Global Channel UdpClient2 As _UdpClient Static BuiltIn(2)
+    Global Channel UdpClient3 As _UdpClient Static BuiltIn(3)
+    Global Channel UdpClient4 As _UdpClient Static BuiltIn(4)
+    Global Channel UdpClient5 As _UdpClient Static BuiltIn(5)
+    Global Channel UdpClient6 As _UdpClient Static BuiltIn(6)
+    Global Channel UdpClient7 As _UdpClient Static BuiltIn(7)
+    Global Channel UdpClient8 As _UdpClient Static BuiltIn(8)
+    Global Channel UdpClient9 As _UdpClient Static BuiltIn(9)
+    Global Channel UdpClient10 As _UdpClient Static BuiltIn(10)
+    Global Channel UdpClient11 As _UdpClient Static BuiltIn(11)
+    Global Channel UdpClient12 As _UdpClient Static BuiltIn(12)
+    Global Channel UdpClient13 As _UdpClient Static BuiltIn(13)
+    Global Channel UdpClient14 As _UdpClient Static BuiltIn(14)
+    Global Channel UdpClient15 As _UdpClient Static BuiltIn(15)
+    Global Channel UdpClient16 As _UdpClient Static BuiltIn(16)
+    Global Channel UdpServer1 As _UdpServer Static BuiltIn(1)
+    Global Channel UdpServer2 As _UdpServer Static BuiltIn(2)
+    Global Channel HttpClient1 As _HttpClient Static BuiltIn(1)
+    Global Channel HttpClient2 As _HttpClient Static BuiltIn(2)
+    Global Channel HttpClient3 As _HttpClient Static BuiltIn(3)
+    Global Channel HttpClient4 As _HttpClient Static BuiltIn(4)
+    Global Channel WebSocket1 As _WebSocket Static BuiltIn(1)
+    Public Var Syslog As _Syslog Static BuiltIn(1)
+    Public Function Wait(timeout As Time) Static BuiltIn(1) End Function
+    Public Function WaitForLocalTime(localtimevalue As Time) As Boolean Static BuiltIn(101) End Function
+    Public Function WaitForUTCTime(utctimevalue As Time) As Boolean Static BuiltIn(102) End Function
+    Public Function GetTextDeclaredLength(sourcetext As Text) As Long Static BuiltIn(2) End Function
+    Public Function GetTextActualLength(sourcetext As Text) As Long Static BuiltIn(3) End Function
+    Public Function GetTextLeft(sourcetext As Text,length As Long, ByRef destinationtext As Text) As Boolean Static BuiltIn(4) End Function
+    Public Function GetTextRight(sourcetext As Text,length As Long, ByRef destinationtext As Text) As Boolean Static BuiltIn(5) End Function
+    Public Function GetTextMiddle(sourcetext As Text,startposition As Long,length As Long, ByRef destinationtext As Text) As Boolean Static BuiltIn(6) End Function
+    Public Function GetSubTextPosition(sourcetext As Text, subtext As Text, Optional fromposition As Long :=1, Optional casesensitive As Boolean := True) As Long Static BuiltIn(7) End Function
+    Public Function CompareText(text1 As Text, text2 As Text, Optional flags As Long := _COMPARE_CASESENSITIVE) As Long Static BuiltIn(9) End Function
+    Public Function TextToLowercase(sourcetext As Text, ByRef destinationtext As Text) As Boolean Static BuiltIn(10) End Function
+    Public Function TextToUppercase(sourcetext As Text, ByRef destinationtext As Text) As Boolean Static BuiltIn(11) End Function
+    Public Function NumberToText(ByRef destinationtext As Text, ParamArray[1]) As Boolean Static BuiltIn(12) End Function
+    Public Function ConcatenateText(ByRef destinationtext As Text, ParamArray) As Boolean Static BuiltIn(13) End Function
+    Public Function FormatText(ByRef destinationtext As Text, formattext As Text, ParamArray ) As Boolean Static BuiltIn(14) End Function
+    Public Function ParseText(sourcetext As Text, formattext As Text, ByRef ParamArray) As Boolean Static BuiltIn(8) End Function
+    Global Function GetSystemTime() As Time Static BuiltIn(117) End Function
+    Global Function GetLocalTime() As Time Static BuiltIn(15) End Function
+    Global Function GetUTCTime() As Time Static BuiltIn(16) End Function
+    Global Function GetLocalTimeStructure(ByRef destinationtimestructure As _TimeStructure) As Boolean Static BuiltIn(17) End Function
+    Global Function GetUTCTimeStructure(ByRef destinationtimestructure As _TimeStructure) As Boolean Static BuiltIn(39) End Function
+    Public Function TimeStructureToTime(sourcetimestructure As _TimeStructure, ByRef destinationtime As Time) As Boolean Static BuiltIn(37) End Function
+    Public Function TimeToTimeStructure(sourcetime As Time, ByRef destinationtimestructure As _TimeStructure) As Boolean Static BuiltIn(38) End Function
+    Public Function Sin(x As Double) As Double Static BuiltIn(18) End Function
+    Public Function Cos(x As Double) As Double Static BuiltIn(19) End Function
+    Public Function Tan(x As Double) As Double Static BuiltIn(20) End Function
+    Public Function ASin(x As Double) As Double Static BuiltIn(21) End Function
+    Public Function ACos(x As Double) As Double Static BuiltIn(22) End Function
+    Public Function ATan(x As Double) As Double Static BuiltIn(23) End Function
+    Public Function ATan2(x As Double,y As Double) As Double Static BuiltIn(24) End Function
+    Public Function Log(x As Double) As Double Static BuiltIn(25) End Function
+    Public Function Ln(x As Double) As Double Static BuiltIn(26) End Function
+    Public Function SetTextActualLength(ByRef destinationtext As Text, length As Long) As Boolean Static BuiltIn(27) End Function
+    Public Function TrimTextLeft(sourcetext As Text, ByRef destinationtext As Text, Optional trimchars As Text := " ") As Boolean Static BuiltIn(28) End Function
+    Public Function TrimTextRight(sourcetext As Text, ByRef destinationtext As Text, Optional trimchars As Text := " ") As Boolean Static BuiltIn(29) End Function
+    Public Function TrimText(sourcetext As Text, ByRef destinationtext As Text, Optional trimchars As Text := " ") As Boolean Static BuiltIn(30) End Function
+    Public Function GetLastError() As Long Static BuiltIn(31) End Function
+    Public Function SetLanguage(languageid As Long) Static BuiltIn(32) End Function
+    Public Function GetLanguage() As Long Static BuiltIn(103) End Function
+    Public Function GetMemorySegment(ParamArray[1]) As Byte Static BuiltIn(33) End Function
+    Public Function GetByteStringDeclaredLength(sourcebytestring As ByteString) As Long Static BuiltIn(79) End Function
+    Public Function GetByteStringActualLength(sourcebytestring As ByteString) As Long Static BuiltIn(80) End Function
+    Public Function SetByteStringActualLength(ByRef destinationbytestring As ByteString, length As Long) As Boolean Static BuiltIn(81) End Function
+    Public Function GetSubByteStringPosition(sourcebytestring As ByteString, subbytestring As ByteString, Optional fromposition As Long :=1, Optional casesensitive As Boolean := True) As Long Static BuiltIn(82) End Function
+    Public Function ConcatenateByteString(ByRef destinationbytestring As ByteString, ParamArray) As Boolean Static BuiltIn(83) End Function
+    Public Function CompareByteString(bytestring1 As ByteString, bytestring2 As ByteString, Optional flags As Long := _COMPARE_CASESENSITIVE) As Long Static BuiltIn(84) End Function
+    Public Function GetByteStringMiddle(sourcebytestring As ByteString,startposition As Long,length As Long, ByRef destinationbytestring As ByteString) As Boolean Static BuiltIn(85) End Function
+    Public Function GetByteStringRight(sourcebytestring As ByteString,length As Long, ByRef destinationtbytestring As ByteString) As Boolean Static BuiltIn(86) End Function
+    Public Function GetByteStringLeft(sourcebytestring As ByteString,length As Long, ByRef destinationbytestring As ByteString) As Boolean Static BuiltIn(87) End Function
+    Public Function TrimByteStringLeft(sourcebytestring As ByteString, ByRef destination As ByteString, Optional trimbytes As ByteString := &S" ") As Boolean  Static BuiltIn(90) End Function
+    Public Function TrimByteStringRight(sourcebytestring As ByteString, ByRef destination As ByteString, Optional trimbytes As ByteString := &S" ") As Boolean  Static BuiltIn(91) End Function
+    Public Function TrimByteString(sourcebytestring As ByteString, ByRef destination As ByteString, Optional trimbytes As ByteString := &S" ") As Boolean Static BuiltIn(92) End Function
+    Public Function ByteStringToLowercase(sourcebytestring As ByteString, ByRef destinationbytestring As ByteString) As Boolean Static BuiltIn(106) End Function
+    Public Function ByteStringToUppercase(sourcebytestring As ByteString, ByRef destinationbytestring As ByteString) As Boolean Static BuiltIn(107) End Function
+    Public Function NumberToByteString(ByRef destinationbytestring As ByteString, ParamArray[1]) As Boolean Static BuiltIn(108) End Function
+    Public Function FormatByteString(ByRef destinationbytestring As ByteString, formatbytestring As ByteString, ParamArray ) As Boolean Static BuiltIn(104) End Function
+    Public Function ParseByteString(sourcebytestring As ByteString, formatbytestring As ByteString, ByRef ParamArray) As Boolean Static BuiltIn(105) End Function
+    Public Function TextToByteString(srctext As Text,ByRef dstbytestring As ByteString,conversiontype As Long) As Boolean Static BuiltIn(88) End Function
+    Public Function ByteStringToText(srcbytestring As ByteString,ByRef dsttext As Text,conversiontype As Long) As Boolean Static BuiltIn(89) End Function
+    Public Function IsDebugEnable() As Boolean Static BuiltIn(36) End Function
+    Public Function DebugPrint( ParamArray ) Static BuiltIn(35) End Function
+    Public Function DebugPrintFormat( formattext As Text, ParamArray ) Static BuiltIn(34) End Function
+    Public Function Color(red As Byte, green As Byte, blue As Byte, Optional opacity As Byte := 255) As Long Static BuiltIn(270) End Function
+    Public Function GetColorComponentRed(color As Long) As Byte Static BuiltIn(292) End Function
+    Public Function GetColorComponentGreen(color As Long) As Byte Static BuiltIn(293) End Function
+    Public Function GetColorComponentBlue(color As Long) As Byte Static BuiltIn(294) End Function
+    Public Function GetColorComponentOpacity(color As Long) As Byte Static BuiltIn(320) End Function
+    Public Function SetColorComponentOpacity(color As Long, newopacity As Byte) As Long Static BuiltIn(321) End Function
+    Public Function CalculateMD5(sourcebytestring As ByteString, ByRef destinationbytestring As ByteString) As Boolean Static BuiltIn(135) End Function
+    Public Function DeleteFile(filepathname As Text)  As Boolean Static BuiltIn(132) End Function
+    Public Function SendEmail(recipientaddress As Text,   subject As Text,    body As Text,    Optional attachment As Text := "")  As Boolean  Static BuiltIn(140) End Function
+    Public Function SendPresetEmail(recipientnumber As Long,   subject As Text,    body As Text,    Optional attachment As Text := "")  As Boolean  Static BuiltIn(141) End Function
+    Public Function WakeOnLAN(macaddress As Text, Optional password As Text := "") As Boolean Static BuiltIn(142) End Function
+    Public Function IsSimulationMode() As Boolean Static BuiltIn(146) End Function
+    Public Function GetSystemIdentification(ByRef systemid As Text) As Boolean Static BuiltIn(147) End Function
+    Public Function ByteStringToTextOnTheFly(ByRef srcbytestring As ByteString,ByRef dsttext As Text,conversiontype As Long, appendmode As Boolean) As Boolean Static BuiltIn(151) End Function
+    Public Function SetLastError(error As Long)  Static BuiltIn(67) End Function
+    Public Function PopBinDouble(ByRef inputdata As ByteString, ByRef outputvalue As Double, Optional encodingformat As Long := _IEE754_64BITS, Optional lsbfirst As Boolean := False) As Boolean Static BuiltIn(327) End Function
+    Public Function PopBinInteger(ByRef inputdata As ByteString, ByRef outputvalue As Long, Optional encodingformat As Long := _SIGNED_INT_32BITS, Optional lsbfirst As Boolean := False) As Boolean Static BuiltIn(328) End Function
+    Public Function PopBinData(ByRef inputdata As ByteString, ByRef outputvalue As ByteString, Optional numofbytes As Long := _LENGTH_UNSPECIFIED) As Boolean Static BuiltIn(329) End Function
+    Public Function PopBinDelimitedData(ByRef inputdata As ByteString, ByRef outputvalue As ByteString, delimiter As ByteString) As Boolean Static BuiltIn(330) End Function
+    Public Function PopBinSyncFrame(ByRef inputdata As ByteString, syncframe As ByteString) As Boolean Static BuiltIn(331) End Function
+    Public Function PopBinPattern(ByRef inputdata As ByteString, pattern As ByteString) As Boolean Static BuiltIn(332) End Function
+    Public Function PushBinDouble(ByRef outputdata As ByteString, inputvalue As Double, Optional encodingformat As Long := _IEE754_64BITS, Optional lsbfirst As Boolean := False) As Boolean Static BuiltIn(333) End Function
+    Public Function PushBinInteger(ByRef outputdata As ByteString, inputvalue As Long, Optional encodingformat As Long := _SIGNED_INT_32BITS, Optional lsbfirst As Boolean := False) As Boolean Static BuiltIn(334) End Function
+    Public Function PushBinData(ByRef outputdata As ByteString, inputvalue As ByteString) As Boolean Static BuiltIn(335) End Function
+    Public Function CreateFolder(foldername As Text) As Boolean Static BuiltIn(355) End Function
+    Public Function DeleteFolder(foldername As Text) As Boolean Static BuiltIn(356) End Function
+    Public Function GetFolderContent(folderpathname As Text, ByRef content As Array[] As _FileFolderInfoStructure, ByRef validitems As Long, ByRef totalitems As Long, Optional mask As Text := "*", Optional fromindex As Long :=1, Optional flags As Long := _FILTER_FILES BitOr _SORT_BY_NAME) As Boolean Static BuiltIn(357) End Function
+    Public Function FileExists(filepathname As Text) As Boolean Static BuiltIn(358) End Function
+    Public Function FolderExists(foldername As Text) As Boolean Static BuiltIn(359) End Function
+    Public Function GetFirmwareVersion(ByRef fwversion As Text) As Boolean Static BuiltIn(360) End Function
+    Public Function GetMACAddress(ByRef macaddress As Text) As Boolean Static BuiltIn(361) End Function
+    Public Function GetRunningApplicationName(ByRef applicationname As Text) As Boolean Static BuiltIn(362) End Function
+    Public Function IsNaN(number As Double) As Boolean Static BuiltIn(363) End Function
+    Public Function GetNaN() As Double Static BuiltIn(364) End Function
+    Global Function StartApplication(applicationname As Text, Optional setasautorun As Boolean := False) As Boolean Static BuiltIn(423) End Function
+    Public Function GetLocalToUTCTimeOffset() As Time Static BuiltIn(433) End Function
+    Public Function LDAPAuthenticate(serverURL As Text, username As Text, password as Text, Optional timeout As Time := :10.0) As Boolean Static BuiltIn(434) End Function
+    Public Function Reset() Static BuiltIn(436) End Function
+    Global Function IsAlive() As Boolean Static BuiltIn(437) End Function
+    Public Function GetRandomLong() As Long Static BuiltIn(438) End Function
+    Public Function GetRandomByteString(ByRef destinationbytestring As ByteString) Static BuiltIn(439) End Function
+    Public Function CalculateSHA1(sourcebytestring As ByteString, ByRef destinationbytestring As ByteString) As Boolean Static BuiltIn(440) End Function
+    Public Function CalculateSHA256(sourcebytestring As ByteString, ByRef destinationbytestring As ByteString) As Boolean Static BuiltIn(441) End Function
+    Public Function CalculateSHA512(sourcebytestring As ByteString, ByRef destinationbytestring As ByteString) As Boolean Static BuiltIn(442) End Function
+    Public Function SyncTimeWithInternetClock() As Boolean Static BuiltIn(445) End Function
+    Public Function SetNTPServers(server1 As Text, Optional server2 As Text := "") As Boolean Static BuiltIn(446) End Function
+    Public Function GetNTPServers(ByRef server1 As Text, ByRef server2 As Text) As Boolean Static BuiltIn(447) End Function
+    Public Function SetInternetClockEnabled(internetclockenabled As Boolean) As Boolean Static BuiltIn(448) End Function
+    Public Function GetInternetClockEnabled() As Boolean Static BuiltIn(449) End Function
+    Public Function GetTimeZonesCount() As Long Static BuiltIn(450) End Function
+    Public Function GetTimeZoneInfo(timezoneindex As Long, ByRef timezoneinfo As _TimeZoneInfo) As Boolean Static BuiltIn(451) End Function
+    Public Function SetTimeZone(timezoneid As Text) As Boolean Static BuiltIn(452) End Function
+    Public Function SetLocalTime(newtime As Time) As Boolean Static BuiltIn(453) End Function
+    Public Function GetCurrentIP(ByRef ip  As _IPSettings) As Boolean Static BuiltIn(455) End Function
+    Public Function GetCurrentTimeZoneInfo(ByRef timezoneinfo As _TimeZoneInfo) As Boolean Static BuiltIn(458) End Function
+    Public Function GetSiteIdentification(ByRef siteidentification As Text) As Boolean Static BuiltIn(462) End Function
+    Public Function GetMagicName(ByRef magicname As Text) As Boolean Static BuiltIn(463) End Function
+    Public Function GetProductName(ByRef productname As Text) As Boolean Static BuiltIn(471) End Function
+    Public Function SendDataToCloud(cloudcredentials As _CloudCredentials, protocolname As Text, instancename As Text , dataname As Text, datavalue As Text, Optional archiveondelete As Boolean := False) As Boolean Static WithAttributes {IsCloudCommand := True} BuiltIn(472) End Function
+    Public Function ReceiveSingleDataFromCloud(cloudcredentials As _CloudCredentials, protocolname As Text, instancename As Text, dataname As Text, sourceunitmagicname As Text, ByRef datavalue As Text) As Boolean Static WithAttributes {IsCloudCommand := True} BuiltIn(473) End Function
+    Public Function GetUnits(ByRef unitsinfo As Array[] As _UnitInfo, ByRef unitscount As Long) As Boolean Static BuiltIn(474) End Function
+    Public Function SendCommandViaCloud(cloudcredentials As _CloudCredentials, protocolname As Text, commandname As Text, commandparameters As Text, destinationunitmagicname As Text, destinationinstancename As Text,  expiration As Time, ByRef answerhandle As Long) As Boolean Static WithAttributes {IsCloudCommand := True} BuiltIn(475) End Function
+    Public Function ReceiveCommandViaCloud(cloudcredentials As _CloudCredentials, protocolname As Text, destinationinstancename As Text, ByRef commandname As Text, ByRef commandparameters As Text, ByRef answerhandle As Long) As Boolean Static WithAttributes {IsCloudCommand := True} BuiltIn(476) End Function
+    Public Function SendAnswerViaCloud(cloudcredentials As _CloudCredentials, answerhandle As Long,  answervalue As Text ) As Boolean Static WithAttributes {IsCloudCommand := True} BuiltIn(477) End Function
+    Public Function ReceiveAnswerViaCloud(cloudcredentials As _CloudCredentials, answerhandle As Long, ByRef answervalue As Text) As Boolean Static WithAttributes {IsCloudCommand := True} BuiltIn(478) End Function
+    Public Function IPCSendRequestAndReceiveAnswer(magicnameoripaddress As Text,  protocolname As Text, instancename As Text, password As Text, requestname As Text, requestdata As Text, ByRef answer as Text, Optional timeout As Time:= :10.0) As Boolean Static BuiltIn(479) End Function
+    Public Function GetTextLanguageVersion(resourcetext As AddressOf Text, languageid As Long, ByRef destination As Text) As Boolean Static BuiltIn(485) End Function
+    Public Function EncryptAES256CBC(sourcebytestring As ByteString, ByRef destinationbytestring As ByteString, encryptionkey As ByteString, ByRef encryptioniv  As ByteString ) As Boolean Static BuiltIn(495) End Function
+    Public Function DecryptAES256CBC(sourcebytestring As ByteString, ByRef destinationbytestring As ByteString, encryptionkey As ByteString, ByRef encryptioniv  As ByteString ) As Boolean Static BuiltIn(496) End Function
+    Public Function IPCIsAlive(magicnameoripaddress As Text,  protocolname As Text, instancename As Text, password As Text, Optional timeout As Time:= :10.0) As Boolean Static BuiltIn(498) End Function
+    Public Function IrCaptureToFile(filename As Text, Optional starttimeout As Time := :5.0, Optional maxgapduration As Time := :0.5, Optional maxirdatalength As Time := :0.5) As Boolean Static BuiltIn(499) End Function
+    Public Function GetCloudCredentials(ByRef cloudcredentials As _CloudCredentials) As Boolean Static BuiltIn(504) End Function
+    Public Function GetAvailableRAM() As Long Static BuiltIn(506) End Function
+    Public Function GetCPUAverageLoad() As Long Static BuiltIn(507) End Function
+    Public Function GetFilestorageFreeSpace() As Long Static BuiltIn(516) End Function
+    Public Function SetHTTPSProxyServer(proxyserver As Text, proxyport As Long, login As Text, password As Text) As Boolean Static BuiltIn(518) End Function
+    Public Function GetHTTPSProxyServer(ByRef proxyserver As Text, ByRef proxyport As Long, ByRef login As Text, ByRef password As Text) As Boolean Static BuiltIn(519) End Function
+    Public Function ReceiveAJAXRequest(ByRef messageId As Long, ByRef URL As Text, ByRef request As ByteString) As Boolean Static BuiltIn(525) End Function
+    Public Function SendAnswerToAJAXRequest(messageId As Long, answer As ByteString) Static BuiltIn(526) End Function
+    Public Function Base64ToByteString(source As ByteString, ByRef destination As ByteString) As Boolean Static BuiltIn(527) End Function
+    Public Function ByteStringToBase64(source As ByteString, ByRef destination As ByteString) As Boolean Static BuiltIn(528) End Function
+    Public Function StartDownloadNewFirmware() As Boolean Static BuiltIn(531) End Function
+    Public Function CancelDownloadNewFirmware() As Boolean Static BuiltIn(532) End Function
+    Public Function UpdateFirmware() As Boolean Static BuiltIn(533) End Function
+    Public Function GetDownloadNewFirmwareStatus(ByRef status As Long, ByRef percent As Double) As Boolean Static BuiltIn(534) End Function
+    Public Function IsNewFirmwareAvailable(ByRef versionText As Text) As Boolean Static  BuiltIn(535) End Function
+    Public Function MoveFile(existingfilepathname As Text, newfilepathname  As Text, Optional failifexist As Boolean := False)  As Boolean Static BuiltIn(537) End Function
+    Public Function SetWebAppButton(appname As Text, applogofilename As Text) Static BuiltIn(540) End Function
+    Public Function IrCaptureToByteString(ByRef destination As ByteString, Optional starttimeout As Time := :5.0, Optional maxgapduration As Time := :0.5, Optional maxirdatalength As Time := :0.5) As Boolean Static BuiltIn(586) End Function
+    Public Event OnPower12VOutputOverload As Process() Static BuiltIn(589)
+    Public Function SetWebAppAngularURLRewriteRules(enable As Boolean) As Boolean Static BuiltIn(595) End Function
+    Public Function SetCSRFProtectionForAJAXRequest(enable As Boolean) Static BuiltIn(615) End Function
+    Public Function DownloadFileFromFTP(serveraddress As Text, username As Text, password As Text, remote_filename As Text, local_filename As Text, Optional option_flags as Long := 0, Optional connect_timeout As Time := :10, Optional download_timeout As Time := _TIME_INFINITE) As Boolean Static BuiltIn(620) End Function
+    Public Function GetFTPUpdateCredentials(ByRef serveraddress As Text, ByRef username As Text, ByRef password As Text, ByRef appbasefolder As Text, ByRef flags As Long) As Boolean Static BuiltIn(625) End Function
+    Public Function GetProcessesCount(ByRef info As _ProcessesCount) As Boolean Static BuiltIn(626) End Function
+    Public Function Ping(serveraddress As Text, Optional repeatcount As Long := 1, Optional timeoutforeply As Time := :2, Optional receivedreplycount As AddressOf Long := Nothing, Optional replyaveragetime As AddressOf Time := Nothing ) As Boolean Static BuiltIn(627) End Function
+    Public Function GetLocalToUTCTimeOffsetExt(locatimeincurrenttimezone As Time) As Time Static BuiltIn(636) End Function
+    Public Function PBKDF2_HMAC_SHA256(password As ByteString, salt As ByteString, iterations As Long, ByRef derivedkey As ByteString, Optional dklen As Long := 256) As Boolean Static BuiltIn(637) End Function
+    Public Function HMAC_SHA256(key As ByteString, data As ByteString, ByRef result As ByteString) As Boolean Static BuiltIn(638) End Function
+    Public Function IsLicenseForwebCUEExist() As Boolean Static BuiltIn(643) End Function
+    Public Function SetHTTPHeaderField(filename As Text, fieldname As Text, fieldvalue As Text) As Boolean Static BuiltIn(644) End Function
+    Public Function DeleteHTTPHeaderField(filename As Text, fieldname As Text) As Boolean Static BuiltIn(645) End Function
+    Public Function HTTPGet(encodedURL As ByteString, ByRef reply As ByteString, Optional username As ByteString := &S"", Optional password As ByteString := &S"") As Boolean Static BuiltIn(646) End Function
+    Public Function EncodeURIComponent(uriComponent As Text, ByRef encodedcomponent As Text) As Boolean Static BuiltIn(652) End Function
+    Public Function ConvertUTCTimeToLocalTime(utc As Time, ByRef dstlocaltime As Time) As Boolean Static BuiltIn(672) End Function
+    Public Function UnlinkWebAppFilestorage() Static BuiltIn(673) End Function
+    Public Function LinkWebAppFilestorageToFolder(subfolderpath As Text) As Boolean Static BuiltIn(674) End Function
+    Public Function IsValidUTF8(src As ByteString) As Boolean Static BuiltIn(697) End Function
+    Public Function ConvertLocalTimeToUTCTime(localtime As Time, ByRef dstutctime As Time) As Boolean Static BuiltIn(698) End Function
+    Public Function ConvertIANALocalTimeToUTC(localtime As _TimeStructure, iana_timezone As Text, ByRef dstutctime As Time) As Boolean Static BuiltIn(699) End Function
+    Public Function EncryptAES128CBC(sourcebytestring As ByteString, ByRef destinationbytestring As ByteString, encryptionkey As ByteString, ByRef encryptioniv  As ByteString ) As Boolean Static BuiltIn(708) End Function
+    Public Function DecryptAES128CBC(sourcebytestring As ByteString, ByRef destinationbytestring As ByteString, encryptionkey As ByteString, ByRef encryptioniv  As ByteString ) As Boolean Static BuiltIn(709) End Function
+    Public Function EncryptAES128ECB(sourcebytestring As ByteString, ByRef destinationbytestring As ByteString, encryptionkey As ByteString) As Boolean Static BuiltIn(710) End Function
+    Public Function DecryptAES128ECB(sourcebytestring As ByteString, ByRef destinationbytestring As ByteString, encryptionkey As ByteString) As Boolean Static BuiltIn(711) End Function
+    Public Function EncryptAES256ECB(sourcebytestring As ByteString, ByRef destinationbytestring As ByteString, encryptionkey As ByteString) As Boolean Static BuiltIn(712) End Function
+    Public Function DecryptAES256ECB(sourcebytestring As ByteString, ByRef destinationbytestring As ByteString, encryptionkey As ByteString) As Boolean Static BuiltIn(713) End Function
+    Public Function GetCUESolutionName(Byref name As Text) As Boolean Static BuiltIn(721) End Function
+    Public Function GetCUESolutionServer(Byref server As Text) As Boolean Static BuiltIn(722) End Function
+    Public Function GetCUESolutionToken(Byref token As Text) As Boolean Static BuiltIn(723) End Function
+    Public Function GetDeviceInstanceName(deviceinstance As Anything, ByRef instancename As Text) As Boolean Static BuiltIn(731) End Function
+    Public Function GetUserNameForAJAXRequest(messageid As Long, ByRef username As Text) As Boolean Static BuiltIn(760) End Function
+    Public Function SetCORSForAJAXRequest(origin as Text, Optional onlyfromlocalhost As Boolean := True) As Boolean Static BuiltIn(761) End Function
+    Public Function SetAutoLoginForAJAXRequest(enable As Boolean, Optional onlyfromlocalhost As Boolean := True) Static BuiltIn(762) End Function
+End ControllerClass
+

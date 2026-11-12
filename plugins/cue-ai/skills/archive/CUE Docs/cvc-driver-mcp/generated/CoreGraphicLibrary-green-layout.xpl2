@@ -1,0 +1,751 @@
+MyProperties { _DisplayWidth:=1280,_DisplayHeight:=800,_DefaultLanguageId:=32,_FullScreen:=False}
+Global _GraphicWindow LightsPage As MyController.CoreGraphicLibrary.Page WithProperties
+ { Left:=0,Top:=0,Width:=1280,Height:=800,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFF10271D}
+Global GraphicObject HeaderLine As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=32,Top:=112,Width:=1216,Height:=2,Visible:=True,Locked:=0,_CollectionID:=0,FillColor:=&HFF3F6952}
+ End GraphicObject
+Global GraphicObject PageHeading As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=32,Top:=24,Width:=400,Height:=64,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF57C987,BorderWidth:=1,ColorDown:=&HFF2E8051,ColorUp:=&HFF57C987,TextMain:=MyCommon.txtSvtla,TextMainColor:=&HFF10271D,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject PageSubtitle As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=464,Top:=35,Width:=784,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFB7D7C4,stxText:=MyCommon.txtTiSvtelnOkruhyStmvnAScny}
+ End GraphicObject
+Global GraphicObject NavigationBackground As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=0,Top:=696,Width:=1280,Height:=104,Visible:=True,Locked:=0,_CollectionID:=0,FillColor:=&HFF19392A}
+ End GraphicObject
+Global GraphicObject NavigateDvd As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=32,Top:=714,Width:=396,Height:=64,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF3F6952,BorderWidth:=1,ColorDown:=&HFF2E8051,ColorUp:=&HFF254B36,Icon:=632,IconColor:=&HFFF3FCF6,IconSize:=30,TextMain:=MyCommon.txtDVD,TextMainColor:=&HFFF3FCF6,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject NavigateLights As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=442,Top:=714,Width:=396,Height:=64,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF57C987,BorderWidth:=1,ColorDown:=&HFF2E8051,ColorUp:=&HFF57C987,Icon:=69,IconColor:=&HFF10271D,IconSize:=30,TextMain:=MyCommon.txtSvtla,TextMainColor:=&HFF10271D,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject NavigateHeating As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=852,Top:=714,Width:=396,Height:=64,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF3F6952,BorderWidth:=1,ColorDown:=&HFF2E8051,ColorUp:=&HFF254B36,Icon:=531,IconColor:=&HFFF3FCF6,IconSize:=30,TextMain:=MyCommon.txtVytpn,TextMainColor:=&HFFF3FCF6,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject MasterPanel As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=32,Top:=138,Width:=1216,Height:=122,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF3F6952,BorderRadius:=16,BorderWidth:=1,FillColor:=&HFF19392A}
+ End GraphicObject
+Global GraphicObject MasterTitle As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=56,Top:=158,Width:=380,Height:=32,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFB7D7C4,stxText:=MyCommon.txtHLAVNOVLDN}
+ End GraphicObject
+Global GraphicObject AllLightsOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=552,Top:=164,Width:=316,Height:=68,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF57C987,BorderWidth:=1,ColorDown:=&HFF2E8051,ColorUp:=&HFF57C987,Icon:=536,IconColor:=&HFF10271D,IconSize:=30,TextMain:=MyCommon.txtVeZapnout,TextMainColor:=&HFF10271D,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject AllLightsOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=892,Top:=164,Width:=332,Height:=68,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF3F6952,BorderWidth:=1,ColorDown:=&HFF2E8051,ColorUp:=&HFF254B36,Icon:=537,IconColor:=&HFFF3FCF6,IconSize:=30,TextMain:=MyCommon.txtVeVypnout,TextMainColor:=&HFFF3FCF6,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject CeilingPanel As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=32,Top:=284,Width:=392,Height:=240,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF3F6952,BorderRadius:=16,BorderWidth:=1,FillColor:=&HFF19392A}
+ End GraphicObject
+Global GraphicObject CeilingTitle As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=52,Top:=302,Width:=352,Height:=60,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF3F6952,BorderWidth:=1,ColorDown:=&HFF2E8051,ColorUp:=&HFF254B36,Icon:=573,IconColor:=&HFFF3FCF6,IconSize:=30,TextMain:=MyCommon.txtStropnSvtla,TextMainColor:=&HFFF3FCF6,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject CeilingOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=52,Top:=378,Width:=168,Height:=56,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF57C987,BorderWidth:=1,ColorDown:=&HFF2E8051,ColorUp:=&HFF57C987,TextMain:=MyCommon.txtZapnout,TextMainColor:=&HFF10271D,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject CeilingOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=236,Top:=378,Width:=168,Height:=56,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF3F6952,BorderWidth:=1,ColorDown:=&HFF2E8051,ColorUp:=&HFF254B36,TextMain:=MyCommon.txtVypnout,TextMainColor:=&HFFF3FCF6,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject CeilingDimDown As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=52,Top:=450,Width:=80,Height:=54,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF3F6952,BorderWidth:=1,ColorDown:=&HFF2E8051,ColorUp:=&HFF254B36,TextMain:=MyCommon.txt2,TextMainColor:=&HFFF3FCF6,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject CeilingLevel As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=148,Top:=460,Width:=160,Height:=34,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFB7D7C4,stxText:=MyCommon.txtJas}
+ End GraphicObject
+Global GraphicObject CeilingDimUp As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=324,Top:=450,Width:=80,Height:=54,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF3F6952,BorderWidth:=1,ColorDown:=&HFF2E8051,ColorUp:=&HFF254B36,TextMain:=MyCommon.txt1,TextMainColor:=&HFFF3FCF6,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject WallPanel As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=444,Top:=284,Width:=392,Height:=240,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF3F6952,BorderRadius:=16,BorderWidth:=1,FillColor:=&HFF19392A}
+ End GraphicObject
+Global GraphicObject WallTitle As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=464,Top:=302,Width:=352,Height:=60,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF3F6952,BorderWidth:=1,ColorDown:=&HFF2E8051,ColorUp:=&HFF254B36,Icon:=574,IconColor:=&HFFF3FCF6,IconSize:=30,TextMain:=MyCommon.txtNstnnSvtla,TextMainColor:=&HFFF3FCF6,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject WallOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=464,Top:=378,Width:=168,Height:=56,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF57C987,BorderWidth:=1,ColorDown:=&HFF2E8051,ColorUp:=&HFF57C987,TextMain:=MyCommon.txtZapnout,TextMainColor:=&HFF10271D,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject WallOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=648,Top:=378,Width:=168,Height:=56,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF3F6952,BorderWidth:=1,ColorDown:=&HFF2E8051,ColorUp:=&HFF254B36,TextMain:=MyCommon.txtVypnout,TextMainColor:=&HFFF3FCF6,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject WallDimDown As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=464,Top:=450,Width:=80,Height:=54,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF3F6952,BorderWidth:=1,ColorDown:=&HFF2E8051,ColorUp:=&HFF254B36,TextMain:=MyCommon.txt2,TextMainColor:=&HFFF3FCF6,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject WallLevel As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=560,Top:=460,Width:=160,Height:=34,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFB7D7C4,stxText:=MyCommon.txtJas}
+ End GraphicObject
+Global GraphicObject WallDimUp As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=736,Top:=450,Width:=80,Height:=54,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF3F6952,BorderWidth:=1,ColorDown:=&HFF2E8051,ColorUp:=&HFF254B36,TextMain:=MyCommon.txt1,TextMainColor:=&HFFF3FCF6,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject AmbientPanel As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=856,Top:=284,Width:=392,Height:=240,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF3F6952,BorderRadius:=16,BorderWidth:=1,FillColor:=&HFF19392A}
+ End GraphicObject
+Global GraphicObject AmbientTitle As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=876,Top:=302,Width:=352,Height:=60,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF3F6952,BorderWidth:=1,ColorDown:=&HFF2E8051,ColorUp:=&HFF254B36,Icon:=571,IconColor:=&HFFF3FCF6,IconSize:=30,TextMain:=MyCommon.txtAmbientnLED,TextMainColor:=&HFFF3FCF6,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject AmbientOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=876,Top:=378,Width:=168,Height:=56,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF57C987,BorderWidth:=1,ColorDown:=&HFF2E8051,ColorUp:=&HFF57C987,TextMain:=MyCommon.txtZapnout,TextMainColor:=&HFF10271D,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject AmbientOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=1060,Top:=378,Width:=168,Height:=56,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF3F6952,BorderWidth:=1,ColorDown:=&HFF2E8051,ColorUp:=&HFF254B36,TextMain:=MyCommon.txtVypnout,TextMainColor:=&HFFF3FCF6,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject AmbientDimDown As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=876,Top:=450,Width:=80,Height:=54,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF3F6952,BorderWidth:=1,ColorDown:=&HFF2E8051,ColorUp:=&HFF254B36,TextMain:=MyCommon.txt2,TextMainColor:=&HFFF3FCF6,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject AmbientLevel As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=972,Top:=460,Width:=160,Height:=34,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFB7D7C4,stxText:=MyCommon.txtJas}
+ End GraphicObject
+Global GraphicObject AmbientDimUp As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=1148,Top:=450,Width:=80,Height:=54,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF3F6952,BorderWidth:=1,ColorDown:=&HFF2E8051,ColorUp:=&HFF254B36,TextMain:=MyCommon.txt1,TextMainColor:=&HFFF3FCF6,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject ScenesPanel As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=32,Top:=548,Width:=1216,Height:=122,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF3F6952,BorderRadius:=16,BorderWidth:=1,FillColor:=&HFF19392A}
+ End GraphicObject
+Global GraphicObject ScenesTitle As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=56,Top:=562,Width:=360,Height:=30,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFB7D7C4,stxText:=MyCommon.txtSVTELNSCNY}
+ End GraphicObject
+Global GraphicObject SceneDay As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=56,Top:=602,Width:=274,Height:=50,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF3F6952,BorderWidth:=1,ColorDown:=&HFF2E8051,ColorUp:=&HFF254B36,TextMain:=MyCommon.txtDen,TextMainColor:=&HFFF3FCF6,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject SceneEvening As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=354,Top:=602,Width:=274,Height:=50,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF3F6952,BorderWidth:=1,ColorDown:=&HFF2E8051,ColorUp:=&HFF254B36,TextMain:=MyCommon.txtVeer,TextMainColor:=&HFFF3FCF6,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject SceneCinema As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=652,Top:=602,Width:=274,Height:=50,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF3F6952,BorderWidth:=1,ColorDown:=&HFF2E8051,ColorUp:=&HFF254B36,TextMain:=MyCommon.txtKino,TextMainColor:=&HFFF3FCF6,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject SceneAway As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=950,Top:=602,Width:=274,Height:=50,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF3F6952,BorderWidth:=1,ColorDown:=&HFF2E8051,ColorUp:=&HFF254B36,TextMain:=MyCommon.txtOdchod,TextMainColor:=&HFFF3FCF6,TextMainFontSize:=24}
+ End GraphicObject
+End _GraphicWindow
+Global _GraphicWindow LightingPage As MyController.CoreGraphicLibrary.Page WithProperties
+ { Left:=0,Top:=0,Width:=1280,Height:=800,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFF0D2418}
+Global GraphicObject AccentLine As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=40,Top:=36,Width:=6,Height:=62,Visible:=True,Locked:=0,_CollectionID:=0,BorderWidth:=0,FillColor:=&HFF66DC91}
+ End GraphicObject
+Global GraphicObject PageTitle As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=64,Top:=28,Width:=710,Height:=62,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtLys,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=36}
+ End GraphicObject
+Global GraphicObject PageSubtitle As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=64,Top:=98,Width:=1040,Height:=32,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFBDDFC7,stxText:=MyCommon.txtVelgEnSceneEllerJusterBelysningenIHverSone}
+ End GraphicObject
+Global GraphicObject SystemCaption As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=946,Top:=48,Width:=290,Height:=28,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFBDDFC7,stxText:=MyCommon.txtHJEMSTYRING}
+ End GraphicObject
+Global GraphicObject NavigationBar As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=40,Top:=692,Width:=1200,Height:=80,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=16,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject NavLights As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=60,Top:=704,Width:=368,Height:=56,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtLys,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject NavDvd As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=456,Top:=704,Width:=368,Height:=56,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtDVD,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject NavHeating As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=852,Top:=704,Width:=368,Height:=56,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtVarme,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject ScenesCaption As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=40,Top:=152,Width:=600,Height:=30,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFBDDFC7,stxText:=MyCommon.txtLYSSCENER}
+ End GraphicObject
+Global GraphicObject SceneDay As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=40,Top:=194,Width:=282,Height:=94,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextHint:=MyCommon.txtSterkBelysning,TextHintColor:=&HFFBDDFC7,TextHintFontSize:=16,TextMain:=MyCommon.txtDagmodus,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject SceneEvening As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=346,Top:=194,Width:=282,Height:=94,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextHint:=MyCommon.txtDempetStemning,TextHintColor:=&HFFBDDFC7,TextHintFontSize:=16,TextMain:=MyCommon.txtKveld,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject SceneCinema As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=652,Top:=194,Width:=282,Height:=94,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextHint:=MyCommon.txtDempetBakgrunnslys,TextHintColor:=&HFFBDDFC7,TextHintFontSize:=16,TextMain:=MyCommon.txtKino,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject SceneAllOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=958,Top:=194,Width:=282,Height:=94,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextHint:=MyCommon.txtAlleLyssoner,TextHintColor:=&HFFBDDFC7,TextHintFontSize:=16,TextMain:=MyCommon.txtSlAvAlt,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject LivingCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=40,Top:=320,Width:=384,Height:=332,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=20,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject LivingTitle As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=60,Top:=338,Width:=344,Height:=60,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtStue,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=26}
+ End GraphicObject
+Global GraphicObject LivingOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=60,Top:=420,Width:=164,Height:=64,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtSlP,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=22}
+ End GraphicObject
+Global GraphicObject LivingOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=240,Top:=420,Width:=164,Height:=64,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSlAv,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=22}
+ End GraphicObject
+Global GraphicObject LivingBrightnessCaption As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=60,Top:=508,Width:=344,Height:=28,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFBDDFC7,stxText:=MyCommon.txtLYSSTYRKETRINN10}
+ End GraphicObject
+Global GraphicObject LivingDimDown As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=60,Top:=554,Width:=84,Height:=70,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txt2,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=32}
+ End GraphicObject
+Global GraphicObject LivingBrightness As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=156,Top:=554,Width:=152,Height:=70,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txt3,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=30}
+ End GraphicObject
+Global GraphicObject LivingDimUp As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=320,Top:=554,Width:=84,Height:=70,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txt1,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=32}
+ End GraphicObject
+Global GraphicObject KitchenCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=448,Top:=320,Width:=384,Height:=332,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=20,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject KitchenTitle As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=468,Top:=338,Width:=344,Height:=60,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtKjkken,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=26}
+ End GraphicObject
+Global GraphicObject KitchenOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=468,Top:=420,Width:=164,Height:=64,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtSlP,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=22}
+ End GraphicObject
+Global GraphicObject KitchenOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=648,Top:=420,Width:=164,Height:=64,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSlAv,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=22}
+ End GraphicObject
+Global GraphicObject KitchenBrightnessCaption As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=468,Top:=508,Width:=344,Height:=28,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFBDDFC7,stxText:=MyCommon.txtLYSSTYRKETRINN10}
+ End GraphicObject
+Global GraphicObject KitchenDimDown As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=468,Top:=554,Width:=84,Height:=70,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txt2,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=32}
+ End GraphicObject
+Global GraphicObject KitchenBrightness As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=564,Top:=554,Width:=152,Height:=70,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txt3,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=30}
+ End GraphicObject
+Global GraphicObject KitchenDimUp As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=728,Top:=554,Width:=84,Height:=70,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txt1,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=32}
+ End GraphicObject
+Global GraphicObject DiningCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=856,Top:=320,Width:=384,Height:=332,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=20,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject DiningTitle As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=876,Top:=338,Width:=344,Height:=60,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSpisestue,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=26}
+ End GraphicObject
+Global GraphicObject DiningOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=876,Top:=420,Width:=164,Height:=64,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtSlP,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=22}
+ End GraphicObject
+Global GraphicObject DiningOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=1056,Top:=420,Width:=164,Height:=64,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSlAv,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=22}
+ End GraphicObject
+Global GraphicObject DiningBrightnessCaption As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=876,Top:=508,Width:=344,Height:=28,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFBDDFC7,stxText:=MyCommon.txtLYSSTYRKETRINN10}
+ End GraphicObject
+Global GraphicObject DiningDimDown As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=876,Top:=554,Width:=84,Height:=70,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txt2,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=32}
+ End GraphicObject
+Global GraphicObject DiningBrightness As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=972,Top:=554,Width:=152,Height:=70,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txt3,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=30}
+ End GraphicObject
+Global GraphicObject DiningDimUp As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=1136,Top:=554,Width:=84,Height:=70,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txt1,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=32}
+ End GraphicObject
+End _GraphicWindow
+Global _GraphicWindow DvdPage As MyController.CoreGraphicLibrary.Page WithProperties
+ { Left:=0,Top:=0,Width:=1280,Height:=800,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFF0D2418}
+Global GraphicObject AccentLine As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=40,Top:=36,Width:=6,Height:=62,Visible:=True,Locked:=0,_CollectionID:=0,BorderWidth:=0,FillColor:=&HFF66DC91}
+ End GraphicObject
+Global GraphicObject PageTitle As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=64,Top:=28,Width:=710,Height:=62,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtDVDspiller,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=36}
+ End GraphicObject
+Global GraphicObject PageSubtitle As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=64,Top:=98,Width:=1040,Height:=32,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFBDDFC7,stxText:=MyCommon.txtAvspillingDiskmenyOgVolumkontroll}
+ End GraphicObject
+Global GraphicObject SystemCaption As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=946,Top:=48,Width:=290,Height:=28,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFBDDFC7,stxText:=MyCommon.txtHJEMSTYRING}
+ End GraphicObject
+Global GraphicObject NavigationBar As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=40,Top:=692,Width:=1200,Height:=80,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=16,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject NavLights As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=60,Top:=704,Width:=368,Height:=56,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtLys,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject NavDvd As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=456,Top:=704,Width:=368,Height:=56,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtDVD,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject NavHeating As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=852,Top:=704,Width:=368,Height:=56,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtVarme,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject PlaybackCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=40,Top:=160,Width:=744,Height:=494,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=20,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject PlaybackCaption As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=64,Top:=180,Width:=500,Height:=30,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFBDDFC7,stxText:=MyCommon.txtDISKAVSPILLING}
+ End GraphicObject
+Global GraphicObject PlayerStatus As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=64,Top:=226,Width:=696,Height:=96,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextHint:=MyCommon.txtKlarTilBruk,TextHintColor:=&HFFBDDFC7,TextHintFontSize:=16,TextMain:=MyCommon.txtDVD,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=40}
+ End GraphicObject
+Global GraphicObject PreviousTrack As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=64,Top:=350,Width:=216,Height:=96,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtForrige,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=22}
+ End GraphicObject
+Global GraphicObject PlayDisc As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=296,Top:=350,Width:=232,Height:=96,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,Icon:=341,IconColor:=&HFFF2FFF5,IconSize:=28,TextMain:=MyCommon.txtSpillAv,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=26}
+ End GraphicObject
+Global GraphicObject NextTrack As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=544,Top:=350,Width:=216,Height:=96,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtNeste,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=22}
+ End GraphicObject
+Global GraphicObject PauseDisc As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=64,Top:=464,Width:=216,Height:=80,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,Icon:=327,IconColor:=&HFFF2FFF5,IconSize:=28,TextMain:=MyCommon.txtPause,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject StopDisc As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=296,Top:=464,Width:=232,Height:=80,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtStopp,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject EjectDisc As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=544,Top:=464,Width:=216,Height:=80,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtLsUt,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject PowerPlayer As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=64,Top:=564,Width:=216,Height:=64,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtStrm,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=22}
+ End GraphicObject
+Global GraphicObject VolumeDown As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=296,Top:=564,Width:=232,Height:=64,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtVolum,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=22}
+ End GraphicObject
+Global GraphicObject VolumeUp As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=544,Top:=564,Width:=216,Height:=64,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtVolum1,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=22}
+ End GraphicObject
+Global GraphicObject DiscMenuCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=808,Top:=160,Width:=432,Height:=494,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=20,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject DiscMenuCaption As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=832,Top:=180,Width:=360,Height:=30,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFBDDFC7,stxText:=MyCommon.txtDISKMENY}
+ End GraphicObject
+Global GraphicObject DiscMenu As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=832,Top:=226,Width:=182,Height:=64,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtDiskmeny1,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=21}
+ End GraphicObject
+Global GraphicObject DiscReturn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=1030,Top:=226,Width:=186,Height:=64,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtTilbake,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=21}
+ End GraphicObject
+Global GraphicObject CursorUp As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=966,Top:=316,Width:=116,Height:=80,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txt4,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=30}
+ End GraphicObject
+Global GraphicObject CursorLeft As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=832,Top:=412,Width:=116,Height:=80,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txt5,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=30}
+ End GraphicObject
+Global GraphicObject ConfirmDisc As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=966,Top:=412,Width:=116,Height:=80,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtOK,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=26}
+ End GraphicObject
+Global GraphicObject CursorRight As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=1100,Top:=412,Width:=116,Height:=80,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txt6,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=30}
+ End GraphicObject
+Global GraphicObject CursorDown As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=966,Top:=508,Width:=116,Height:=80,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txt7,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=30}
+ End GraphicObject
+Global GraphicObject MenuHint As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=832,Top:=612,Width:=384,Height:=24,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFBDDFC7,stxText:=MyCommon.txtBekreftValgetMedOK}
+ End GraphicObject
+End _GraphicWindow
+Global _GraphicWindow HeatingPage As MyController.CoreGraphicLibrary.Page WithProperties
+ { Left:=0,Top:=0,Width:=1280,Height:=800,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFF0D2418}
+Global GraphicObject AccentLine As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=40,Top:=36,Width:=6,Height:=62,Visible:=True,Locked:=0,_CollectionID:=0,BorderWidth:=0,FillColor:=&HFF66DC91}
+ End GraphicObject
+Global GraphicObject PageTitle As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=64,Top:=28,Width:=710,Height:=62,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtVarme,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=36}
+ End GraphicObject
+Global GraphicObject PageSubtitle As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=64,Top:=98,Width:=1040,Height:=32,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFBDDFC7,stxText:=MyCommon.txtStillInnTemperaturOgDriftsmodusForRommet}
+ End GraphicObject
+Global GraphicObject SystemCaption As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=946,Top:=48,Width:=290,Height:=28,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFBDDFC7,stxText:=MyCommon.txtHJEMSTYRING}
+ End GraphicObject
+Global GraphicObject NavigationBar As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=40,Top:=692,Width:=1200,Height:=80,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=16,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject NavLights As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=60,Top:=704,Width:=368,Height:=56,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtLys,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject NavDvd As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=456,Top:=704,Width:=368,Height:=56,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtDVD,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject NavHeating As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=852,Top:=704,Width:=368,Height:=56,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtVarme,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject TemperatureCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=40,Top:=160,Width:=744,Height:=494,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=20,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject RoomCaption As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=64,Top:=184,Width:=600,Height:=28,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFBDDFC7,stxText:=MyCommon.txtSTUE1}
+ End GraphicObject
+Global GraphicObject RoomTemperature As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=64,Top:=226,Width:=696,Height:=106,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextHint:=MyCommon.txtNvrendeTemperatur,TextHintColor:=&HFFBDDFC7,TextHintFontSize:=16,TextMain:=MyCommon.txtC,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=48}
+ End GraphicObject
+Global GraphicObject TargetCaption As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=64,Top:=356,Width:=600,Height:=28,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFBDDFC7,stxText:=MyCommon.txtNSKETTEMPERATUR}
+ End GraphicObject
+Global GraphicObject TemperatureDown As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=64,Top:=402,Width:=148,Height:=116,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,Icon:=305,IconColor:=&HFFF2FFF5,IconSize:=28,TextMain:=MyCommon.txt2,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=48}
+ End GraphicObject
+Global GraphicObject TargetTemperature As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=232,Top:=402,Width:=360,Height:=116,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtC,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=44}
+ End GraphicObject
+Global GraphicObject TemperatureUp As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=612,Top:=402,Width:=148,Height:=116,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,Icon:=2,IconColor:=&HFFF2FFF5,IconSize:=28,TextMain:=MyCommon.txt1,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=48}
+ End GraphicObject
+Global GraphicObject TemperatureStepHint As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=64,Top:=544,Width:=696,Height:=28,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFBDDFC7,stxText:=MyCommon.txtJusternsketTemperaturITrinnP05C}
+ End GraphicObject
+Global GraphicObject HeatingStatus As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=64,Top:=594,Width:=696,Height:=40,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtVarmestatus,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=20}
+ End GraphicObject
+Global GraphicObject HeatingModesCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=808,Top:=160,Width:=432,Height:=494,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=20,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject HeatingModeCaption As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=832,Top:=184,Width:=380,Height:=28,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFBDDFC7,stxText:=MyCommon.txtDRIFTSMODUS}
+ End GraphicObject
+Global GraphicObject HeatingAuto As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=832,Top:=234,Width:=384,Height:=84,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextHint:=MyCommon.txtEtterTidsprogram,TextHintColor:=&HFFBDDFC7,TextHintFontSize:=16,TextMain:=MyCommon.txtAutomatisk,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=26}
+ End GraphicObject
+Global GraphicObject HeatingComfort As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=832,Top:=338,Width:=384,Height:=84,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextHint:=MyCommon.txtBehageligTemperatur,TextHintColor:=&HFFBDDFC7,TextHintFontSize:=16,TextMain:=MyCommon.txtKomfort,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=26}
+ End GraphicObject
+Global GraphicObject HeatingEco As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=832,Top:=442,Width:=384,Height:=84,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextHint:=MyCommon.txtEnergisparendeDrift,TextHintColor:=&HFFBDDFC7,TextHintFontSize:=16,TextMain:=MyCommon.txtkomodus,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=26}
+ End GraphicObject
+Global GraphicObject HeatingOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=832,Top:=546,Width:=384,Height:=84,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextHint:=MyCommon.txtSlAvOppvarming,TextHintColor:=&HFFBDDFC7,TextHintFontSize:=16,TextMain:=MyCommon.txtSlAv,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=26}
+ End GraphicObject
+End _GraphicWindow
+Global _GraphicWindow CdPage As MyController.CoreGraphicLibrary.Page WithProperties
+ { Left:=0,Top:=0,Width:=1280,Height:=800,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFF0D2418}
+Global GraphicObject AccentLine As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=40,Top:=36,Width:=6,Height:=62,Visible:=True,Locked:=0,_CollectionID:=0,BorderWidth:=0,FillColor:=&HFF66DC91}
+ End GraphicObject
+Global GraphicObject PageTitle As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=64,Top:=28,Width:=710,Height:=62,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtCDspiller,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=36}
+ End GraphicObject
+Global GraphicObject PageSubtitle As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=64,Top:=98,Width:=1040,Height:=32,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFBDDFC7,stxText:=MyCommon.txtSpillMusikkVelgSporOgJusterVolumet}
+ End GraphicObject
+Global GraphicObject NavigationBar As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=40,Top:=692,Width:=1200,Height:=80,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=16,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject NavLights As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=60,Top:=704,Width:=280,Height:=56,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtLys,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject NavDvd As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=356,Top:=704,Width:=280,Height:=56,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtDVD,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject NavHeating As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=652,Top:=704,Width:=280,Height:=56,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtVarme,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject NavCd As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=948,Top:=704,Width:=272,Height:=56,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtCD,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject PlaybackCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=40,Top:=160,Width:=744,Height:=494,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=20,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject AudioCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=808,Top:=160,Width:=432,Height:=494,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=20,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject PlaybackCaption As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=64,Top:=184,Width:=650,Height:=28,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFBDDFC7,stxText:=MyCommon.txtCDAVSPILLING}
+ End GraphicObject
+Global GraphicObject TrackDisplay As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=64,Top:=230,Width:=696,Height:=96,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextHint:=MyCommon.txtSpilletid,TextHintColor:=&HFFBDDFC7,TextHintFontSize:=16,TextMain:=MyCommon.txtSpor,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject PreviousTrack As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=64,Top:=352,Width:=216,Height:=86,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,Icon:=577,IconColor:=&HFFF2FFF5,IconSize:=28,TextMain:=MyCommon.txtForrige,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject PlayDisc As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=296,Top:=352,Width:=232,Height:=86,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,Icon:=341,IconColor:=&HFFF2FFF5,IconSize:=28,TextMain:=MyCommon.txtSpillAv,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject NextTrack As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=544,Top:=352,Width:=216,Height:=86,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,Icon:=212,IconColor:=&HFFF2FFF5,IconSize:=28,TextMain:=MyCommon.txtNeste,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject RewindDisc As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=64,Top:=458,Width:=216,Height:=76,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSpolTilbake,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject PauseDisc As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=296,Top:=458,Width:=232,Height:=76,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,Icon:=327,IconColor:=&HFFF2FFF5,IconSize:=28,TextMain:=MyCommon.txtPause,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject ForwardDisc As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=544,Top:=458,Width:=216,Height:=76,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSpolFrem,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject StopDisc As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=64,Top:=554,Width:=216,Height:=76,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,Icon:=437,IconColor:=&HFFF2FFF5,IconSize:=28,TextMain:=MyCommon.txtStopp,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject RepeatDisc As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=296,Top:=554,Width:=232,Height:=76,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtGjenta,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject ShuffleDisc As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=544,Top:=554,Width:=216,Height:=76,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtTilfeldig,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject AudioCaption As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=832,Top:=184,Width:=384,Height:=28,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFBDDFC7,stxText:=MyCommon.txtVOLUMOGSPILLER}
+ End GraphicObject
+Global GraphicObject VolumeDisplay As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=832,Top:=230,Width:=384,Height:=96,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtVolum2,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject VolumeDown As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=832,Top:=352,Width:=182,Height:=86,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,Icon:=599,IconColor:=&HFFF2FFF5,IconSize:=28,TextMain:=MyCommon.txtVolumNed,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject VolumeUp As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=1030,Top:=352,Width:=186,Height:=86,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,Icon:=507,IconColor:=&HFFF2FFF5,IconSize:=28,TextMain:=MyCommon.txtVolumOpp,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject MuteAudio As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=832,Top:=458,Width:=384,Height:=76,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,Icon:=535,IconColor:=&HFFF2FFF5,IconSize:=28,TextMain:=MyCommon.txtDempLyden,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject PowerPlayer As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=832,Top:=554,Width:=182,Height:=76,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,Icon:=348,IconColor:=&HFFF2FFF5,IconSize:=28,TextMain:=MyCommon.txtStrm,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject EjectDisc As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=1030,Top:=554,Width:=186,Height:=76,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtLsUt,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject LanguageCzech As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=850,Top:=28,Width:=180,Height:=62,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF66DC91,BorderWidth:=1,ColorUp:=&HFF1D5033,ColorDown:=&HFF36985A,TextMain:=MyCommon.txtLanguageCzech,TextHint:=MyCommon.txtEmpty,TextMainColor:=&HFFF2FFF5}
+ End GraphicObject
+Global GraphicObject LanguageOriginal As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=1050,Top:=28,Width:=180,Height:=62,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF66DC91,BorderWidth:=1,ColorUp:=&HFF1D5033,ColorDown:=&HFF36985A,TextMain:=MyCommon.txtLanguageOriginal,TextHint:=MyCommon.txtEmpty,TextMainColor:=&HFFF2FFF5}
+ End GraphicObject
+End _GraphicWindow
+Global _GraphicWindow WholeHouseLightingPage As MyController.CoreGraphicLibrary.Page WithProperties
+ { Left:=0,Top:=0,Width:=1280,Height:=800,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFF0D2418}
+Global GraphicObject AccentLine As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=40,Top:=32,Width:=6,Height:=56,Visible:=True,Locked:=0,_CollectionID:=0,BorderWidth:=0,FillColor:=&HFF66DC91}
+ End GraphicObject
+Global GraphicObject PageTitle As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=64,Top:=26,Width:=830,Height:=64,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtLysIHeleHuset,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=34}
+ End GraphicObject
+Global GraphicObject PageSubtitle As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=64,Top:=100,Width:=1120,Height:=28,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFBDDFC7,stxText:=MyCommon.txt10SoveromOgFellesromStyringAvHvertRom}
+ End GraphicObject
+Global GraphicObject AllLightsOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=40,Top:=144,Width:=384,Height:=66,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtSlPAlt,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject AllLightsOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=448,Top:=144,Width:=384,Height:=66,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtSlAvAlt,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject NightScene As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=856,Top:=144,Width:=384,Height:=66,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtNattmodus,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=24}
+ End GraphicObject
+Global GraphicObject BedroomsCaption As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=40,Top:=228,Width:=384,Height:=26,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFBDDFC7,stxText:=MyCommon.txtSOVEROM15BAD1}
+ End GraphicObject
+Global GraphicObject MoreBedroomsCaption As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=448,Top:=228,Width:=384,Height:=26,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFBDDFC7,stxText:=MyCommon.txtSOVEROM610BAD2}
+ End GraphicObject
+Global GraphicObject SharedRoomsCaption As MyController.CoreGraphicLibrary.Label WithProperties
+ { Left:=856,Top:=228,Width:=384,Height:=26,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFBDDFC7,stxText:=MyCommon.txtFELLESROM}
+ End GraphicObject
+Global GraphicObject BedroomOneCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=40,Top:=266,Width:=384,Height:=58,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=10,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject BedroomOneName As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=46,Top:=271,Width:=176,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSoverom1,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=20}
+ End GraphicObject
+Global GraphicObject BedroomOneOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=230,Top:=271,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtSlP,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject BedroomOneOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=326,Top:=271,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSlAv,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject BedroomTwoCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=40,Top:=332,Width:=384,Height:=58,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=10,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject BedroomTwoName As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=46,Top:=337,Width:=176,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSoverom2,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=20}
+ End GraphicObject
+Global GraphicObject BedroomTwoOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=230,Top:=337,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtSlP,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject BedroomTwoOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=326,Top:=337,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSlAv,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject BedroomThreeCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=40,Top:=398,Width:=384,Height:=58,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=10,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject BedroomThreeName As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=46,Top:=403,Width:=176,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSoverom3,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=20}
+ End GraphicObject
+Global GraphicObject BedroomThreeOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=230,Top:=403,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtSlP,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject BedroomThreeOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=326,Top:=403,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSlAv,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject BedroomFourCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=40,Top:=464,Width:=384,Height:=58,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=10,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject BedroomFourName As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=46,Top:=469,Width:=176,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSoverom4,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=20}
+ End GraphicObject
+Global GraphicObject BedroomFourOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=230,Top:=469,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtSlP,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject BedroomFourOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=326,Top:=469,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSlAv,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject BedroomFiveCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=40,Top:=530,Width:=384,Height:=58,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=10,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject BedroomFiveName As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=46,Top:=535,Width:=176,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSoverom5,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=20}
+ End GraphicObject
+Global GraphicObject BedroomFiveOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=230,Top:=535,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtSlP,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject BedroomFiveOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=326,Top:=535,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSlAv,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject BedroomSixCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=448,Top:=266,Width:=384,Height:=58,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=10,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject BedroomSixName As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=454,Top:=271,Width:=176,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSoverom6,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=20}
+ End GraphicObject
+Global GraphicObject BedroomSixOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=638,Top:=271,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtSlP,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject BedroomSixOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=734,Top:=271,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSlAv,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject BedroomSevenCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=448,Top:=332,Width:=384,Height:=58,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=10,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject BedroomSevenName As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=454,Top:=337,Width:=176,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSoverom7,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=20}
+ End GraphicObject
+Global GraphicObject BedroomSevenOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=638,Top:=337,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtSlP,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject BedroomSevenOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=734,Top:=337,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSlAv,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject BedroomEightCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=448,Top:=398,Width:=384,Height:=58,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=10,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject BedroomEightName As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=454,Top:=403,Width:=176,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSoverom8,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=20}
+ End GraphicObject
+Global GraphicObject BedroomEightOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=638,Top:=403,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtSlP,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject BedroomEightOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=734,Top:=403,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSlAv,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject BedroomNineCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=448,Top:=464,Width:=384,Height:=58,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=10,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject BedroomNineName As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=454,Top:=469,Width:=176,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSoverom9,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=20}
+ End GraphicObject
+Global GraphicObject BedroomNineOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=638,Top:=469,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtSlP,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject BedroomNineOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=734,Top:=469,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSlAv,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject BedroomTenCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=448,Top:=530,Width:=384,Height:=58,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=10,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject BedroomTenName As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=454,Top:=535,Width:=176,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSoverom10,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=20}
+ End GraphicObject
+Global GraphicObject BedroomTenOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=638,Top:=535,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtSlP,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject BedroomTenOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=734,Top:=535,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSlAv,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject LivingRoomCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=856,Top:=266,Width:=384,Height:=58,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=10,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject LivingRoomName As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=862,Top:=271,Width:=176,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtStue,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=20}
+ End GraphicObject
+Global GraphicObject LivingRoomOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=1046,Top:=271,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtSlP,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject LivingRoomOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=1142,Top:=271,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSlAv,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject KitchenRoomCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=856,Top:=332,Width:=384,Height:=58,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=10,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject KitchenRoomName As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=862,Top:=337,Width:=176,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtKjkken,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=20}
+ End GraphicObject
+Global GraphicObject KitchenRoomOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=1046,Top:=337,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtSlP,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject KitchenRoomOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=1142,Top:=337,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSlAv,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject DiningRoomCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=856,Top:=398,Width:=384,Height:=58,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=10,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject DiningRoomName As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=862,Top:=403,Width:=176,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSpisestue,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=20}
+ End GraphicObject
+Global GraphicObject DiningRoomOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=1046,Top:=403,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtSlP,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject DiningRoomOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=1142,Top:=403,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSlAv,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject StudyRoomCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=856,Top:=464,Width:=384,Height:=58,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=10,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject StudyRoomName As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=862,Top:=469,Width:=176,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtKontor,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=20}
+ End GraphicObject
+Global GraphicObject StudyRoomOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=1046,Top:=469,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtSlP,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject StudyRoomOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=1142,Top:=469,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSlAv,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject BathroomOneCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=40,Top:=596,Width:=384,Height:=58,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=10,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject BathroomOneName As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=46,Top:=601,Width:=176,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtBad1,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=20}
+ End GraphicObject
+Global GraphicObject BathroomOneOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=230,Top:=601,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtSlP,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject BathroomOneOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=326,Top:=601,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSlAv,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject BathroomTwoCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=448,Top:=596,Width:=384,Height:=58,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=10,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject BathroomTwoName As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=454,Top:=601,Width:=176,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtBad2,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=20}
+ End GraphicObject
+Global GraphicObject BathroomTwoOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=638,Top:=601,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtSlP,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject BathroomTwoOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=734,Top:=601,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSlAv,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject HallwayCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=856,Top:=530,Width:=384,Height:=58,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=10,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject HallwayName As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=862,Top:=535,Width:=176,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtGang,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=20}
+ End GraphicObject
+Global GraphicObject HallwayOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=1046,Top:=535,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtSlP,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject HallwayOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=1142,Top:=535,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSlAv,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject ExteriorCard As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=856,Top:=596,Width:=384,Height:=58,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=10,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject ExteriorName As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=862,Top:=601,Width:=176,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtUteomrde,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=20}
+ End GraphicObject
+Global GraphicObject ExteriorOn As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=1046,Top:=601,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtSlP,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject ExteriorOff As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=1142,Top:=601,Width:=88,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtSlAv,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=18}
+ End GraphicObject
+Global GraphicObject NavigationBar As MyController.CoreGraphicLibrary.Frame WithProperties
+ { Left:=40,Top:=708,Width:=1200,Height:=64,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderRadius:=12,BorderWidth:=1,FillColor:=&HFF153A25}
+ End GraphicObject
+Global GraphicObject NavLights As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=52,Top:=716,Width:=286,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF287F47,TextMain:=MyCommon.txtLysHus,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=22}
+ End GraphicObject
+Global GraphicObject NavDvd As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=348,Top:=716,Width:=286,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtDVD,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=22}
+ End GraphicObject
+Global GraphicObject NavHeating As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=644,Top:=716,Width:=286,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtVarme,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=22}
+ End GraphicObject
+Global GraphicObject NavCd As MyController.CoreGraphicLibrary.Button WithProperties
+ { Left:=940,Top:=716,Width:=288,Height:=48,Visible:=True,Locked:=0,_CollectionID:=0,BorderColor:=&HFF447653,BorderWidth:=1,ColorDown:=&HFF36985A,ColorUp:=&HFF1D5033,TextMain:=MyCommon.txtCD,TextMainColor:=&HFFF2FFF5,TextMainFontSize:=22}
+ End GraphicObject
+End _GraphicWindow

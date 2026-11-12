@@ -1,0 +1,44 @@
+MyProperties { _DisplayWidth:=1280,_DisplayHeight:=800,_DefaultLanguageId:=0,_FullScreen:=False}
+Global _GraphicWindow Home As MyController.GenericObjects.Page WithProperties
+ { Left:=0,Top:=0,Width:=1280,Height:=800,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFF182434}
+Global GraphicObject Relay1Indicator As MyController.GenericObjects.Indicator WithProperties
+ { Left:=560,Top:=270,Width:=160,Height:=160,Visible:=False,Locked:=0,_CollectionID:=0,ActiveColor:=&HFF28C76F,NonActiveColor:=&HFF748094,IndicatorValue:=False,Events:=False}
+ End GraphicObject
+Global GraphicObject StatusText As MyController.GenericObjects.StaticText WithProperties
+ { Left:=340,Top:=470,Width:=600,Height:=80,Visible:=True,Locked:=0,_CollectionID:=0,Color:=&HFFFFFFFF}
+ End GraphicObject
+End _GraphicWindow
+
+// Main
+Private Process Autoexec()
+    Home.ShowObject()
+    RelayStatus.Initialize()
+End Process
+
+// RelayStatus
+Public Function Initialize()
+    ShowUnknown()
+    RequestState()
+    _CallPeriodic(RequestState, :1.0)
+End Function
+
+Private Function RequestState()
+    StartProcess SmartRelay1.RelayControl.ReportRelay1State()
+End Function
+
+Global Process ReceiveRelay1State(isclosed As Boolean)
+    Home.Relay1Indicator.SetValue(isclosed)
+    Home.Relay1Indicator.ShowObject()
+    If isclosed Then
+        Home.StatusText.SetText("Relay 1: ON")
+    Else
+        Home.StatusText.SetText("Relay 1: OFF")
+    End If
+    _StopSchedule(ShowUnknown)
+    _CallDelayed(ShowUnknown, :5.0)
+End Process
+
+Private Function ShowUnknown()
+    Home.Relay1Indicator.HideObject()
+    Home.StatusText.SetText("Relay 1: waiting for connection")
+End Function

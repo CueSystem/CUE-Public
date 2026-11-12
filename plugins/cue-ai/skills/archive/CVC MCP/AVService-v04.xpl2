@@ -1,0 +1,182 @@
+Private Var SelectedInput As Long := 0
+Private Var InputRevision As Long := 0
+Private Var InputSendLock As _Semaphore
+Private Var PowerCaption As Text[128] := "Monitor: stav neznámý"
+Private Var InputCaption As Text[128] := "Vstup: dosud nezvolen"
+Global Event InputSelectionChanged As Process(inputid As Long)
+Global Event AVStateChanged As Process(powertext As Text, inputtext As Text)
+
+Global Process ReportState()
+    RaiseEvent InputSelectionChanged(SelectedInput)
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+End Process
+
+Private Process PowerFeedback(status As Long) Link SamsungMonitor1.OnPowerStatusChange
+    If status = 1 Then
+        PowerCaption := "Monitor: zapnutý"
+    Else
+        If status = 0 Then
+            PowerCaption := "Monitor: vypnutý"
+        Else
+            PowerCaption := "Monitor: stav neznámý"
+        End If
+    End If
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+End Process
+
+Global Process Input_HDMI_1()
+    SelectedInput := 1
+    InputRevision += 1
+    InputCaption := "Požadovaný vstup: HDMI 1"
+    RaiseEvent InputSelectionChanged(SelectedInput)
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+    StartProcess SendInput(1, InputRevision)
+End Process
+
+Global Process Input_HDMI_2()
+    SelectedInput := 2
+    InputRevision += 1
+    InputCaption := "Požadovaný vstup: HDMI 2"
+    RaiseEvent InputSelectionChanged(SelectedInput)
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+    StartProcess SendInput(2, InputRevision)
+End Process
+
+Global Process Input_DisplayPort_1()
+    SelectedInput := 3
+    InputRevision += 1
+    InputCaption := "Požadovaný vstup: DisplayPort 1"
+    RaiseEvent InputSelectionChanged(SelectedInput)
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+    StartProcess SendInput(3, InputRevision)
+End Process
+
+Global Process Input_VGA_1()
+    SelectedInput := 4
+    InputRevision += 1
+    InputCaption := "Požadovaný vstup: VGA 1"
+    RaiseEvent InputSelectionChanged(SelectedInput)
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+    StartProcess SendInput(4, InputRevision)
+End Process
+
+Global Process Input_DVI_1()
+    SelectedInput := 5
+    InputRevision += 1
+    InputCaption := "Požadovaný vstup: DVI 1"
+    RaiseEvent InputSelectionChanged(SelectedInput)
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+    StartProcess SendInput(5, InputRevision)
+End Process
+
+Global Process Input_Component_1()
+    SelectedInput := 6
+    InputRevision += 1
+    InputCaption := "Požadovaný vstup: Component 1"
+    RaiseEvent InputSelectionChanged(SelectedInput)
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+    StartProcess SendInput(6, InputRevision)
+End Process
+
+Global Process Input_BNC_1()
+    SelectedInput := 7
+    InputRevision += 1
+    InputCaption := "Požadovaný vstup: BNC 1"
+    RaiseEvent InputSelectionChanged(SelectedInput)
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+    StartProcess SendInput(7, InputRevision)
+End Process
+
+Global Process Input_Composite_1()
+    SelectedInput := 8
+    InputRevision += 1
+    InputCaption := "Požadovaný vstup: Composite 1"
+    RaiseEvent InputSelectionChanged(SelectedInput)
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+    StartProcess SendInput(8, InputRevision)
+End Process
+
+Global Process Input_Svideo_1()
+    SelectedInput := 9
+    InputRevision += 1
+    InputCaption := "Požadovaný vstup: Svideo 1"
+    RaiseEvent InputSelectionChanged(SelectedInput)
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+    StartProcess SendInput(9, InputRevision)
+End Process
+
+Global Process Input_MagicInfo()
+    SelectedInput := 10
+    InputRevision += 1
+    InputCaption := "Požadovaný vstup: MagicInfo"
+    RaiseEvent InputSelectionChanged(SelectedInput)
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+    StartProcess SendInput(10, InputRevision)
+End Process
+
+Global Process Input_MagicInfoLite()
+    SelectedInput := 11
+    InputRevision += 1
+    InputCaption := "Požadovaný vstup: MagicInfoLite"
+    RaiseEvent InputSelectionChanged(SelectedInput)
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+    StartProcess SendInput(11, InputRevision)
+End Process
+
+// TCP runs separately from the shared selection and its UI events.
+// Discard obsolete queued selections; never overwrite a newer UI selection.
+Private Process SendInput(inputid As Long, revision As Long)
+    InputSendLock.Lock()
+    If revision = InputRevision Then
+        Select inputid
+            Case 1
+                SamsungMonitor1.Input_HDMI_1()
+            Case 2
+                SamsungMonitor1.Input_HDMI_2()
+            Case 3
+                SamsungMonitor1.Input_DisplayPort_1()
+            Case 4
+                SamsungMonitor1.Input_VGA_1()
+            Case 5
+                SamsungMonitor1.Input_DVI_1()
+            Case 6
+                SamsungMonitor1.Input_Component_1()
+            Case 7
+                SamsungMonitor1.Input_BNC_1()
+            Case 8
+                SamsungMonitor1.Input_Composite_1()
+            Case 9
+                SamsungMonitor1.Input_Svideo_1()
+            Case 10
+                SamsungMonitor1.Input_MagicInfo()
+            Case 11
+                SamsungMonitor1.Input_MagicInfoLite()
+        End Select
+    End If
+    InputSendLock.Unlock()
+End Process
+
+Global Process PowerOn()
+    PowerCaption := "Požadavek: zapnout monitor"
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+    StartProcess SendPowerOn()
+End Process
+
+Private Process SendPowerOn()
+    SamsungMonitor1.PowerOn()
+End Process
+
+Global Process PowerOff()
+    PowerCaption := "Požadavek: vypnout monitor"
+    RaiseEvent AVStateChanged(PowerCaption, InputCaption)
+    StartProcess SendPowerOff()
+End Process
+
+Private Process SendPowerOff()
+    SamsungMonitor1.PowerOff()
+End Process
+
+
+
+
+

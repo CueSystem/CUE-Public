@@ -1,0 +1,32 @@
+Global Event DimmerLevelRequested As Process(level As Double)
+Private Var RequestedLevel As Double := 0
+
+Public Function SetDimmerLevel(level As Double)
+    If level < 0 Then level := 0 End If
+    If level > 100 Then level := 100 End If
+    If level <> RequestedLevel Then
+        RequestedLevel := level
+        Lights.DimmerLevel.SetValue(level)
+        RaiseEvent DimmerLevelRequested(level)
+    End If
+End Function
+
+Private Process DimmerChanged(level As Double) Link Lights.DimmerLevel.OnValueChange
+    SetDimmerLevel(level)
+End Process
+
+Private Process DimmerOff() Link Lights.DimmerOff.OnPush
+    SetDimmerLevel(0)
+End Process
+
+Private Process DimmerFull() Link Lights.DimmerFull.OnPush
+    SetDimmerLevel(100)
+End Process
+
+Private Process Circuit2On() Link Lights.Circuit2On.OnPush
+    StartProcess SmartRelay1.RelayControl.Relay2On()
+End Process
+
+Private Process Circuit2Off() Link Lights.Circuit2Off.OnPush
+    StartProcess SmartRelay1.RelayControl.Relay2Off()
+End Process

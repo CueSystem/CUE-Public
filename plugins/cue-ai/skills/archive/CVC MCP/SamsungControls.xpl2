@@ -1,0 +1,52 @@
+Private Process ProjectorOn_OnPush() Link Home.ProjectorOn.OnPush
+    SamsungMonitor1.PowerOn()
+End Process
+
+Private Process ProjectorOff_OnPush() Link Home.ProjectorOff.OnPush
+    SamsungMonitor1.PowerOff()
+End Process
+
+Private Process InputHDMI1_OnPush() Link Home.InputHDMI1.OnPush
+    SamsungMonitor1.Input_HDMI_1()
+End Process
+
+Private Process InputHDMI2_OnPush() Link Home.InputHDMI2.OnPush
+    SamsungMonitor1.Input_HDMI_2()
+End Process
+
+Private Process InputDP_OnPush() Link Home.InputDP.OnPush
+    SamsungMonitor1.Input_DisplayPort_1()
+End Process
+
+Private Process InputVGA_OnPush() Link Home.InputVGA.OnPush
+    SamsungMonitor1.Input_VGA_1()
+End Process
+
+Private Process InputDVI_OnPush() Link Home.InputDVI.OnPush
+    SamsungMonitor1.Input_DVI_1()
+End Process
+
+Private Process InputComponent_OnPush() Link Home.InputComponent.OnPush
+    SamsungMonitor1.Input_Component_1()
+End Process
+
+Private Process InputBNC_OnPush() Link Home.InputBNC.OnPush
+    SamsungMonitor1.Input_BNC_1()
+End Process
+
+Private Process InputComposite_OnPush() Link Home.InputComposite.OnPush
+    SamsungMonitor1.Input_Composite_1()
+End Process
+
+Private Process InputSVideo_OnPush() Link Home.InputSVideo.OnPush
+    SamsungMonitor1.Input_Svideo_1()
+End Process
+
+Private Process InputMagicInfo_OnPush() Link Home.InputMagicInfo.OnPush
+    SamsungMonitor1.Input_MagicInfo()
+End Process
+
+Private Process InputMagicInfoLite_OnPush() Link Home.InputMagicInfoLite.OnPush
+    SamsungMonitor1.Input_MagicInfoLite()
+End Process
+
