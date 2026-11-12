@@ -3,6 +3,8 @@ Public repository for CUE, a.s.
 
 ## CUE AI plugin
 
+**Začínáte? [Český návod: instalace Codexu a přidání CUE AI ve Windows](docs/INSTALACE-CODEX-CUE-AI.cs.md).**
+
 Plugin pro **Codex a Claude Code**, připojující CUE Visual Composer a dokumentaci CUE.
 Obsahuje skill `cue-visual-composer` včetně referencí, skriptů a ukázkových projektů
 z archivu `CVC-Project-Skills.zip`.
