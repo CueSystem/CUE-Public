@@ -1,8 +1,11 @@
-# Instalace Codexu a pluginu CUE AI ve Windows
+# Instalace Codexu nebo Claude Code a pluginu CUE AI ve Windows
 
-Tento návod vás provede instalací Codexu, přidáním pluginu **CUE AI** z veřejného
+Tento návod vás provede instalací Codexu nebo Claude Code, přidáním pluginu **CUE AI** z veřejného
 repozitáře [CueSystem/CUE-Public](https://github.com/CueSystem/CUE-Public)
 a prvním ověřením připojení ke CUE Visual Composeru.
+
+Vyberte si klienta: kroky 1–7 popisují Codex, samostatná část **Claude Code** níže
+obsahuje druhou možnost. Pro použití CUE AI stačí jeden z těchto klientů.
 
 Postup je určen pro Windows na počítači, kde běží CVC. Podoba obrazovek se může
 mezi verzemi aplikace lišit. Postup vychází z oficiální dokumentace ověřené
@@ -163,7 +166,110 @@ restartujte, a otevřete nový chat.
 | CVC není dostupný z cloudu nebo WSL | Použijte Codex přímo ve Windows na počítači s CVC; `127.0.0.1` označuje prostředí klienta. |
 | Dokumentace není dostupná | Zkontrolujte internet, proxy a přístup k `www.cuesystem.com`. |
 
-## Technická kontrola ze staženého repozitáře
+## Claude Code: instalace a připojení CUE AI
+
+### A. Nainstalujte Claude Code
+
+V PowerShellu spusťte oficiální instalátor:
+
+```powershell
+irm https://claude.ai/install.ps1 | iex
+```
+
+Otevřete nové okno PowerShellu a ověřte instalaci:
+
+```powershell
+claude --version
+```
+
+Pro práci s repozitářem doporučujeme také Git pro Windows. Claude Code používejte
+přímo ve Windows na počítači s CVC, aby lokální endpoint ukazoval na správný počítač.
+
+Zdroj: [oficiální instalace Claude Code](https://code.claude.com/docs/en/setup).
+
+### B. Přihlaste se a vyberte projekt
+
+Přejděte do své existující složky s CVC projektem; cestu v příkladu nahraďte vlastní:
+
+```powershell
+Set-Location 'C:\CUE\MojeProjekty'
+claude
+```
+
+Při prvním spuštění dokončete přihlášení v prohlížeči podle pokynů Claude Code.
+Potřebujete účet nebo firemní přístup podporující Claude Code. Účet ChatGPT
+pro přihlášení do Claude Code neslouží. V otevřené relaci lze přihlášení vyvolat
+příkazem `/login`. Pak relaci ukončete příkazem `/exit` a pokračujte v PowerShellu.
+
+Zdroj: [první spuštění a přihlášení](https://code.claude.com/docs/en/quickstart).
+
+### C. Přidejte marketplace a nainstalujte plugin
+
+V PowerShellu, mimo běžící relaci Claude Code:
+
+```powershell
+claude plugin marketplace add CueSystem/CUE-Public
+claude plugin install cue-ai@cue-ai-local
+claude plugin list
+```
+
+Ve výpisu zkontrolujte `cue-ai@cue-ai-local` a stav povoleného pluginu. Tato instalace
+je pro vašeho uživatele; samostatná instalace původního ZIP se skills není potřeba.
+
+Zdroj: [instalace pluginů ze shellu](https://code.claude.com/docs/en/discover-plugins).
+
+### D. Ověřte MCP a skill
+
+Spusťte CVC s MCP podle kroku 5 výše. Ve složce projektu otevřete novou relaci:
+
+```powershell
+claude
+```
+
+Následující příkazy zadávejte uvnitř Claude Code, nikoli do PowerShellu:
+
+```text
+/mcp
+```
+
+Zkontrolujte oba servery: `cvc` a `cue-docs`. V seznamu mohou mít navíc prefix
+pluginu. Potom napište:
+
+> Pomocí nástrojů pluginu CUE AI načti informace o CVC přes get_application_info
+> a vyhledej v CUE Docs dokumentaci k CUE Visual Composeru. Uveď výsledek obou
+> volání. Projekt neotevírej ani neupravuj.
+
+Skill vyvolejte přímo:
+
+```text
+/cue-ai:cue-visual-composer
+```
+
+Zadejte například kontrolu existujícího projektu bez změn. Příkaz `/plugin`
+otevře správu pluginů a případné chyby načtení. Pokud se plugin nenačetl,
+ukončete relaci přes `/exit` a spusťte `claude` znovu.
+
+Zdroj: [kontrola instalace a skills](https://code.claude.com/docs/en/discover-plugins),
+[připojení MCP](https://code.claude.com/docs/en/mcp).
+
+### E. Aktualizace a potíže
+
+V PowerShellu obnovte katalog i plugin:
+
+```powershell
+claude plugin marketplace update cue-ai-local
+claude plugin update cue-ai@cue-ai-local
+```
+
+Potom otevřete novou relaci. Pokud `claude` není rozpoznán, otevřete nové okno
+PowerShellu a zkontrolujte instalaci a PATH. Při chybě připojení CVC ověřte
+port 8765 a běžící CVC; při chybě dokumentace přístup na internet.
+Příkazy s úvodním `/` patří do relace Claude Code, příkazy začínající `claude`
+do PowerShellu.
+
+Zdroj: [aktualizace pluginů a marketplaces](https://code.claude.com/docs/en/discover-plugins).
+
+## Technická kontrola ze staženého repozitáře — oba klienti
 
 Pro správce nebo při diagnostice, s nainstalovaným Gitem a Node.js 18+:
 
